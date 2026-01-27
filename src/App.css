@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: linear-gradient(
+    -45deg,
+    #0c001e,    
+    #231830,   
+    #36284d,  
+    #42234b,   
+    #4a3c61,    
+    #36284d,    
+    #231830   
+  );
+  background-size: 400% 400%;
+  color: #E0D6FF;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+.chat-app {
+  height: 100vh; 
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column; 
+}
+
+.messages-container {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: rgba(12, 0, 30, 0.5);
+  flex-direction: column; 
+  align-items: flex-start; 
+}
+
+.input-message {
+  border-radius: 12px;
+  flex-shrink: 0; 
+  padding: 16px;
+  background-color: rgba(12, 0, 30, 0.7);
+  border-top: 1px solid rgba(224, 214, 255, 0.2);
+  display: flex;
+  gap: 12px;
+}
+
+.input-message input {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(224, 214, 255, 0.1);
+  border: 1px solid rgba(224, 214, 255, 0.3);
+  border-radius: 8px;
+  color: #E0D6FF;
+  font-size: 16px;
+}
+
+.input-message input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.input-message button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chat-message {
+ border-radius: 12px;
+  max-width: 70%;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  position: relative;
+  word-wrap: break-word;
+  line-height: 1.4;
+  background-color: #3c2f4c;
+  margin-right: auto;
+  color: #E0D6FF;
+}
+
+.my-message {
+  border-radius: 12px;
+  max-width: 70%;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  position: relative;
+  word-wrap: break-word;
+  line-height: 1.4;
+  background-color: #adbcff;
+  margin-left: auto;
+  margin-right: 0;
+  color: #000;
+}
