@@ -1,3 +1,6 @@
 export default interface IWebSocketClient {
-  connect
+  socket: WebSocket | null;
+  connect(): void;
+  onMessage(): void;
+  onDisconnect(): void;
 }

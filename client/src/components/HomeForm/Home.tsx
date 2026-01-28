@@ -1,29 +1,23 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Message from "../Message";
-import SERVER_URL from "../../config";
 import type MessageProps from "../../interfaces/MessageProps";
 import './Home.css';
 import Chat from "../Chat";
 import test from '../../assets/i.png';
+import WebSocketChat from "../../modules/websocket-client";
 
 const Home = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<MessageProps[]>([]);
-  const socket = useRef<WebSocket | null>(null);
+  const socketRef = useRef<WebSocketChat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    socket.current = new WebSocket(SERVER_URL);
+    socketRef.current = new WebSocketChat(); 
+    socketRef.current.connect();
+    socketRef.current.onMessage(event: MessageEvent) {
 
-    socket.current.onmessage = (event: MessageEvent) => {
-      console.log(event.data);
-      const data = JSON.parse(event.data);
-      setMessages(prev => [...prev, { message: data.message, type: 'chat' }]);
-    };
-
-    return () => {
-      socket.current?.close();
-    };
+    }
   }, []);
 
   //!!!
@@ -35,11 +29,6 @@ const Home = () => {
     e.preventDefault();
     if (!message.trim()) return;
 
-    socket.current?.send(JSON.stringify({
-      message,
-      time: new Date().toLocaleString(),
-      type: 'message'
-    }));
     setMessages(prev => [...prev, { message, type: 'my' }]);
     setMessage('');
   };
