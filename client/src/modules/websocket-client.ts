@@ -2,19 +2,36 @@ import SERVER_URL from "../config";
 import type IWebSocketClient from "../interfaces/WebSocketProps";
 
 export default class WebSocketChat implements IWebSocketClient{
-  socket: WebSocket | null = null;
-  
-  connect(): void  {
-    this.socket = new WebSocket(SERVER_URL);
-  } 
+  private socket: WebSocket | null = null;
 
-  onMessage(event: Event | undefined, MessageEvent: { new <T>(type: string, eventInitDict?: MessageEventInit<T>): MessageEvent<T>; prototype: MessageEvent; }): void {
-    this.socket!.onmessage = (event: MessageEvent): void  => {
-      console.log(event.data);
+  connect(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.socket = new WebSocket(SERVER_URL);
+
+      this.socket.onopen = () => {
+        console.log('Подключено')
+        resolve();
+      }
+      
+      this.socket.onerror = (error) => {
+        console.log(error);
+        reject();
+      }
+    })
+  }
+
+  getMessage(handler: (message: string) => void): void {
+    this.socket!.onmessage = (event: MessageEvent) => {
+      console.log(`Message: ${event.data}`);
+      handler(event.data);
     }
   }
 
-  onDisconnect(): void {
+  sendMessage(message: string): void {
+    this.socket?.send(message);
+  }
+
+  disconnect(): void {
     this.socket?.close();
   }
 }
