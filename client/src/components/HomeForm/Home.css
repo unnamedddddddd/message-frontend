@@ -6,7 +6,7 @@
 }
 
 .chats-sidebar {
-  width: 300px;
+  width: 15%;
   background-color: rgba(12, 0, 30, 0.8);
   border-radius: 16px;
   padding: 20px;
@@ -20,6 +20,9 @@
   flex-direction: column;
   min-width: 0;
   margin-left: 20px;
+  margin-right: 20px;
+  background-color: #3e157a;
+  border-radius: 15px;
 }
 
 .messages-container {
@@ -28,7 +31,7 @@
   padding: 20px;
   background-color: rgba(12, 0, 30, 0.5);
   border-radius: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -127,6 +130,7 @@
 
 .chat-image {
   width: 20%;
+  border-radius: 15px;
 }
 
 .chats-sidebar {
@@ -147,3 +151,57 @@
   font-size: 20px;
 }
 
+.profile-container {
+  width: 12%;
+  margin-left: 20px;
+  gap: 20px;
+  background-color: #3e157a;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile-text {
+  text-align: center;
+  font-size: 20px;
+}
+
+.profile-avatar {
+  display: block;
+  margin: auto;
+  width: 30%;
+  border-radius: 15px;
+  margin-top: 5px;
+}
+
+.profile-data {
+  flex-grow: 1;
+  border-radius: 15px;
+  background-color: #3c2f4c;
+  min-height: 0;
+}
+
+.button-chat {
+  background: transparent;
+  border: 2px solid #0c001e;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.button-chat:active {
+  background-color: #341653;
+}
+
+.out-chat {
+  margin-left: auto;
+  margin-bottom: auto;
+  background: transparent;
+  border: 0px solid #0c001e
+}
