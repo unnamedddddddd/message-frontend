@@ -20,7 +20,7 @@ export default class WebSocketChat implements IWebSocketClient{
     })
   }
 
-  getMessage(handler: (message: string) => void): void {
+  getMessage(handler: (data: string) => void): void {
     this.socket!.onmessage = (event: MessageEvent) => {
       console.log(`Message: ${event.data}`);
       handler(event.data);

@@ -13,11 +13,19 @@ const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    socketRef.current = new WebSocketChat(); 
-    socketRef.current.connect();
-    socketRef.current.onMessage(event: MessageEvent) {
-
+    socketRef.current = new WebSocketChat()
+    const handleMessage = (data: string) => {
+      console.log(data);
+      const message = JSON.parse(data)
+      setMessages(prev => [...prev, message])
     }
+
+    socketRef.current.connect().then(() => {
+       socketRef.current?.getMessage(handleMessage);
+    });
+   
+    return () => socketRef.current?.disconnect()
+
   }, []);
 
   //!!!
@@ -28,7 +36,7 @@ const Home = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message.trim()) return;
-
+    socketRef.current?.sendMessage(message);
     setMessages(prev => [...prev, { message, type: 'my' }]);
     setMessage('');
   };
