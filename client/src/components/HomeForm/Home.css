@@ -12,6 +12,8 @@
   padding: 20px;
   overflow-y: auto;
   flex-shrink: 0;
+  flex-direction: column;
+  display: flex;
 }
 
 .chat-main {
@@ -31,7 +33,7 @@
   padding: 20px;
   background-color: rgba(12, 0, 30, 0.5);
   border-radius: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   display: flex;
   flex-direction: column;
 }
@@ -201,7 +203,19 @@
 
 .out-chat {
   margin-left: auto;
-  margin-bottom: auto;
+  margin-top: auto;
   background: transparent;
   border: 0px solid #0c001e
+}
+
+.clear-chat-container {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 5px;
+}
+
+.clear-chat {
+  background-color: #3c2f4c;
+  border: 2px solid #341653;
+  border-radius: 5px;
 }

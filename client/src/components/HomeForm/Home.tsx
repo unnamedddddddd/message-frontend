@@ -14,25 +14,22 @@ const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false)
 
-
-  useEffect(() => {
+  const connect = () => {
     socketRef.current = new WebSocketChat()
-    const handleMessage = (data: string) => {
-      console.log(data);
-      const message = JSON.parse(data)
-      setMessages(prev => [...prev, message])
+
+    const handleMessage = (data: MessageProps) => {    
+      setMessages(prev => [...prev, {
+        type: data.type, 
+        message: data.message, 
+      }])
     }
 
     socketRef.current.connect().then(() => {
-       socketRef.current?.getMessage(handleMessage);
+      socketRef.current?.getMessage(handleMessage);
       setIsConnected(true);
-    });
-   
-    return () => socketRef.current?.disconnect()
+    })
+  }
 
-  }, []);
-
-  
   const disconnect = () => {
     if (socketRef.current) {
       socketRef.current.disconnect();
@@ -58,13 +55,13 @@ const Home = () => {
     <>
       <div className="home-container">
         <div className="chats-sidebar">
+          <Chat image={test} name='test' disabled={isConnected} onClick={connect}/>          
           <button 
-          className="out-chat" 
-          disabled={!isConnected} 
-          onClick={disconnect}>
-            ←Назад
+            className="out-chat" 
+            disabled={!isConnected} 
+            onClick={disconnect}>
+            отключится
           </button>
-          <Chat image={test} name='test' disabled={isConnected} onClick={() => setIsConnected(true)}/>
         </div>
         <div className="separator"><hr/></div>
         <div className='chat-main'>
@@ -75,6 +72,13 @@ const Home = () => {
               </div>
             ))}
             <div ref={messagesEndRef} />
+          </div>
+          <div className="clear-chat-container">
+            <button className="clear-chat" onClick={() => {
+              setMessages([])
+            }}> 
+              🗑️ Очистить чат
+            </button>
           </div>
           <div className="input-container">
             <form className='input-message' onSubmit={handleSubmit}>
@@ -88,7 +92,7 @@ const Home = () => {
               <button
                 type="submit"
                 className='btn-message'
-                disabled={!message.trim()}
+                disabled={!message.trim() && !isConnected}
                 title="Отправить"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
