@@ -8,16 +8,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background: linear-gradient(
-    -45deg,
-    #0c001e,    
-    #231830,   
-    #36284d,  
-    #42234b,   
-    #4a3c61,    
-    #36284d,    
-    #231830   
-  );
+  background-image: linear-gradient(to right top, #292929, #353536, #414243, #4e4f51, #5b5c5f, #616366, #676b6e, #6d7275, #6d7477, #6d7678, #6e7879, #6f7a79);
   background-size: 400% 400%;
   color: #E0D6FF;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
