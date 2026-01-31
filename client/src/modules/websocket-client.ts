@@ -1,17 +1,23 @@
 import SERVER_URL from "../config";
 import type MessageProps from "../interfaces/MessageProps";
+import type SocketProps from "../interfaces/SocketProps";
 import type IWebSocketClient from "../interfaces/WebSocketProps";
-import { io, Socket } from 'socket.io-client'
+import { io } from 'socket.io-client'
 
 export default class WebSocketChat implements IWebSocketClient{
-  private socket: Socket | null = null;
+  private socket: SocketProps | null = null;
 
-  connect(): Promise<void> {
+  connect(roomId: string, userName: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.socket = io(SERVER_URL);
 
+      this.socket.userName = userName;
+      this.socket.currentRoom = roomId;
+
+      this.socket.emit('join-room', {roomId, userName})
+
       this.socket.on('connect', () => {
-        console.log('Подключеноc c id', this.socket?.id)
+        console.log(`Подключен user ${this.socket?.userName} c id ${this.socket?.id}`)
         resolve();
       })
 
@@ -30,7 +36,15 @@ export default class WebSocketChat implements IWebSocketClient{
   }
 
   sendMessage(message: string): void {
-    this.socket?.emit('message', message);
+    const roomId = this.socket?.currentRoom;
+    this.socket?.emit('message', {message, roomId});
+  }
+
+  leaveRoom(): void {
+    const roomId = this.socket!.currentRoom;
+    const userName = this.socket!.userName;
+    this.socket?.emit('leave-room', {roomId, userName})
+    this.socket!.currentRoom = null;
   }
 
   disconnect(): void {

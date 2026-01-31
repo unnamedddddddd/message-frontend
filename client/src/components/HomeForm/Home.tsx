@@ -4,6 +4,8 @@ import type MessageProps from "../../interfaces/MessageProps";
 import './Home.css';
 import Chat from "../Chat";
 import test from '../../assets/i.png';
+import bohema from '../../assets/bohema.png';
+
 import WebSocketChat from "../../modules/websocket-client";
 import Profile from "../Profile";
 
@@ -14,7 +16,9 @@ const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false)
 
-  const connect = () => {
+  const connect = (roomId: string) => {
+    if (isConnected) return;
+
     socketRef.current = new WebSocketChat()
 
     const handleMessage = (data: MessageProps) => {    
@@ -24,7 +28,7 @@ const Home = () => {
       }])
     }
 
-    socketRef.current.connect().then(() => {
+    socketRef.current.connect(roomId, 'unnamed').then(() => {
       socketRef.current?.getMessage(handleMessage);
       setIsConnected(true);
     })
@@ -32,9 +36,10 @@ const Home = () => {
 
   const disconnect = () => {
     if (socketRef.current) {
-      socketRef.current.disconnect();
+      socketRef.current.leaveRoom();
       socketRef.current = null;
       setIsConnected(false);
+      setMessages([])
     }
   }
 
@@ -55,7 +60,8 @@ const Home = () => {
     <>
       <div className="home-container">
         <div className="chats-sidebar">
-          <Chat image={test} name='test' disabled={isConnected} onClick={connect}/>          
+          <Chat image={test} name='test' disabled={isConnected} onJoinRoom={connect}/>     
+          <Chat image={bohema} name='bohema' disabled={isConnected} onJoinRoom={connect}/>          
           <button 
             className="out-chat" 
             disabled={!isConnected} 

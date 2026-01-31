@@ -8,6 +8,11 @@ const Login = () => {
       <div className="login-main">
         <div className="login-form-container">
           <form action="" className="login-form">
+            <div className='auth-label'>
+              <label htmlFor="" className='auth'>
+                Sign in
+              </label>
+            </div>
             <div className="main-form">
               <div className="input-user-data">
                 <div className="input-login">

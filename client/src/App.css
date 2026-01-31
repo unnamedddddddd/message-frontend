@@ -8,7 +8,21 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-image: linear-gradient(to right top, #292929, #353536, #414243, #4e4f51, #5b5c5f, #616366, #676b6e, #6d7275, #6d7477, #6d7678, #6e7879, #6f7a79);
+  background-image: linear-gradient(
+    to right top,
+    #000000,  
+    #0c0c0c,
+    #161617,
+    #1f2021,
+    #28292b,
+    #313335,
+    #3a3c3e,
+    #434548,
+    #444749,
+    #45494b,
+    #464b4c,
+    #474d4d
+  );
   background-size: 400% 400%;
   color: #E0D6FF;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
