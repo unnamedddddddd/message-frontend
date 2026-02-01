@@ -48,7 +48,7 @@
   margin-bottom: 12px;
   padding: 12px 16px;
   background-color: rgba(91, 92, 95, 0.9);
-  color: #E0D6FF;
+  color: #a3a2a3;
   align-self: flex-start;
   word-wrap: break-word;
   line-height: 1.4;
@@ -79,13 +79,17 @@
   border: 1px solid rgba(224, 214, 255, 0.1);
 }
 
+input::placeholder {
+  color: #a3a2a3 !important;
+}
+
 .input-message input {
   flex: 1;
   padding: 14px 18px;
   background: rgba(41, 41, 41, 0.7);
   border: 1px solid rgba(109, 114, 117, 0.4); 
   border-radius: 12px;
-  color: #E0D6FF;
+  color: #a3a2a3;
   font-size: 16px;
   transition: border-color 0.3s;
 }
@@ -159,7 +163,7 @@
 
 .chat-name {
   font-size: 20px;
-  color: #E0D6FF;
+  color: #a3a2a3;
 }
 
 .profile-container {
@@ -183,7 +187,7 @@
 .profile-text {
   text-align: center;
   font-size: 20px;
-  color: #E0D6FF;
+  color: #a3a2a3;
 }
 
 .profile-avatar {
@@ -208,7 +212,7 @@
   border: 1px solid rgba(109, 114, 117, 0.4);
   padding: 8px;
   border-radius: 12px;
-  color: #E0D6FF;
+  color: #a3a2a3;
   transition: background-color 0.2s;
   margin-bottom: 20px;
 }
@@ -226,7 +230,7 @@
   margin-top: auto;
   background: rgba(53, 53, 54, 0.7);
   border: 1px solid rgba(109, 114, 117, 0.4);
-  color: #E0D6FF;
+  color: #a3a2a3;
   padding: 8px 16px;
   border-radius: 12px;
   transition: background-color 0.2s;
@@ -246,7 +250,7 @@
   background-color: rgba(91, 92, 95, 0.9);
   border: 1px solid rgba(109, 114, 117, 0.4);
   border-radius: 5px;
-  color: #E0D6FF;
+  color: #a3a2a3;
   padding: 6px 12px;
   transition: background-color 0.2s;
   margin-right: 5px;

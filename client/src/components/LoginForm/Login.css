@@ -12,7 +12,9 @@
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  opacity: 90%;
+  opacity: 70%;
+  box-shadow: #1717188a 2px 2px 12px;
+  filter: blur();
 }
 
 .input-user-data {
@@ -24,7 +26,7 @@
 .input-login, .input-password{
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 5px; 
 }
 
 .auth-label {
@@ -42,20 +44,21 @@
   width: 100%;
   font-size: 16px;
   border-width: 2px;
-  border-style: solid;
   border-image: initial;
   border-radius: 12px;
   padding: 14px 16px;
   transition: 0.5s;
+  box-shadow: inset #1717188a 2px 2px 12px;
+  color: #a3a2a3  ;
 }
 
 .login-button {
-  background-color: #292929;
+  background-color: #292929;  
   border: 0px ;
   padding: 10px;
   width: 100%;
   border-radius: 8px;
-  color: #E0D6FF;
+  color: #a3a2a3;
   transition: background-color 0.3s ease;
   font-size: medium;
 }
@@ -67,9 +70,9 @@
 
 .login:focus, .password:focus {
   outline: none;
-  border-color: #E0D6FF;
+  box-shadow: inset #504f4f8a 2px 2px 12px;
 }
 
 .login-button:hover {
-  background-color: #5c5c5c;
+  background-color: #434548;
 }
