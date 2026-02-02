@@ -1,4 +1,4 @@
-import SERVER_URL from "../config";
+import WEBSOCKET_URL from "../config";
 import type MessageProps from "../interfaces/MessageProps";
 import type SocketProps from "../interfaces/SocketProps";
 import type IWebSocketClient from "../interfaces/WebSocketProps";
@@ -9,7 +9,7 @@ export default class WebSocketChat implements IWebSocketClient{
 
   connect(roomId: string, userName: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.socket = io(SERVER_URL);
+      this.socket = io(WEBSOCKET_URL);
 
       this.socket.userName = userName;
       this.socket.currentRoom = roomId;
