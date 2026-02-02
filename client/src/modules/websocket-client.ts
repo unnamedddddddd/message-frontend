@@ -1,4 +1,4 @@
-import WEBSOCKET_URL from "../config";
+import { WEBSOCKET_URL } from "../config";
 import type MessageProps from "../interfaces/MessageProps";
 import type SocketProps from "../interfaces/SocketProps";
 import type IWebSocketClient from "../interfaces/WebSocketProps";
