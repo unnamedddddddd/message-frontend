@@ -9,7 +9,12 @@ export default class WebSocketChat implements IWebSocketClient{
 
   connect(roomId: string, userName: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.socket = io(WEBSOCKET_URL);
+      this.socket = io(WEBSOCKET_URL, {
+        withCredentials: true,
+        transports: ['websocket', 'polling'],
+        reconnectionAttempts: 3,
+        timeout: 10000,
+      });
 
       this.socket.userName = userName;
       this.socket.currentRoom = roomId;
