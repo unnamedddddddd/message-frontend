@@ -34,7 +34,7 @@ const Login = () => {
                   type="text" 
                   className="login" 
                   placeholder="Login"
-                  onChange={(e) => setLogin(e.target.value)}
+                  onChange={(e) => setLogin(e.target.value.trim())}
                   />
               </div>
               <div className="input-password">
@@ -45,7 +45,7 @@ const Login = () => {
                   type="password" 
                   className="password" 
                   placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value.trim())}
                   />
               </div>    
             </div>

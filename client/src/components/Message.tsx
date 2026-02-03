@@ -1,5 +1,7 @@
 import type MessageProps from "../interfaces/MessageProps";
 
+
+//ДОБАВИТЬ ВРЕМЯ
 const Message = ({message}: MessageProps) => {
   return (
     <>
@@ -8,7 +10,6 @@ const Message = ({message}: MessageProps) => {
       </span>
     </>
   )
-
 }
 
 export default Message;

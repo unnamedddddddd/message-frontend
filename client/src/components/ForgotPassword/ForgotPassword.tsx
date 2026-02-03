@@ -1,16 +1,16 @@
-import { useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from "react";
 import {useNavigate} from 'react-router-dom'
-import './CreateUser.css'
-import createUser from '../../scripts/CreateUser';
+import './ForgotPassword.css'
+import forgotPassword from "../../scripts/ForgotPassword";
 
-
-const CreateUser = () => {
+const ForgotPassword = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
   const navigate = useNavigate();
-  
+
+
   // СДЕЛАТЬ ЧЕРЕЗ ПОЧТУ
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,20 +19,22 @@ const CreateUser = () => {
       return;
     }
     
-    const data = await createUser(login, password);
+    const data = await forgotPassword(login, password);
+    console.log(login);
+    
     if (!data.success) {
       console.error(data.message);
       alert(`Ошибка: ${data.message}`);
       return
     }
-    alert('Пользователь создан успешно');
+    alert('Пароль успешно изменён');
     navigate('/login');
   }
 
   return (
-    <div className="create-main">
-      <div className="create-form-container">
-        <form action="" className='create-form' onSubmit={handleForm}>
+    <div className="forgot-main">
+      <div className="forgot-form-container">
+        <form action="" className="forgot-form" onSubmit={handleForm}>
           <div className="input-user-data">
             <div className="input-login">
               <label htmlFor="" className="login-label">
@@ -43,10 +45,11 @@ const CreateUser = () => {
                 className="login" 
                 placeholder="Login"
                 onChange={(e) => setLogin(e.target.value.trim())}
-                />
+              />
+            </div>
             <div className="input-password">
               <label htmlFor="" className="login-label">
-                Password
+                New Password
               </label>
               <input 
                 type="password" 
@@ -54,25 +57,24 @@ const CreateUser = () => {
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value.trim())}
                 />
-            </div>   
+            </div>    
             <div className="input-password">
               <label htmlFor="" className="login-label">
-                Repeat password
+                Repeat new Password
               </label>
               <input 
                 type="password" 
                 className="password" 
-                placeholder="Repeat password"
-                onChange={(e) => setRepeatPassword(e.target.value)}
+                placeholder="Password"
+                onChange={(e) => setRepeatPassword(e.target.value.trim())}
                 />
-              </div>     
-            </div>
+            </div>          
+         </div> 
+         <div className="button-container">
+            <button className="forgot-button">
+              change password
+            </button>
           </div>
-            <div className='button-container'> 
-              <button className="create-button">
-                create user
-              </button>
-            </div>
         </form>
       </div>
     </div>
@@ -80,4 +82,5 @@ const CreateUser = () => {
 };
 
 
-export default CreateUser;
+
+export default ForgotPassword;
