@@ -5,17 +5,41 @@ import './Home.css';
 import Chat from "../Chat";
 import test from '../../assets/i.png';
 import bohema from '../../assets/bohema.png';
-
+import { useNavigate } from 'react-router-dom'
 import WebSocketChat from "../../modules/websocket-client";
 import Profile from "../Profile";
+import getUserProfile from "../../scripts/getUsetProfile";
 
 const Home = () => {
+  const userLoginRef = useRef<string | null>(null);
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const socketRef = useRef<WebSocketChat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false)
+  const navigate = useNavigate();
 
+useEffect(() => {
+  const checkAuth = async () => {
+    try {
+      const userId: string | null = localStorage.getItem('user_id');
+      const data = await getUserProfile(Number(userId));
+      
+      if (!data.success) {
+        console.log('Пользователь не авторизован:', data.message);
+        navigate('/login');
+      }
+      
+      userLoginRef.current = data.user.user_login;
+      
+    } catch (error) {
+      console.error('Ошибка проверки авторизации:', error);
+      navigate('/login');
+    }
+  };
+  
+  checkAuth();
+}, [navigate]);
   const connect = (roomId: string) => {
     if (isConnected) return;
 

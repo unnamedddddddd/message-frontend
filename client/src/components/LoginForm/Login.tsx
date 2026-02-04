@@ -11,6 +11,8 @@ const Login = () => {
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = await loginUser(login, password);
+    console.log(data);
+    
     if (!data.success) {
       console.error(data.message)
       alert(`Ошибка: ${data.message}`);
