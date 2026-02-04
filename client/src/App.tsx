@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
-import Home from './components/HomeForm/Home'
+import Home from './pages/HomeForm/Home'
 import './App.css'
-import Login from './components/LoginForm/Login'
-import CreateUser from './components/CreateUser/CreateUser'
-import ForgotPassword from './components/ForgotPassword/ForgotPassword'
+import Login from './pages/LoginForm/Login'
+import CreateUser from './pages/CreateUser/CreateUser'
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
 
 function App() {
   return (

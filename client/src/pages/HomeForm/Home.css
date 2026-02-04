@@ -286,9 +286,17 @@ input::placeholder {
   color: rgba(252, 57, 8, 0.63);
 }
 
-.message-time {
-  font-size: 12px;
-  margin-top: auto;
+.message-time-my {
+  font-size: 10px;
+  display: flex;
+  justify-content: right;
+  color: #a3a2a3;
+} 
+
+.message-time-chat {
+  font-size: 10px;
+  display: flex;
+  justify-content: left;
   color: #a3a2a3;
 } 
 

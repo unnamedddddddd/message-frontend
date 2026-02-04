@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import Message from "../Message";
+import Message from "../../components/Message";
 import type MessageProps from "../../interfaces/MessageProps";
 import './Home.css';
-import Chat from "../Chat";
+import Chat from "../../components/Chat";
 import test from '../../assets/i.png';
 import bohema from '../../assets/bohema.png';
 import { useNavigate } from 'react-router-dom'
 import WebSocketChat from "../../modules/websocket-client";
-import Profile from "../Profile";
+import Profile from "../../components/Profile";
 import getUserProfile from "../../scripts/getUsetProfile";
 
 const Home = () => {
@@ -57,7 +57,7 @@ const Home = () => {
         type: data.type, 
         message: data.message,
         userName: data.userName,
-        time: formatTime(data.time),
+        renderTime: formatTime(data.renderTime),
       }])     
     }
 
@@ -100,7 +100,7 @@ const Home = () => {
       message, 
       type: 'my', 
       userName: userLogin, 
-      time: formatTime()
+      renderTime: formatTime(),
     }]);
     setMessage('');
   };
@@ -122,7 +122,7 @@ const Home = () => {
         <div className='messages-container'>
           {messages.map((msg, index) => (
             <div key={index} className={`${msg.type}-message`}>
-              <Message type={msg.type} message={msg.message} userName={msg.userName} time={msg.time}/>
+              <Message type={msg.type} message={msg.message} userName={msg.userName} renderTime={msg.renderTime}/>
             </div>
           ))}
           <div ref={messagesEndRef} />
