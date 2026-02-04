@@ -1,7 +1,8 @@
 export default interface MessageProps {
   type: 'my' | 'chat';
   message: string;
-  time?: Date;
+  userName: string;
+  time?: string;
   senderId?: string;
 }
 

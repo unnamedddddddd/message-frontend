@@ -48,7 +48,7 @@
   margin-bottom: 12px;
   padding: 12px 16px;
   background-color: rgba(91, 92, 95, 0.9);
-  color: #a3a2a3;
+  color: white;
   align-self: flex-start;
   word-wrap: break-word;
   line-height: 1.4;
@@ -255,6 +255,42 @@ input::placeholder {
   transition: background-color 0.2s;
   margin-right: 5px;
 }
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-data {
+  display: flex;
+  gap: 7px;
+}
+
+.message-text-chat {
+  justify-content: left;
+}
+
+.message-text-my {
+  justify-content: right;
+}
+
+.user-name-my {
+  margin-left: auto;
+  margin-bottom: 5px;
+  color: aquamarine;
+}
+
+.user-name-chat {
+  margin-right: auto;
+  margin-bottom: 5px;
+  color: rgba(252, 57, 8, 0.63);
+}
+
+.message-time {
+  font-size: 12px;
+  margin-top: auto;
+  color: #a3a2a3;
+} 
 
 .clear-chat:hover {
   background-color: rgba(97, 99, 102, 0.9);

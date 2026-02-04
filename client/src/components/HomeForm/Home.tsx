@@ -11,35 +11,42 @@ import Profile from "../Profile";
 import getUserProfile from "../../scripts/getUsetProfile";
 
 const Home = () => {
-  const userLoginRef = useRef<string | null>(null);
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<MessageProps[]>([]);
+  const [userLogin, setUserLogin] = useState<string>('');
   const socketRef = useRef<WebSocketChat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false)
   const navigate = useNavigate();
 
-useEffect(() => {
-  const checkAuth = async () => {
-    try {
-      const userId: string | null = localStorage.getItem('user_id');
-      const data = await getUserProfile(Number(userId));
-      
-      if (!data.success) {
-        console.log('Пользователь не авторизован:', data.message);
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const userId: string | null = localStorage.getItem('user_id');
+        if (!userId) {
+          console.error('userId не найден в localStorage');
+          navigate('/login');
+          return;
+        }
+
+        const data = await getUserProfile(Number(userId));
+        
+        if (!data.success) {
+          console.log('Пользователь не авторизован:', data.message);
+          navigate('/login');
+          return;
+        }
+
+        setUserLogin(data.userLogin);
+      } catch (error) {
+        console.error('Ошибка проверки авторизации:', error);
         navigate('/login');
       }
-      
-      userLoginRef.current = data.user.user_login;
-      
-    } catch (error) {
-      console.error('Ошибка проверки авторизации:', error);
-      navigate('/login');
-    }
-  };
-  
-  checkAuth();
-}, [navigate]);
+    };
+    
+    checkAuth();
+  }, [navigate]);
+
   const connect = (roomId: string) => {
     if (isConnected) return;
 
@@ -48,11 +55,13 @@ useEffect(() => {
     const handleMessage = (data: MessageProps) => {    
       setMessages(prev => [...prev, {
         type: data.type, 
-        message: data.message, 
-      }])
+        message: data.message,
+        userName: data.userName,
+        time: formatTime(data.time),
+      }])     
     }
 
-    socketRef.current.connect(roomId, 'unnamed').then(() => {
+    socketRef.current.connect(roomId, userLogin).then(() => {
       socketRef.current?.getMessage(handleMessage);
       setIsConnected(true);
     })
@@ -67,6 +76,17 @@ useEffect(() => {
     }
   }
 
+  const formatTime = (date?: Date | string ) => {
+    const dateObj = date 
+      ? (typeof date === 'string' ? new Date(date) : date)
+      : new Date();
+
+    return dateObj.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
   //!!!
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -76,7 +96,12 @@ useEffect(() => {
     e.preventDefault();
     if (!message.trim()) return;
     socketRef.current?.sendMessage(message);
-    setMessages(prev => [...prev, { message, type: 'my' }]);
+    setMessages(prev => [...prev, { 
+      message, 
+      type: 'my', 
+      userName: userLogin, 
+      time: formatTime()
+    }]);
     setMessage('');
   };
 
@@ -97,7 +122,7 @@ useEffect(() => {
         <div className='messages-container'>
           {messages.map((msg, index) => (
             <div key={index} className={`${msg.type}-message`}>
-              <Message type={msg.type} message={msg.message} />
+              <Message type={msg.type} message={msg.message} userName={msg.userName} time={msg.time}/>
             </div>
           ))}
           <div ref={messagesEndRef} />
@@ -132,7 +157,7 @@ useEffect(() => {
         </div>
       </div>
       <div className="separator"><hr/></div>
-      <Profile name="test" image={test}/> 
+      <Profile name={userLogin} image={test}/> 
     </div>
   );
 };
