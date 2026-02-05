@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import {useNavigate} from 'react-router-dom'
 import './CreateUser.css'
-import createUser from '../../scripts/CreateUser';
+import createUser from '../../scripts/user/CreateUser';
 
 
 const CreateUser = () => {

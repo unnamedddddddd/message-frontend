@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import {useNavigate} from 'react-router-dom'
 import './ForgotPassword.css'
-import forgotPassword from "../../scripts/ForgotPassword";
+import forgotPassword from "../../scripts/user/ForgotPassword";
 
 const ForgotPassword = () => {
   const [login, setLogin] = useState('');

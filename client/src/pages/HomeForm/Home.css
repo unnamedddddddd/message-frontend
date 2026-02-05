@@ -1,8 +1,21 @@
-  .home-container {
+.home-container {
   height: 100vh;
   display: flex;
   background: rgba(41, 41, 41, 0.9); 
   padding: 20px;
+  gap: 20px;
+}
+
+.servers-sidebar {
+  width: 15%;
+  background-color: rgba(53, 53, 54, 0.9); 
+  border-radius: 16px;
+  padding: 20px;
+  overflow-y: auto;
+  flex-shrink: 0;
+  flex-direction: column;
+  display: flex;
+  border: 1px solid rgba(94, 95, 97, 0.3);
 }
 
 .chats-sidebar {
@@ -15,16 +28,13 @@
   flex-direction: column;
   display: flex;
   border: 1px solid rgba(94, 95, 97, 0.3);
-  margin-right: 20px;
 }
 
 .chat-main {
-  flex: 1;
+  flex-basis: 55%;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  margin-left: 20px;
-  margin-right: 20px;
   background-color: rgba(65, 66, 67, 0.9); 
   border-radius: 15px;
   border: 1px solid rgba(107, 108, 110, 0.3);
@@ -146,7 +156,7 @@ input::placeholder {
   background: linear-gradient(to bottom, #676b6e, #6d7477);
 }
 
-.chat-image {
+.server-image {
   width: 20%;
   border-radius: 15px;
   border: 1px solid rgba(109, 114, 117, 0.3);
@@ -156,19 +166,18 @@ input::placeholder {
   background-color: rgba(78, 79, 81, 0.5); 
 }
 
-.container-chat {
+.container-server {
   display: flex;
   gap: 20px;
 }
 
-.chat-name {
+.server-name {
   font-size: 20px;
   color: #a3a2a3;
 }
 
 .profile-container {
   width: 12%;
-  margin-left: 20px;
   gap: 20px;
   background-color: rgba(65, 66, 67, 0.9);
   border-radius: 15px;
@@ -205,6 +214,7 @@ input::placeholder {
   background-color: rgba(56, 57, 59, 0.7); 
   min-height: 0;
   border: 1px solid rgba(97, 99, 102, 0.3);
+  display: flex;
 }
 
 .button-chat {
@@ -217,7 +227,17 @@ input::placeholder {
   margin-bottom: 20px;
 }
 
-.button-chat:hover {
+.button-server {
+  background: rgba(53, 53, 54, 0.7);
+  border: 1px solid rgba(109, 114, 117, 0.4);
+  padding: 8px;
+  border-radius: 12px;
+  color: #a3a2a3;
+  transition: background-color 0.2s;
+  margin-bottom: 20px;
+}
+
+.button-server:hover {
   background-color: rgba(65, 66, 67, 0.9);
 }
 
@@ -302,6 +322,24 @@ input::placeholder {
 
 .clear-chat:hover {
   background-color: rgba(97, 99, 102, 0.9);
+}
+
+.logout-button {
+  margin-top: auto;
+  margin-left: auto;
+  margin-bottom: 8px;
+  margin-right: 8px;
+  height: 3%;
+  border: 1px solid rgba(109, 114, 117, 0.4);
+  border-radius: 5px; 
+  background-color: rgba(91, 92, 95, 0.9);
+  padding: 4px 12px;
+  transition: background-color 0.2s;
+  color: #a3a2a3;
+}
+
+.logout-button:hover {
+  background-color: rgba(65, 66, 67, 0.9);
 }
 
 ::-webkit-scrollbar {

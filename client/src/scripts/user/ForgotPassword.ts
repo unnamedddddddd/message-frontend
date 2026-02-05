@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../config"
+import { SERVER_URL } from "../../config";
 
 const forgotPassword = async (userLogin:string, newUserPassword: string) => {
   const request = await fetch(`${SERVER_URL}/api/forgotPassword`, {

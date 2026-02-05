@@ -1,16 +1,36 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import './Login.css'
 import {useNavigate, Link } from 'react-router-dom'
-import loginUser from '../../scripts/LoginUser';
+import verificationTokenRemember from '../../scripts/user/VerificationTokenRemember';
+import loginUser from '../../scripts/user/LoginUser';
+
 
 const Login = () => {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+  const [login, setLogin] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isRemember, setIsRemember] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const handleForm = async (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const checkTokenRemember = async () => {
+      try {
+        const data = await verificationTokenRemember()
+        if (!data.success) {
+          console.error(data.message)
+          return;
+        }
+        localStorage.setItem('user_id', data.user_id);
+        navigate('/home');
+      } catch(error) {
+        console.error(error);
+      }
+    }
+    checkTokenRemember();
+  }, [navigate])
+
+  const handleForm = async (e: FormEvent<HTMLFormElement>) => {    
     e.preventDefault();
-    const data = await loginUser(login, password);
+    const data = await loginUser(login, password, isRemember);
     console.log(data);
     
     if (!data.success) {
@@ -19,6 +39,7 @@ const Login = () => {
       return;
     }
     localStorage.setItem('user_id', data.user_id);
+    localStorage.setItem('token_remember', data.tokenRemember);
     navigate('/home');
   }
 
@@ -56,6 +77,7 @@ const Login = () => {
               <input 
                 type="checkbox" 
                 id="login-cbx" 
+                onChange={() => setIsRemember(!isRemember)}
                 style={{ display: 'none' }} 
               />
               <label htmlFor="login-cbx" className="login-check">

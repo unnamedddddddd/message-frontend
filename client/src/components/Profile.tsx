@@ -1,6 +1,6 @@
 import type ProfileProps from '../interfaces/ProfileProps';
 
-const Profile = ({name, image} : ProfileProps) => {
+const Profile = ({name, image, logOut} : ProfileProps) => {
   return (
     <div className="profile-container">
       <div className="profile">
@@ -14,7 +14,9 @@ const Profile = ({name, image} : ProfileProps) => {
         </div>
       </div>
       <div className="profile-data">
-
+        <button className='logout-button' onClick={logOut}>
+          logOut
+        </button>
       </div>
     </div>
   );

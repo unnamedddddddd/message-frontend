@@ -2,17 +2,21 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Message from "../../components/Message";
 import type MessageProps from "../../interfaces/MessageProps";
 import './Home.css';
-import Chat from "../../components/Chat";
 import test from '../../assets/i.png';
 import bohema from '../../assets/bohema.png';
 import { useNavigate } from 'react-router-dom'
 import WebSocketChat from "../../modules/websocket-client";
 import Profile from "../../components/Profile";
-import getUserProfile from "../../scripts/getUsetProfile";
+import LogOut from "../../scripts/chat/LogOut";
+import getUserProfile from "../../scripts/chat/getUsetProfile";
+import Server from "../../components/Server";
+import Chat from "../../components/Chat";
+import type ChatProps from "../../interfaces/ChatProps";
 
 const Home = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<MessageProps[]>([]);
+  const [chats, setChats] = useState<ChatProps[]>([]);
   const [userLogin, setUserLogin] = useState<string>('');
   const socketRef = useRef<WebSocketChat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -46,6 +50,13 @@ const Home = () => {
     
     checkAuth();
   }, [navigate]);
+
+  const joinServer = async (serverId: number) => {
+
+
+
+
+  }
 
   const connect = (roomId: string) => {
     if (isConnected) return;
@@ -92,6 +103,17 @@ const Home = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const logOut = async () => {
+    const data = await LogOut();
+
+    if (!data.success) {
+      console.log('Пользователь не авторизован:', data.message);
+      return;
+    }
+    localStorage.clear();
+    navigate('/login')
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message.trim()) return;
@@ -107,22 +129,48 @@ const Home = () => {
 
   return (
     <div className="home-container">
+      <div className="servers-sidebar">
+        <Server 
+          image={test} 
+          name='test' 
+          disabled={isConnected} 
+          onJoinServer={connect}
+        />     
+        <Server 
+          image={bohema} 
+          name='bohema' 
+          disabled={isConnected} 
+          onJoinServer={connect}
+        />          
+      </div>
       <div className="chats-sidebar">
-        <Chat image={test} name='test' disabled={isConnected} onJoinRoom={connect}/>     
-        <Chat image={bohema} name='bohema' disabled={isConnected} onJoinRoom={connect}/>          
+        {chats.map((chat) => (
+          <div key={chat.name} className={`${chat.name}-chat`}>
+           <Chat 
+            onJoinChat={connect}
+            name={chat.name}
+            disabled={isConnected} 
+          />
+          </div>
+        ))}
         <button 
           className="out-chat" 
           disabled={!isConnected} 
-          onClick={disconnect}>
+          onClick={disconnect}
+        >
           отключится
         </button>
       </div>
-      <div className="separator"><hr/></div>
       <div className='chat-main'>
         <div className='messages-container'>
           {messages.map((msg, index) => (
             <div key={index} className={`${msg.type}-message`}>
-              <Message type={msg.type} message={msg.message} userName={msg.userName} renderTime={msg.renderTime}/>
+              <Message 
+                type={msg.type}
+                message={msg.message} 
+                userName={msg.userName} 
+                renderTime={msg.renderTime}
+              />
             </div>
           ))}
           <div ref={messagesEndRef} />
@@ -156,8 +204,11 @@ const Home = () => {
           </form>
         </div>
       </div>
-      <div className="separator"><hr/></div>
-      <Profile name={userLogin} image={test}/> 
+      <Profile 
+        name={userLogin} 
+        image={test} 
+        logOut={logOut}
+      /> 
     </div>
   );
 };
