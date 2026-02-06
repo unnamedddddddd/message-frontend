@@ -1,18 +1,18 @@
 import type ServerProps from "../interfaces/ServerProps";
 
-const Server = ({image, name, disabled, onJoinServer} : ServerProps) => {
-  // const handleJoin = () => {
-  //   if (onJoinServer) {
-  //     onJoinServer(name)
-  //   }
-  // }
+const Server = ({serverId, image, name, disabled, onJoinServer} : ServerProps) => {
+  const handleJoin = () => {
+    if (onJoinServer) {
+      onJoinServer(serverId)
+    }
+  }
 
   return(
     <>
       <button 
         className="button-server" 
         disabled={disabled}
-        // onClick={handleJoin}
+        onClick={handleJoin}
       >
         <div className={`container-server`}>
             <img src={image} alt="test" className='server-image'/>

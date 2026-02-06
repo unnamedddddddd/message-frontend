@@ -225,6 +225,7 @@ input::placeholder {
   color: #a3a2a3;
   transition: background-color 0.2s;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .button-server {

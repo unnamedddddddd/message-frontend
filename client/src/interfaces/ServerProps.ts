@@ -1,7 +1,8 @@
 export default interface ServerProps {
-  image: string;
+  image?: string;
+  serverId: number;
   name: string;
-  disabled: boolean;
+  disabled?: boolean;
   onClick?: () => void;
-  onJoinServer?: (serverId: string) => void
+  onJoinServer?: (serverId: number) => void
 }

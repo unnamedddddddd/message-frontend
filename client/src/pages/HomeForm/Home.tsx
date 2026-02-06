@@ -12,11 +12,17 @@ import getUserProfile from "../../scripts/chat/getUsetProfile";
 import Server from "../../components/Server";
 import Chat from "../../components/Chat";
 import type ChatProps from "../../interfaces/ChatProps";
+import getChats from "../../scripts/chat/getChats";
+import getServers from "../../scripts/chat/getServers";
+import type ServerProps from "../../interfaces/ServerProps";
+import type ChatResponse from "../../interfaces/ChatResponseProps";
+import type serverResponse from "../../interfaces/ServerResponseProps";
 
 const Home = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [chats, setChats] = useState<ChatProps[]>([]);
+  const [servers, setServers] = useState<ServerProps[]>([]);
   const [userLogin, setUserLogin] = useState<string>('');
   const socketRef = useRef<WebSocketChat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -52,11 +58,44 @@ const Home = () => {
   }, [navigate]);
 
   const joinServer = async (serverId: number) => {
+    const chatsResponse = await getChats(serverId);
 
+    if (!chatsResponse.success) {
+      console.log('Чаты не найдены:', chatsResponse.message);
+      return;
+    }
+    const chatsAsChatProps: ChatProps[] = chatsResponse.chats.map((chat: ChatResponse) => {
+      return {
+        chatId: chat.chat_id,
+        name: chat.chat_name,  
+      };
+    })
 
-
-
+    setChats(chatsAsChatProps)  
   }
+
+  useEffect(() => {
+    const loadServers  = async () => {
+      const serversResponse = await getServers();
+
+      console.log(serversResponse);
+      
+      if (!serversResponse.success) {
+        console.log('Сервера не найдены:', serversResponse.message);
+        return;
+      }
+     
+      const serverAsServerProps: ServerProps[] = serversResponse.servers.map((server: serverResponse) => {
+        return {
+          serverId: server.server_id,
+          name: server.server_name,  
+        };
+      })
+      setServers(serverAsServerProps);
+    }
+
+    loadServers();
+  }, [])
 
   const connect = (roomId: string) => {
     if (isConnected) return;
@@ -130,23 +169,22 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="servers-sidebar">
-        <Server 
-          image={test} 
-          name='test' 
-          disabled={isConnected} 
-          onJoinServer={connect}
-        />     
-        <Server 
-          image={bohema} 
-          name='bohema' 
-          disabled={isConnected} 
-          onJoinServer={connect}
-        />          
+        {servers.map((server) => (
+          <div key={server.name} className={`${server.name}-chat`}>
+           <Server 
+            serverId={server.serverId}
+            name={server.name}
+            disabled={isConnected} 
+            onJoinServer={joinServer}
+          />  
+          </div>
+        ))} 
       </div>
       <div className="chats-sidebar">
         {chats.map((chat) => (
           <div key={chat.name} className={`${chat.name}-chat`}>
            <Chat 
+            chatId={chat.chatId}
             onJoinChat={connect}
             name={chat.name}
             disabled={isConnected} 

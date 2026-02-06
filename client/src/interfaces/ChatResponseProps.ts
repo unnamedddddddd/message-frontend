@@ -1,0 +1,5 @@
+export default interface ChatResponse {
+  chat_id: number;
+  chat_name: string;
+  disabled?: boolean;
+}
