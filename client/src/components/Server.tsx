@@ -1,11 +1,12 @@
 import type ServerProps from "../interfaces/ServerProps";
 
-const Server = ({serverId, image, name, disabled, onJoinServer} : ServerProps) => {
+const Server = ({serverId, avatar, name, disabled, onJoinServer} : ServerProps) => {
   const handleJoin = () => {
     if (onJoinServer) {
       onJoinServer(serverId)
     }
   }
+  console.log(`http://localhost:3000${avatar}`);
 
   return(
     <>
@@ -15,7 +16,7 @@ const Server = ({serverId, image, name, disabled, onJoinServer} : ServerProps) =
         onClick={handleJoin}
       >
         <div className={`container-server`}>
-            <img src={image} alt="test" className='server-image'/>
+            <img src={`http://localhost:3000${avatar}`} alt="test" className='server-image'/>
             <div className='server-text'> 
               <div className='server-name'>{name}</div>
             </div>

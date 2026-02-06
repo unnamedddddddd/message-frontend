@@ -1,9 +1,9 @@
 import type ChatProps from "../interfaces/ChatProps";
 
-const Chat = ({name, disabled, onJoinChat}: ChatProps) => {
+const Chat = ({chatId, name, disabled, onJoinChat}: ChatProps) => {
   const handleJoin = () => {
     if (onJoinChat) {
-      onJoinChat(name);
+      onJoinChat(name, chatId);
     }
   }
 

@@ -1,5 +1,5 @@
 export default interface ServerProps {
-  image?: string;
+  avatar?: string;
   serverId: number;
   name: string;
   disabled?: boolean;

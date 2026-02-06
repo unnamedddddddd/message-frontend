@@ -5,5 +5,4 @@ export default interface IWebSocketClient {
   sendMessage(message: string): void;
   getMessage(handler: (data: MessageProps) => void): void;
   disconnect(): void;
-  leaveRoom(): void;
 }

@@ -2,8 +2,6 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Message from "../../components/Message";
 import type MessageProps from "../../interfaces/MessageProps";
 import './Home.css';
-import test from '../../assets/i.png';
-import bohema from '../../assets/bohema.png';
 import { useNavigate } from 'react-router-dom'
 import WebSocketChat from "../../modules/websocket-client";
 import Profile from "../../components/Profile";
@@ -17,6 +15,8 @@ import getServers from "../../scripts/chat/getServers";
 import type ServerProps from "../../interfaces/ServerProps";
 import type ChatResponse from "../../interfaces/ChatResponseProps";
 import type serverResponse from "../../interfaces/ServerResponseProps";
+import getMessagesChat from "../../scripts/chat/getMessages";
+import type MessageResponse from "../../interfaces/MessageResponseProps";
 
 const Home = () => {
   const [message, setMessage] = useState<string>('');
@@ -27,6 +27,7 @@ const Home = () => {
   const socketRef = useRef<WebSocketChat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false)
+  const [activeChatId, setActiveChatId] = useState<number | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,10 +86,11 @@ const Home = () => {
         return;
       }
      
-      const serverAsServerProps: ServerProps[] = serversResponse.servers.map((server: serverResponse) => {
+      const serverAsServerProps: ServerProps[] = serversResponse.servers.map((server: serverResponse) => {        
         return {
           serverId: server.server_id,
           name: server.server_name,  
+          avatar: server.server_avatar,
         };
       })
       setServers(serverAsServerProps);
@@ -97,11 +99,14 @@ const Home = () => {
     loadServers();
   }, [])
 
-  const connect = (roomId: string) => {
-    if (isConnected) return;
+  const connect = (roomId: string, chatId: number) => {
+    if (socketRef.current) {
+      disconnect();
+    }
 
     socketRef.current = new WebSocketChat()
 
+    loadMessages(chatId);
     const handleMessage = (data: MessageProps) => {    
       setMessages(prev => [...prev, {
         type: data.type, 
@@ -114,15 +119,17 @@ const Home = () => {
     socketRef.current.connect(roomId, userLogin).then(() => {
       socketRef.current?.getMessage(handleMessage);
       setIsConnected(true);
+      setActiveChatId(chatId)
     })
   }
 
   const disconnect = () => {
     if (socketRef.current) {
-      socketRef.current.leaveRoom();
+      socketRef.current.disconnect();
       socketRef.current = null;
       setIsConnected(false);
       setMessages([])
+      setActiveChatId(null);
     }
   }
 
@@ -166,15 +173,35 @@ const Home = () => {
     setMessage('');
   };
 
+  const loadMessages = async (chatId: number) => {
+    const messageResponse = await getMessagesChat(chatId)
+    
+    if (!messageResponse.success) {
+      setMessages([]); 
+      return;
+    }
+
+    const currentUserId = Number(localStorage.getItem('user_id'));
+    const MessageAsMessagesProps: MessageProps[] = messageResponse.messages.map((message: MessageResponse) => {     
+      return {
+        userName: message.user_login,
+        message: message.message_text,
+        renderTime: formatTime(message.created_at),
+        type: Number(currentUserId) === Number(message.user_id) ? 'my' : 'chat',
+      };
+    })
+    setMessages(MessageAsMessagesProps);
+  }
+
   return (
     <div className="home-container">
       <div className="servers-sidebar">
         {servers.map((server) => (
           <div key={server.name} className={`${server.name}-chat`}>
            <Server 
+            avatar={server.avatar}
             serverId={server.serverId}
             name={server.name}
-            disabled={isConnected} 
             onJoinServer={joinServer}
           />  
           </div>
@@ -182,13 +209,13 @@ const Home = () => {
       </div>
       <div className="chats-sidebar">
         {chats.map((chat) => (
-          <div key={chat.name} className={`${chat.name}-chat`}>
-           <Chat 
-            chatId={chat.chatId}
-            onJoinChat={connect}
-            name={chat.name}
-            disabled={isConnected} 
-          />
+          <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
+            <Chat 
+              chatId={chat.chatId}
+              onJoinChat={connect}
+              name={chat.name}
+              disabled={activeChatId === chat.chatId}  
+            />
           </div>
         ))}
         <button 
@@ -244,7 +271,6 @@ const Home = () => {
       </div>
       <Profile 
         name={userLogin} 
-        image={test} 
         logOut={logOut}
       /> 
     </div>

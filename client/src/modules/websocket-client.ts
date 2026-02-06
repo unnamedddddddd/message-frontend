@@ -34,7 +34,7 @@ export default class WebSocketChat implements IWebSocketClient{
   }
 
   getMessage(handler: (data: MessageProps) => void): void {
-    this.socket!.on('message', (data) => {
+    this.socket?.on('message', (data) => {
       console.log(data);
       handler(data);
     });
@@ -53,6 +53,15 @@ export default class WebSocketChat implements IWebSocketClient{
   }
 
   disconnect(): void {
-    this.socket?.disconnect();
+    if (!this.socket) return;
+
+    const roomId = this.socket!.currentRoom;
+    const userName = this.socket!.userName;
+    this.socket?.emit('leave-room', {roomId, userName})
+
+    this.socket.disconnect();
+
+    this.socket.currentRoom = null;
+    this.socket = null;   
   }
 }
