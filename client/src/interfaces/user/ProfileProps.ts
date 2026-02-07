@@ -1,5 +1,5 @@
 export default interface ProfileProps {
   name: string;
-  image?: string;
+  avatar?: string;
   logOut(): void; 
 }

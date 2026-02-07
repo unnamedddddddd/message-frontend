@@ -1,4 +1,4 @@
-import type ChatProps from "../interfaces/ChatProps";
+import type ChatProps from "../interfaces/chat/ChatProps";
 
 const Chat = ({chatId, name, disabled, onJoinChat}: ChatProps) => {
   const handleJoin = () => {

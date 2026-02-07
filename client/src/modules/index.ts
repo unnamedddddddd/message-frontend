@@ -1,0 +1,1 @@
+export { default as WebSocketChat } from './websocket-client';

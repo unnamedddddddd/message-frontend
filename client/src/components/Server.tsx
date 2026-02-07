@@ -1,4 +1,5 @@
-import type ServerProps from "../interfaces/ServerProps";
+import { SERVER_URL } from "../config";
+import type ServerProps from "../interfaces/chat/ServerProps";
 
 const Server = ({serverId, avatar, name, disabled, onJoinServer} : ServerProps) => {
   const handleJoin = () => {
@@ -6,7 +7,6 @@ const Server = ({serverId, avatar, name, disabled, onJoinServer} : ServerProps) 
       onJoinServer(serverId)
     }
   }
-  console.log(`http://localhost:3000${avatar}`);
 
   return(
     <>
@@ -16,7 +16,7 @@ const Server = ({serverId, avatar, name, disabled, onJoinServer} : ServerProps) 
         onClick={handleJoin}
       >
         <div className={`container-server`}>
-            <img src={`http://localhost:3000${avatar}`} alt="test" className='server-image'/>
+            <img src={`${SERVER_URL}${avatar}`} alt="test" className='server-image'/>
             <div className='server-text'> 
               <div className='server-name'>{name}</div>
             </div>

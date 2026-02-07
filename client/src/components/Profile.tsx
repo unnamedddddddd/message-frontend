@@ -1,11 +1,11 @@
-import type ProfileProps from '../interfaces/ProfileProps';
+import type ProfileProps from '../interfaces/user/ProfileProps';
 
-const Profile = ({name, image, logOut} : ProfileProps) => {
+const Profile = ({name, avatar, logOut} : ProfileProps) => {
   return (
     <div className="profile-container">
       <div className="profile">
         <div className="profile-image">
-          <img src={image} alt="test" className='profile-avatar'/>
+          <img src={avatar} alt="test" className='profile-avatar'/>
         </div>
         <div className="profile-text">
           <span className='profile-name'>

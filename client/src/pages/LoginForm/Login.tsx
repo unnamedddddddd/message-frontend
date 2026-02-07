@@ -1,47 +1,15 @@
-import { useEffect, useState, type FormEvent } from 'react';
-import './Login.css'
-import {useNavigate, Link } from 'react-router-dom'
-import verificationTokenRemember from '../../scripts/user/VerificationTokenRemember';
-import loginUser from '../../scripts/user/LoginUser';
-
+import { Link } from 'react-router-dom';
+import './Login.css';
+import { useUser } from '@/hooks/user';
 
 const Login = () => {
-  const [login, setLogin] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [isRemember, setIsRemember] = useState<boolean>(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkTokenRemember = async () => {
-      try {
-        const data = await verificationTokenRemember()
-        if (!data.success) {
-          console.error(data.message)
-          return;
-        }
-        localStorage.setItem('user_id', data.user_id);
-        navigate('/home');
-      } catch(error) {
-        console.error(error);
-      }
-    }
-    checkTokenRemember();
-  }, [navigate])
-
-  const handleForm = async (e: FormEvent<HTMLFormElement>) => {    
-    e.preventDefault();
-    const data = await loginUser(login, password, isRemember);
-    console.log(data);
-    
-    if (!data.success) {
-      console.error(data.message)
-      alert(`Ошибка: ${data.message}`);
-      return;
-    }
-    localStorage.setItem('user_id', data.user_id);
-    localStorage.setItem('token_remember', data.tokenRemember);
-    navigate('/home');
-  }
+  const { 
+    login,
+    password,
+    setLogin, 
+    setPassword, 
+    setIsRemember, 
+    handleForm } = useUser();
 
   return(
     <div className="login-main">
@@ -50,10 +18,11 @@ const Login = () => {
           <div className="main-form">
             <div className="input-user-data">
               <div className="input-login">
-                <label htmlFor="" className="login-label">
+                <label htmlFor="login" className="login-label">
                   Login
                 </label>
                 <input 
+                  value={login}
                   type="text" 
                   className="login" 
                   placeholder="Login"
@@ -61,10 +30,11 @@ const Login = () => {
                   />
               </div>
               <div className="input-password">
-                <label htmlFor="" className="login-label">
+                <label htmlFor="password" className="login-label">
                   Password
                 </label>
                 <input 
+                  value={password}
                   type="password" 
                   className="password" 
                   placeholder="Password"
@@ -77,7 +47,7 @@ const Login = () => {
               <input 
                 type="checkbox" 
                 id="login-cbx" 
-                onChange={() => setIsRemember(!isRemember)}
+                onChange={(e) => setIsRemember(e.target.checked)}
                 style={{ display: 'none' }} 
               />
               <label htmlFor="login-cbx" className="login-check">

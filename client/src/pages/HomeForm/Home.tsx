@@ -1,164 +1,32 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import Message from "../../components/Message";
-import type MessageProps from "../../interfaces/MessageProps";
 import './Home.css';
-import { useNavigate } from 'react-router-dom'
-import WebSocketChat from "../../modules/websocket-client";
-import Profile from "../../components/Profile";
-import LogOut from "../../scripts/chat/LogOut";
-import getUserProfile from "../../scripts/chat/getUsetProfile";
-import Server from "../../components/Server";
-import Chat from "../../components/Chat";
-import type ChatProps from "../../interfaces/ChatProps";
-import getChats from "../../scripts/chat/getChats";
-import getServers from "../../scripts/chat/getServers";
-import type ServerProps from "../../interfaces/ServerProps";
-import type ChatResponse from "../../interfaces/ChatResponseProps";
-import type serverResponse from "../../interfaces/ServerResponseProps";
-import getMessagesChat from "../../scripts/chat/getMessages";
-import type MessageResponse from "../../interfaces/MessageResponseProps";
+import { Message, Profile, Server, Chat } from '@/components';
+import useAuth from "@/hooks/user/useAuth";
+import useChat from "@/hooks/chat/useChat";
+import { formatTime } from "@/utils";
 
 const Home = () => {
   const [message, setMessage] = useState<string>('');
-  const [messages, setMessages] = useState<MessageProps[]>([]);
-  const [chats, setChats] = useState<ChatProps[]>([]);
-  const [servers, setServers] = useState<ServerProps[]>([]);
-  const [userLogin, setUserLogin] = useState<string>('');
-  const socketRef = useRef<WebSocketChat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [isConnected, setIsConnected] = useState<boolean>(false)
-  const [activeChatId, setActiveChatId] = useState<number | null>(null);
-  const navigate = useNavigate();
+  const { userLogin, logOut } = useAuth();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const userId: string | null = localStorage.getItem('user_id');
-        if (!userId) {
-          console.error('userId не найден в localStorage');
-          navigate('/login');
-          return;
-        }
-
-        const data = await getUserProfile(Number(userId));
-        
-        if (!data.success) {
-          console.log('Пользователь не авторизован:', data.message);
-          navigate('/login');
-          return;
-        }
-
-        setUserLogin(data.userLogin);
-      } catch (error) {
-        console.error('Ошибка проверки авторизации:', error);
-        navigate('/login');
-      }
-    };
-    
-    checkAuth();
-  }, [navigate]);
-
-  const joinServer = async (serverId: number) => {
-    const chatsResponse = await getChats(serverId);
-
-    if (!chatsResponse.success) {
-      console.log('Чаты не найдены:', chatsResponse.message);
-      return;
-    }
-    const chatsAsChatProps: ChatProps[] = chatsResponse.chats.map((chat: ChatResponse) => {
-      return {
-        chatId: chat.chat_id,
-        name: chat.chat_name,  
-      };
-    })
-
-    setChats(chatsAsChatProps)  
-  }
-
-  useEffect(() => {
-    const loadServers  = async () => {
-      const serversResponse = await getServers();
-
-      console.log(serversResponse);
-      
-      if (!serversResponse.success) {
-        console.log('Сервера не найдены:', serversResponse.message);
-        return;
-      }
-     
-      const serverAsServerProps: ServerProps[] = serversResponse.servers.map((server: serverResponse) => {        
-        return {
-          serverId: server.server_id,
-          name: server.server_name,  
-          avatar: server.server_avatar,
-        };
-      })
-      setServers(serverAsServerProps);
-    }
-
-    loadServers();
-  }, [])
-
-  const connect = (roomId: string, chatId: number) => {
-    if (socketRef.current) {
-      disconnect();
-    }
-
-    socketRef.current = new WebSocketChat()
-
-    loadMessages(chatId);
-    const handleMessage = (data: MessageProps) => {    
-      setMessages(prev => [...prev, {
-        type: data.type, 
-        message: data.message,
-        userName: data.userName,
-        renderTime: formatTime(data.renderTime),
-      }])     
-    }
-
-    socketRef.current.connect(roomId, userLogin).then(() => {
-      socketRef.current?.getMessage(handleMessage);
-      setIsConnected(true);
-      setActiveChatId(chatId)
-    })
-  }
-
-  const disconnect = () => {
-    if (socketRef.current) {
-      socketRef.current.disconnect();
-      socketRef.current = null;
-      setIsConnected(false);
-      setMessages([])
-      setActiveChatId(null);
-    }
-  }
-
-  const formatTime = (date?: Date | string ) => {
-    const dateObj = date 
-      ? (typeof date === 'string' ? new Date(date) : date)
-      : new Date();
-
-    return dateObj.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  }
+  const { 
+    messages, 
+    servers,
+    chats,
+    isConnected, 
+    activeChatId, 
+    socketRef,  
+    connect, 
+    disconnect, 
+    setMessages, 
+    joinServer,
+  } = useChat(userLogin); 
 
   //!!!
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  const logOut = async () => {
-    const data = await LogOut();
-
-    if (!data.success) {
-      console.log('Пользователь не авторизован:', data.message);
-      return;
-    }
-    localStorage.clear();
-    navigate('/login')
-  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -172,26 +40,6 @@ const Home = () => {
     }]);
     setMessage('');
   };
-
-  const loadMessages = async (chatId: number) => {
-    const messageResponse = await getMessagesChat(chatId)
-    
-    if (!messageResponse.success) {
-      setMessages([]); 
-      return;
-    }
-
-    const currentUserId = Number(localStorage.getItem('user_id'));
-    const MessageAsMessagesProps: MessageProps[] = messageResponse.messages.map((message: MessageResponse) => {     
-      return {
-        userName: message.user_login,
-        message: message.message_text,
-        renderTime: formatTime(message.created_at),
-        type: Number(currentUserId) === Number(message.user_id) ? 'my' : 'chat',
-      };
-    })
-    setMessages(MessageAsMessagesProps);
-  }
 
   return (
     <div className="home-container">
@@ -270,7 +118,7 @@ const Home = () => {
         </div>
       </div>
       <Profile 
-        name={userLogin} 
+        name={userLogin}
         logOut={logOut}
       /> 
     </div>

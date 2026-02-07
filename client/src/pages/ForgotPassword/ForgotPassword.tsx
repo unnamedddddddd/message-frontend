@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
-import {useNavigate} from 'react-router-dom'
-import './ForgotPassword.css'
-import forgotPassword from "../../scripts/user/ForgotPassword";
+import { useNavigate } from 'react-router-dom';
+import './ForgotPassword.css';
+
+import { forgotPasswordUser } from '@/api/user';
 
 const ForgotPassword = () => {
   const [login, setLogin] = useState('');
@@ -19,7 +20,7 @@ const ForgotPassword = () => {
       return;
     }
     
-    const data = await forgotPassword(login, password);
+    const data = await forgotPasswordUser(login, password);
     console.log(login);
     
     if (!data.success) {

@@ -1,7 +1,7 @@
 import { WEBSOCKET_URL } from "../config";
-import type MessageProps from "../interfaces/MessageProps";
-import type SocketProps from "../interfaces/SocketProps";
-import type IWebSocketClient from "../interfaces/WebSocketProps";
+import type MessageProps from "../interfaces/chat/MessageProps";
+import type SocketProps from "../interfaces/socket/SocketProps";
+import type IWebSocketClient from "../interfaces/socket/WebSocketProps";
 import { io } from 'socket.io-client'
 
 export default class WebSocketChat implements IWebSocketClient{

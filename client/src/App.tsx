@@ -4,6 +4,7 @@ import './App.css'
 import Login from './pages/LoginForm/Login'
 import CreateUser from './pages/CreateUser/CreateUser'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
+import Profile from './pages/Profile/Profile'
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/createUser" element={<CreateUser />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/profile" element={<Profile />} />
+
       </Routes>
     </Router>
   )

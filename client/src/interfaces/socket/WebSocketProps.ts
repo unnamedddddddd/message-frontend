@@ -1,4 +1,4 @@
-import type MessageProps from "./MessageProps";
+import type MessageProps from "../chat/MessageProps";
 
 export default interface IWebSocketClient {
   connect(roomId: string, userName: string): Promise<void>;
