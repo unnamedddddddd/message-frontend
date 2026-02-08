@@ -1,4 +1,4 @@
-import type MessageProps from "../interfaces/chat/MessageProps";
+import type MessageProps from "../types/chat/MessageProps";
 
 //ДОБАВИТЬ ВРЕМЯ
 const Message = ({message, userName, type, renderTime}: MessageProps) => {

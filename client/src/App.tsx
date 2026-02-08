@@ -1,10 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
-import Home from './pages/HomeForm/Home'
 import './App.css'
-import Login from './pages/LoginForm/Login'
-import CreateUser from './pages/CreateUser/CreateUser'
-import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
-import Profile from './pages/Profile/Profile'
+import { CreateUser, ForgotPassword, Home, Login, ProfileForm, VerifyEmail } from './pages'
 
 function App() {
   return (
@@ -15,8 +11,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/createUser" element={<CreateUser />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
-        <Route path="/profile" element={<Profile />} />
-
+        <Route path="/profile" element={<ProfileForm />} />
+        <Route path="/verifyEmail" element={<VerifyEmail />} />
       </Routes>
     </Router>
   )

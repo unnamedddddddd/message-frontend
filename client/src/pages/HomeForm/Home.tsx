@@ -1,45 +1,31 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef } from "react";
 import './Home.css';
 import { Message, Profile, Server, Chat } from '@/components';
 import useAuth from "@/hooks/user/useAuth";
 import useChat from "@/hooks/chat/useChat";
-import { formatTime } from "@/utils";
 
 const Home = () => {
-  const [message, setMessage] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { userLogin, logOut } = useAuth();
-
-  const { 
+  const {
+    message, 
     messages, 
     servers,
     chats,
     isConnected, 
     activeChatId, 
-    socketRef,  
-    connect, 
+    setMessage,  
     disconnect, 
-    setMessages, 
+    setMessages,
+    joinChat, 
     joinServer,
+    handleSubmit,
   } = useChat(userLogin); 
 
   //!!!
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!message.trim()) return;
-    socketRef.current?.sendMessage(message);
-    setMessages(prev => [...prev, { 
-      message, 
-      type: 'my', 
-      userName: userLogin, 
-      renderTime: formatTime(),
-    }]);
-    setMessage('');
-  };
 
   return (
     <div className="home-container">
@@ -60,7 +46,7 @@ const Home = () => {
           <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
             <Chat 
               chatId={chat.chatId}
-              onJoinChat={connect}
+              onJoinChat={joinChat}
               name={chat.name}
               disabled={activeChatId === chat.chatId}  
             />

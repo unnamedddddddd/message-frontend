@@ -1,4 +1,4 @@
-import { LoginUser } from "@/api/user";
+import { loginUser } from "@/api/user";
 import verificationTokenRemember from "@/api/user/VerificationTokenRemember";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +27,7 @@ const useUser = () => {
 
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {    
     e.preventDefault();
-    const data = await LoginUser(login, password, isRemember);
+    const data = await loginUser(login, password, isRemember);
     console.log(data);
     
     if (!data.success) {

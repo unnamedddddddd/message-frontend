@@ -1,5 +1,5 @@
 import { SERVER_URL } from "../config";
-import type ServerProps from "../interfaces/chat/ServerProps";
+import type ServerProps from "../types/chat/ServerProps";
 
 const Server = ({serverId, avatar, name, disabled, onJoinServer} : ServerProps) => {
   const handleJoin = () => {
@@ -7,7 +7,7 @@ const Server = ({serverId, avatar, name, disabled, onJoinServer} : ServerProps) 
       onJoinServer(serverId)
     }
   }
-
+  
   return(
     <>
       <button 

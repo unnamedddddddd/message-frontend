@@ -1,32 +1,27 @@
-import { getChats, getMessages, getServers } from "@/api/chat";
-import type { ChatProps, ChatResponse, MessageProps, ServerProps } from "@/interfaces";
-import { WebSocketChat } from "@/modules";
-import { formatTime, mapServers } from "@/utils";
+import { getChats, getMessages } from "@/api/chat";
+import type { ChatProps, MessageProps } from "@/types";
+
 import mapMessages from "@/utils/mapMessages";
-import { useEffect, useRef, useState } from "react";
+import { useState, type FormEvent } from "react";
+import useWebSocket from "./useWebSocket";
+import useServers from "./useServer";
+import { formatTime, mapChats } from "@/utils";
 
 const useChat = (userLogin: string) => {
+  const [message, setMessage] = useState<string>('')
   const [messages, setMessages] = useState<MessageProps[]>([]);
-  const [isConnected, setIsConnected] = useState<boolean>(false);
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
-  const socketRef = useRef<WebSocketChat | null>(null);
-  const [servers, setServers] = useState<ServerProps[]>([]);
   const [chats, setChats] = useState<ChatProps[]>([]);
-
-  useEffect(() => {
-    const loadServers  = async () => {
-      const serversResponse = await getServers();
-
-      if (!serversResponse.success) {
-        console.log('Сервера не найдены:', serversResponse.message);
-        return;
-      }
-     
-      setServers(mapServers(serversResponse.servers));
-    }
-
-    loadServers();
-  }, [])
+  const { 
+    isConnected, 
+    connect, 
+    disconnect,
+    socketRef 
+  } = useWebSocket(
+    userLogin, 
+    (newMsg: MessageProps) => setMessages(prev => [...prev, newMsg])
+  );
+  const { servers } = useServers();
 
   const joinServer = async (serverId: number) => {
     const chatsResponse = await getChats(serverId);
@@ -35,74 +30,57 @@ const useChat = (userLogin: string) => {
       console.log('Чаты не найдены:', chatsResponse.message);
       return;
     }
-    const chatsAsChatProps: ChatProps[] = chatsResponse.chats.map((chat: ChatResponse) => {
-      return {
-        chatId: chat.chat_id,
-        name: chat.chat_name,  
-      };
-    })
-
-    setChats(chatsAsChatProps)  
+    setChats(mapChats(chatsResponse.chats))  
   }
 
-  const connect = (roomId: string, chatId: number) => {
-    if (socketRef.current) {
-      disconnect();
-    }
+  const joinChat = async (roomId: string, chatId: number) => {
+    disconnect();
+    setMessages([]);
 
-    socketRef.current = new WebSocketChat()
-
-    loadMessages(chatId);
-    const handleMessage = (data: MessageProps) => {    
-      setMessages(prev => [...prev, {
-        type: data.type, 
-        message: data.message,
-        userName: data.userName,
-        renderTime: formatTime(data.renderTime),
-      }])     
-    }
-
-    socketRef.current.connect(roomId, userLogin).then(() => {
-      socketRef.current?.getMessage(handleMessage);
-      setIsConnected(true);
-      setActiveChatId(chatId)
-    })
+    await loadMessages(chatId);
+    await connect(roomId);
+   
+    setActiveChatId(chatId)
   }
 
-  const disconnect = () => {
-    if (socketRef.current) {
-      socketRef.current.disconnect();
-      socketRef.current = null;
-      setIsConnected(false);
-      setMessages([])
-      setActiveChatId(null);
-    }
-  }
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!message.trim()) return;
+    socketRef.current?.sendMessage(message);
+    setMessages(prev => [...prev, { 
+      message, 
+      type: 'my', 
+      userName: userLogin, 
+      renderTime: formatTime(),
+    }]);
+    setMessage('');
+  };
 
- const loadMessages = async (chatId: number) => {
+  const loadMessages = async (chatId: number) => {
     const messageResponse = await getMessages(chatId)
     
     if (!messageResponse.success) {
       setMessages([]); 
       return;
     }
-
     const currentUserId = Number(localStorage.getItem('user_id'));
     setMessages(mapMessages(messageResponse.messages, currentUserId));
   }
 
- return {
-    messages,
-    servers,
-    chats,
-    isConnected,
+  return {
+    message,
+    messages, 
+    servers, 
+    chats, 
+    isConnected, 
     activeChatId,
-    connect,
-    disconnect,
-    loadMessages, 
-    setMessages,
-    joinServer,  
     socketRef,
+    setMessage,
+    setMessages,
+    joinChat, 
+    joinServer,
+    disconnect,
+    handleSubmit, 
   }
 }
 

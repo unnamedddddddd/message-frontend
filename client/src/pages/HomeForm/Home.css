@@ -199,13 +199,17 @@ input::placeholder {
   color: #a3a2a3;
 }
 
-.profile-avatar {
-  display: block;
-  margin: auto;
-  width: 30%;
-  border-radius: 15px;
+.profile-image-container {
   margin-top: 5px;
-  border: 1px solid rgba(109, 114, 117, 0.3);
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  object-fit: cover; 
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .profile-data {

@@ -1,54 +1,55 @@
-import { useEffect, useState } from "react";
-import getUserProfile from "../../api/user/getUserProfile";
-import { useNavigate } from 'react-router-dom'
+import Email from "@/components/Email";
 import { SERVER_URL } from "../../config";
 import './Profile.css'
+import { useAuth } from "@/hooks/user";
+import { Link } from 'react-router-dom';
 
-const Profile = () => {
-  const [userLogin, setUserLogin] = useState<string>('') ;
-  const [userAvatar, setUserAvatar] = useState<string>('');
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const loadUserProfile = async () => {
-      const userId = localStorage.getItem('user_id');
-
-      if (userId) {
-        const data = await getUserProfile(Number(userId));
-        
-        if (!data.success) {
-          console.log(data.message);
-          navigate('/login');
-          return;
-        }
-        setUserLogin(data.userLogin);
-        setUserAvatar('') // ДОБАВИТЬ АВАТАРЫ ПОЛЬЗОВАТЕЛЕЙ
-      } else {
-        alert('id не найден');
-        navigate('/login');
-        return;
-      }
-    }
-
-    loadUserProfile();
-  }, [navigate]);
-
+const ProfileForm = () => {
+  const {
+    userLogin,
+    userAvatar,
+    changeUserAvatar
+  } = useAuth();
+  
   return (
     <div className="profile-main">
       <div className="portal-breadcrums customzed">
       </div>
       <div className="card-info_full_info">
+          <Link 
+            to='/home'
+            style={{
+              display: 'block',
+              textAlign: 'right',
+              color: '#5c5e61',
+              fontSize: '14px',
+              textDecoration: 'none',
+              justifyContent: 'flex-end'
+            }}
+          >Назад</Link>
           <div className="card-header_full-name">
             <div className="card-header_user-avatar">
-              <img src={`${SERVER_URL}${userAvatar}`} alt={`Аватар пользователя ${userLogin}`} className='profile-image'/> {/*ДОБАВИТЬ ДЕФОЛТ АВАТАР*/}
+              <img src={`${SERVER_URL}${userAvatar}`} alt={`Аватар пользователя ${userLogin}`} className='profile-image'/> 
             </div>
             <div className="card-header_user-login">
               {userLogin}
             </div>
           </div>
+          <div className="avatar-upload-wrapper">
+            <label htmlFor="user-avatar-upload" className="avatar-label">
+              <div className="avatar-overlay">Сменить фото</div>
+            </label>
+            <input 
+              id="user-avatar-upload"
+              type="file"  
+              accept="image/*" 
+              style={{ display: 'none' }} 
+              onChange={changeUserAvatar} 
+            />
+          </div>
           <div className="card-body_user_info">
             <div className="card-body_user-email">
-              {/* ДОБАВИТЬ EMAIL*/}email: dlfkdfkbsdjkfsfds
+              <Email/>
             </div>
           </div>
         </div>
@@ -56,4 +57,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileForm;

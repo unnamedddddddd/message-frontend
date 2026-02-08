@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
 import './ForgotPassword.css';
 
-import { forgotPasswordUser } from '@/api/user';
+import { forgotPassword } from '@/api/user';
 
 const ForgotPassword = () => {
   const [login, setLogin] = useState('');
@@ -10,7 +10,6 @@ const ForgotPassword = () => {
   const [repeatPassword, setRepeatPassword] = useState('');
 
   const navigate = useNavigate();
-
 
   // СДЕЛАТЬ ЧЕРЕЗ ПОЧТУ
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {
@@ -20,7 +19,7 @@ const ForgotPassword = () => {
       return;
     }
     
-    const data = await forgotPasswordUser(login, password);
+    const data = await forgotPassword(login, password);
     console.log(login);
     
     if (!data.success) {

@@ -1,4 +1,4 @@
-import type { ServerProps, ServerResponse } from "@/interfaces";
+import type { ServerProps, ServerResponse } from "@/types";
 
 const mapServers = (dbServers: ServerResponse[]): ServerProps[] => 
   dbServers.map(s => ({
