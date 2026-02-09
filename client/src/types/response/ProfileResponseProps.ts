@@ -4,4 +4,5 @@ export default interface ProfileResponse {
   user_avatar: string;
   user_email: string;
   message?: string;
+  is_verified: boolean;
 }

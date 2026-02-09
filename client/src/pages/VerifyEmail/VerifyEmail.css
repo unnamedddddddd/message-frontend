@@ -48,7 +48,7 @@ input::placeholder {
   opacity: 0.6;
 }
 
-label {
+.label-email {
   padding: 5px;
 }
 

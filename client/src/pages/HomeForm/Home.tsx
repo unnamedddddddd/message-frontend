@@ -63,8 +63,9 @@ const Home = () => {
       <div className='chat-main'>
         <div className='messages-container'>
           {messages.map((msg, index) => (
-            <div key={index} className={`${msg.type}-message`}>
-              <Message 
+            <div key={index} className={`${msg.type}-message-container`}>
+              <Message
+                userAvatar={msg.userAvatar} 
                 type={msg.type}
                 message={msg.message} 
                 userName={msg.userName} 

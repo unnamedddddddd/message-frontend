@@ -3,6 +3,7 @@ import formatTime from "./time";
 
 const mapMessages = (dbMessages: MessageResponse[], currentUserId: number): MessageProps[] => {
   return dbMessages.map(msg => ({
+    userAvatar: msg.user_avatar,
     userName: msg.user_login,
     message: msg.message_text,
     renderTime: formatTime(msg.created_at),

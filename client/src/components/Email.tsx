@@ -2,9 +2,9 @@ import { useAuth } from "@/hooks/user";
 import { Link } from 'react-router-dom';
 
 const Email = () => {
-  const { userEmail } = useAuth();
-  const verifyEmail =  () => {
-    if (userEmail) {
+  const { userEmail, isVerified } = useAuth();  
+  const is_VerifiedEmail = () => {
+    if (isVerified) {
       return (
         <>
           email: {userEmail}
@@ -39,7 +39,7 @@ const Email = () => {
 
   return (
     <div className="user-email-container">
-      {verifyEmail()}
+      {is_VerifiedEmail()}
     </div>
   );
 };

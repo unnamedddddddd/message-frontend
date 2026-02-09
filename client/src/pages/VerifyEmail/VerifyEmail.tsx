@@ -20,16 +20,21 @@ const VerifyEmail = () => {
 
       if (verifyStep === 'email') {
         const responseEmail = await confirmEmail(Number(userId), userEmail);
-        if (responseEmail.success) {
-          setVerifyStep('code');
-          alert(responseEmail.message)
+        if (!responseEmail.success) {
+          console.error(responseEmail.message);
+          alert(responseEmail.message);
+          return;
         }
+        setVerifyStep('code');
+        alert(responseEmail.message)
     } else {
       const responseCode = await confirmCode(Number(userId), code)
-      if (responseCode.success) {
+      if (!responseCode.success) {
+        console.error(responseCode.message);
         alert(responseCode.message)
-        navigate('/profile')
+        return;
       }
+      navigate('/profile')
     }
   }
 
@@ -40,7 +45,7 @@ const VerifyEmail = () => {
           {verifyStep === 'email' ? (
             <>
               <div className="input-confirm">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" className='label-email'>Email</label>
                 <input 
                   value={userEmail}
                   onChange={(e) => setUserEmail(e.target.value)}

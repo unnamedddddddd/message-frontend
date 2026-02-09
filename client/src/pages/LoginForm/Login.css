@@ -79,7 +79,7 @@ input::placeholder {
   background-color: #434548;
 }
 
-label {
+.login-label, .password-label {
   padding: 5px;
 }
 

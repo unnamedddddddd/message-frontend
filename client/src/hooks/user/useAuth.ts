@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const useAuth = () => {
   const [userLogin, setUserLogin] = useState<string>('');
   const [userAvatar, setUserAvatar] = useState<string>('')
+  const [isVerified, setisVerified] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userEmail, setUserEmail] = useState<string>('');
   const navigate = useNavigate();
@@ -22,7 +23,6 @@ const useAuth = () => {
       }
 
       const data: ProfileResponse = await getUserProfile(Number(userId));
-      
       if (!data.success) {
         console.log('Пользователь не авторизован:', data.message);
         navigate('/login');
@@ -32,7 +32,7 @@ const useAuth = () => {
       setUserLogin(data.user_login);      
       setUserAvatar(data.user_avatar);
       setUserEmail(data.user_email);
-      console.log(data.user_email);
+      setisVerified(data.is_verified);
       
     } catch (error) {
       console.error('Ошибка проверки авторизации:', error);
@@ -87,9 +87,11 @@ const useAuth = () => {
     userLogin,
     userAvatar,
     userEmail,
+    isVerified,
     isLoading,
     setUserLogin,
     setUserAvatar,
+    setisVerified,
     changeUserAvatar,
     logOut,
   }
