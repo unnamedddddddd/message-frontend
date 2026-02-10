@@ -1,11 +1,14 @@
+import type { Participant } from "@/types";
 import { WEBSOCKET_URL } from "../config";
 import type MessageProps from "../types/chat/MessageProps";
 import type SocketProps from "../types/socket/SocketProps";
 import type IWebSocketClient from "../types/socket/WebSocketProps";
 import { io } from 'socket.io-client'
+import type { SignalData } from "simple-peer";
 
 export default class WebSocketChat implements IWebSocketClient{
   private socket: SocketProps | null = null;
+  public socketId: string | undefined = undefined;
 
   connect(roomId: string, userName: string): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -18,6 +21,7 @@ export default class WebSocketChat implements IWebSocketClient{
 
       this.socket.userName = userName;
       this.socket.currentRoom = roomId;
+      this.socketId = this.socket?.id;
 
       this.socket.emit('join-room', {roomId, userName})
 
@@ -26,11 +30,41 @@ export default class WebSocketChat implements IWebSocketClient{
         resolve();
       })
 
-      this.socket.on('connect_error', (error) => {
+      this.socket.on('connect-error', (error) => {
         console.log(error);
         reject();
       })
     })
+  }
+
+  onUserJoinedVoice(handler: (data: {userId: string}) => void): void {
+    this.socket?.on('user-join-voice', handler);
+  }
+
+  onUserLeftVoice(handler: (data: {userId: string}) => void): void {
+    this.socket?.on('user-left-voice', handler);
+  }
+
+  getParticipants(): Promise<Participant[]> {
+  return new Promise((resolve) => {
+    this.socket?.on('voice-chat-participants', (participants: Participant[]) => {
+      resolve(participants);
+      this.socket?.off('voice-chat-participants');
+    });
+  });
+}
+
+  getVoiceSignal(handler: (data: { from: string; signal: SignalData }) => void): void {
+    this.socket?.on('voice-signal', handler);
+  }
+
+  sendVoiceSignal(signal: unknown, targetSocketId: string): void {
+    const roomId = this.socket?.currentRoom;
+    this.socket?.emit('voice-signal', {
+      signal,
+      roomId,
+      to: targetSocketId,
+    });
   }
 
   getMessage(handler: (data: MessageProps) => void): void {

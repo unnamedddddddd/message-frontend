@@ -1,5 +1,5 @@
 import { getChats, getMessages } from "@/api/chat";
-import type { ChatProps, MessageProps } from "@/types";
+import type { TextChatProps, MessageProps } from "@/types";
 
 import mapMessages from "@/utils/mapMessages";
 import { useState, type FormEvent } from "react";
@@ -12,7 +12,8 @@ const useChat = (userLogin: string) => {
   const [message, setMessage] = useState<string>('')
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
-  const [chats, setChats] = useState<ChatProps[]>([]);
+  const [textChats, setTextChats] = useState<TextChatProps[]>([]);
+
   const { 
     isConnected, 
     connect, 
@@ -33,7 +34,7 @@ const useChat = (userLogin: string) => {
       console.log('Чаты не найдены:', chatsResponse.message);
       return;
     }
-    setChats(mapChats(chatsResponse.chats))  
+    setTextChats(mapChats(chatsResponse.chats))  
   }
 
   const joinChat = async (roomId: string, chatId: number) => {
@@ -76,7 +77,7 @@ const useChat = (userLogin: string) => {
     message,
     messages, 
     servers, 
-    chats, 
+    textChats, 
     isConnected, 
     activeChatId,
     socketRef,

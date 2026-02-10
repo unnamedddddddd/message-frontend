@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import './Home.css';
-import { Message, Profile, Server, Chat } from '@/components';
+import { Message, Profile, Server, TextChat, VoiceChat } from '@/components';
 import useAuth from "@/hooks/user/useAuth";
 import useChat from "@/hooks/chat/useChat";
 
@@ -11,7 +11,7 @@ const Home = () => {
     message, 
     messages, 
     servers,
-    chats,
+    textChats,
     isConnected, 
     activeChatId, 
     setMessage,  
@@ -42,16 +42,32 @@ const Home = () => {
         ))} 
       </div>
       <div className="chats-sidebar">
-        {chats.map((chat) => (
-          <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
-            <Chat 
-              chatId={chat.chatId}
-              onJoinChat={joinChat}
-              name={chat.name}
-              disabled={activeChatId === chat.chatId}  
-            />
-          </div>
-        ))}
+        <div className="text-chats">
+          <label htmlFor="" className="text-chats-label">Текстовые каналы</label>
+          {textChats.map((chat) => (
+            <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
+              <TextChat 
+                chatId={chat.chatId}
+                onJoinChat={joinChat}
+                name={chat.name}
+                disabled={activeChatId === chat.chatId}  
+              />
+            </div>
+          ))}
+        </div>
+        <div className="voice-chats">
+          <label htmlFor="" className="voice-chats-label">Голосовые каналы</label>
+          {textChats.map((chat) => (
+            <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
+              <VoiceChat 
+                chatId={chat.chatId}
+                onJoinChat={joinChat}
+                name={chat.name}
+                disabled={activeChatId === chat.chatId}  
+              />
+            </div>
+          ))}
+        </div>
         <button 
           className="out-chat" 
           disabled={!isConnected} 

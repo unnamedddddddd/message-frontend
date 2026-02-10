@@ -1,6 +1,6 @@
-import type ChatProps from "../types/chat/ChatProps";
+import type ChatProps from "../types/chat/TextChatProps";
 
-const Chat = ({chatId, name, disabled, onJoinChat}: ChatProps) => {
+const TextChat = ({chatId, name, disabled, onJoinChat}: ChatProps) => {
   const handleJoin = () => {
     if (onJoinChat) {
       onJoinChat(name, chatId);
@@ -27,4 +27,4 @@ const Chat = ({chatId, name, disabled, onJoinChat}: ChatProps) => {
   );
 };
 
-export default Chat;
+export default TextChat;

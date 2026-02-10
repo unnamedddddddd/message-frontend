@@ -1,4 +1,4 @@
-export default interface ChatProps {
+export default interface TextChatProps {
   chatId: number;
   name: string;
   disabled?: boolean;
