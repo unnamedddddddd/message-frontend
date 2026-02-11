@@ -415,7 +415,7 @@ input::placeholder {
   margin-top: auto;
 }
 
-.create-server-button {
+.create-server-link {
   background: rgba(53, 53, 54, 0.7);
   border: 1px solid rgba(109, 114, 117, 0.4);
   color: #a3a2a3;
@@ -424,7 +424,7 @@ input::placeholder {
   transition: background-color 0.2s;
 }
 
-.create-server-button:hover {
+.create-server-link:hover {
   background-color: rgba(97, 99, 102, 0.7);
 }
 

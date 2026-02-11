@@ -3,6 +3,7 @@ import './Home.css';
 import { Message, Profile, Server, TextChat, VoiceChat } from '@/components';
 import useAuth from "@/hooks/user/useAuth";
 import useChat from "@/hooks/chat/useChat";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -41,9 +42,20 @@ const Home = () => {
           </div>
         ))} 
         <div className="create-server-container">
-          <button className="create-server-button">
-            create server
-           </button>
+          <Link
+            to={'/createServer'}
+            className="create-server-link"
+            style={{
+              display: 'block',
+              textAlign: 'right',
+              color: '#A3A2A3',
+              fontSize: '13px',
+              textDecoration: 'none',
+              justifyContent: 'flex-end'
+            }}
+              >
+              create server
+          </Link>
         </div>
       </div>
       <div className="chats-sidebar">

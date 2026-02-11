@@ -13,7 +13,7 @@ const useChat = (userLogin: string) => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
   const [textChats, setTextChats] = useState<TextChatProps[]>([]);
-
+  const { isVerified } = useAuth();
   const { 
     isConnected, 
     connect, 
@@ -28,6 +28,7 @@ const useChat = (userLogin: string) => {
 
 
   const joinServer = async (serverId: number) => {
+    setTextChats([]);
     const chatsResponse = await getChats(serverId);
 
     if (!chatsResponse.success) {
@@ -49,6 +50,10 @@ const useChat = (userLogin: string) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isVerified) {
+      alert('Пожалуйста потвердите почту, сделать это можно в вашем профиле')
+      return;
+    }
     if (!message.trim()) return;
     socketRef.current?.sendMessage(message);
     setMessages(prev => [...prev, { 

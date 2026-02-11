@@ -23,8 +23,8 @@ const CreateServer = () => {
       alert(`Ошибка: ${data.message}`);
       return
     }
-    alert('Пользователь создан успешно');
-    navigate('/login');
+    alert('Сервер создан успешно');
+    navigate('/home');
   }
 
  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +51,7 @@ const CreateServer = () => {
         <form className="create-server-form" onSubmit={handleSubmit}>
           <div className="server-data">
             <div className="server-avatar-container">
-              <label htmlFor="server-avatar-upload" className="avatar-label">
+              <label htmlFor="server-avatar-upload" className="server-avatar-label">
                 <div className="avatar-overlay">Поставить аватар</div>
               </label>
               <input 

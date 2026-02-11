@@ -13,6 +13,12 @@ const CreateUser = () => {
   // СДЕЛАТЬ ЧЕРЕЗ ПОЧТУ
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!login || !password || !repeatPassword) {
+      alert('Поле обязательное')
+      return;
+    }
+
     if (password !== repeatPassword) {
       alert('Пароли не совпадают');
       return;

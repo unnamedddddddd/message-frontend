@@ -27,6 +27,12 @@ const useUser = () => {
 
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {    
     e.preventDefault();
+
+    if (!login || !password) {
+      alert('Поле обязательное')
+      return;
+    }
+
     const data = await loginUser(login, password, isRemember);
     console.log(data);
     
