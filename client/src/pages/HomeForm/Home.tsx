@@ -40,6 +40,11 @@ const Home = () => {
           />  
           </div>
         ))} 
+        <div className="create-server-container">
+          <button className="create-server-button">
+            create server
+           </button>
+        </div>
       </div>
       <div className="chats-sidebar">
         <div className="text-chats">

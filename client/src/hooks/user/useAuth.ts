@@ -62,7 +62,6 @@ const useAuth = () => {
       }
       const data = await uploadUserAvatar(file, Number(currentUserId));
       if (data.success) {
-        // 2. Обновляем состояние аватара в UI (путь из БД)
         setUserAvatar(data.avatar); 
         console.log("Аватар успешно обновлен:", data.avatar);
       }

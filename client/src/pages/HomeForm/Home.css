@@ -407,9 +407,26 @@ input::placeholder {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-
 }
 
+.create-server-container {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.create-server-button {
+  background: rgba(53, 53, 54, 0.7);
+  border: 1px solid rgba(109, 114, 117, 0.4);
+  color: #a3a2a3;
+  padding: 8px 16px;
+  border-radius: 12px;
+  transition: background-color 0.2s;
+}
+
+.create-server-button:hover {
+  background-color: rgba(97, 99, 102, 0.7);
+}
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -427,3 +444,4 @@ input::placeholder {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(109, 114, 117, 0.7);
 }
+
