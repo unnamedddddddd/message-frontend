@@ -32,7 +32,7 @@ export default class WebSocketChat implements IWebSocketClient{
 
       this.socket.on('connect-error', (error) => {
         console.log(error);
-        reject();
+        reject(error);
       })
     })
   }
@@ -46,24 +46,36 @@ export default class WebSocketChat implements IWebSocketClient{
   }
 
   getParticipants(): Promise<Participant[]> {
-  return new Promise((resolve) => {
-    this.socket?.on('voice-chat-participants', (participants: Participant[]) => {
-      resolve(participants);
-      this.socket?.off('voice-chat-participants');
+    console.log('Gjcbt');
+    
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        this.socket?.off('voice-chat-participants');
+        reject(new Error('Timeout: no participants response'));
+      }, 5000);
+
+      this.socket?.on('voice-chat-participants', (participants: Participant[]) => {
+        clearTimeout(timeout);
+        resolve(participants);
+        this.socket?.off('voice-chat-participants');
+      });
+
+      this.socket?.emit('voice-chat-participants', { 
+        roomId: this.socket?.currentRoom 
+      });
     });
-  });
-}
+  }
 
   getVoiceSignal(handler: (data: { from: string; signal: SignalData }) => void): void {
     this.socket?.on('voice-signal', handler);
   }
 
-  sendVoiceSignal(signal: unknown, targetSocketId: string): void {
+  sendVoiceSignalGroup(signal: unknown, targetSocketId: string): void {
     const roomId = this.socket?.currentRoom;
     this.socket?.emit('voice-signal', {
+      to: targetSocketId,
       signal,
       roomId,
-      to: targetSocketId,
     });
   }
 
@@ -72,6 +84,11 @@ export default class WebSocketChat implements IWebSocketClient{
       console.log(data);
       handler(data);
     });
+  }
+
+  joinVoiceChat(): void {
+    const roomId = this.socket?.currentRoom;
+    this.socket?.emit('user-join-voice', { roomId });
   }
 
   sendMessage(message: string): void {

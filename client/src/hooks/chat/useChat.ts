@@ -1,18 +1,17 @@
-import { getChats, getMessages } from "@/api/chat";
-import type { TextChatProps, MessageProps } from "@/types";
+import { getMessages } from "@/api/chat";
+import type { MessageProps } from "@/types";
 
 import mapMessages from "@/utils/mapMessages";
 import { useState, type FormEvent } from "react";
 import useWebSocket from "./useWebSocket";
 import useServers from "./useServer";
-import { formatTime, mapChats } from "@/utils";
+import { formatTime } from "@/utils";
 import { useAuth } from "../user";
 
 const useChat = (userLogin: string) => {
   const [message, setMessage] = useState<string>('')
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
-  const [textChats, setTextChats] = useState<TextChatProps[]>([]);
   const { isVerified } = useAuth();
   const { 
     isConnected, 
@@ -23,26 +22,15 @@ const useChat = (userLogin: string) => {
     userLogin, 
     (newMsg: MessageProps) => setMessages(prev => [...prev, newMsg])
   );
-  const { servers } = useServers();
+  const { servers } = useServers();   
   const { userAvatar } = useAuth();
 
-
-  const joinServer = async (serverId: number) => {
-    setTextChats([]);
-    const chatsResponse = await getChats(serverId);
-
-    if (!chatsResponse.success) {
-      console.log('Чаты не найдены:', chatsResponse.message);
-      return;
-    }
-    setTextChats(mapChats(chatsResponse.chats))  
-  }
 
   const joinChat = async (roomId: string, chatId: number) => {
     disconnect();
     setMessages([]);
 
-    await loadMessages(chatId);
+    await loadMessages(chatId);     
     await connect(roomId);
    
     setActiveChatId(chatId)
@@ -82,14 +70,12 @@ const useChat = (userLogin: string) => {
     message,
     messages, 
     servers, 
-    textChats, 
     isConnected, 
     activeChatId,
     socketRef,
     setMessage,
     setMessages,
     joinChat, 
-    joinServer,
     disconnect,
     handleSubmit, 
   }

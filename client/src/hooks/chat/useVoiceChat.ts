@@ -1,19 +1,26 @@
-import type { Participant, VoiceChatProps } from "@/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import SimplePeer from "simple-peer";
 import { WebSocketChat } from "@/modules";
-import { error } from "console";
 
-const useVoiceChat = () => {
-  const [voiceChats, setVoiceChats] = useState<VoiceChatProps[]>([]);
+const useVoiceChat = (userLogin: string) => {
   const [isInCall, setIsInCall] = useState(false);
   const localStreamRef = useRef<MediaStream | null>(null);
   const peersRef = useRef<Record<string, SimplePeer.Instance>>({});
   const socketRef = useRef<WebSocketChat | null>(null);
   const [participants, setParticipants] = useState<string[]>([]);
 
-  const joinVoiceChat = useCallback(async (roomId: string, userLogin: string) => {
+  const leaveVoiceChat = () => {    
+    socketRef.current?.disconnect();
+    Object.values(peersRef.current).forEach(peer => peer.destroy());
+    localStreamRef.current?.getTracks().forEach(track => track.stop());
+    setParticipants([]);
+    setIsInCall(false);
+  }
+
+  const joinVoiceChat = useCallback(async (roomId: string) => {
     try {
+      leaveVoiceChat();
+
       socketRef.current = new WebSocketChat()
       await socketRef.current?.connect(roomId, userLogin)
 
@@ -21,15 +28,23 @@ const useVoiceChat = () => {
         audio: true,
       });
       localStreamRef.current = stream;
-      console.log("Микрофон включен, уведомил сервер");
+      socketRef.current.joinVoiceChat();
+      console.log(localStreamRef.current?.active);
+      console.log(Object.keys(peersRef.current).length);
+      
+      console.log("Микрофон включен");
+      setIsInCall(true); 
+      navigator.mediaDevices.enumerateDevices()
+        .then(devices => console.log(devices.filter(d => d.kind === 'audioinput')))
+      
+
     } catch (error) {
       console.error(error);
     }   
-  }, [])
+  }, [userLogin])
 
   const createPeerConnection = useCallback((targetSocketId: string, initiator: boolean) => {
     if (targetSocketId === socketRef.current?.socketId) {
-      console.log("Пропускаем, мы ");
       return null;
     }
     if (peersRef?.current[targetSocketId]) {
@@ -55,8 +70,7 @@ const useVoiceChat = () => {
     });
 
     peer.on('signal', (signal) => {
-      console.log(`Отправляю сигнал к ${targetSocketId}`);
-      socketRef.current?.sendVoiceSignal(signal, targetSocketId);
+      socketRef.current?.sendVoiceSignalGroup(signal, targetSocketId);
     });
 
     peer.on('stream', (remoteStream) => {
@@ -67,6 +81,7 @@ const useVoiceChat = () => {
       audio.srcObject = remoteStream;
       audio.autoplay = true;
       audio.style.display = 'none';
+      audio.play();
       document.body.appendChild(audio);
 
       setParticipants(prev => {
@@ -91,13 +106,6 @@ const useVoiceChat = () => {
 
     return peer;
   }, [])
-
-  const leaveVoiceChat = () => {
-    socketRef.current?.disconnect();
-    Object.values(peersRef.current).forEach(peer => peer.destroy());
-    localStreamRef.current?.getTracks().forEach(track => track.stop());
-    setParticipants([]);
-  }
 
   useEffect(() => {
     if (!socketRef.current) return;
@@ -134,7 +142,7 @@ const useVoiceChat = () => {
 
     socketRef.current.getVoiceSignal(({ from, signal }) => {
       console.log(`Получил сигнал от ${from}`);
-
+       console.log("📢 ПОЛУЧЕН СИГНАЛ:", signal.type, "от", from);
       if (peersRef.current[from]) {
         peersRef.current[from].signal(signal);
       } else if (localStreamRef.current) {
@@ -143,52 +151,58 @@ const useVoiceChat = () => {
       }
     });
 
-    return () => {
-      socketRef.current?.disconnect();
-      Object.values(peersRef!.current).forEach(peer => {
+   return () => {
+    if (!isInCall) return;
+
+    socketRef.current?.disconnect();
+    
+    Object.values(peersRef.current).forEach(peer => {
+      try {
+        peer.destroy();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+    
+    Object.keys(peersRef.current).forEach(socketId => {
+      const audio = document.getElementById(`audio-${socketId}`);
+      if (audio) {
         try {
-          peer.destroy();
-        } catch (error) {
-          console.error(error);
+          audio.remove();
+        } catch (err) {
+          console.warn("Ошибка при удалении аудио элемента:", err);
+        }
+      }
+    });
+    
+    if (localStreamRef.current) {
+      localStreamRef.current.getTracks().forEach(track => {
+        try {
+          track.stop();
+        } catch (err) {
+          console.warn("Ошибка при остановке трека:", err);
         }
       });
-      socketRef.current = null;
-      if (localStreamRef.current) {
-        localStreamRef.current.getTracks().forEach(track => {
-          try {
-            track.stop();
-          } catch (err) {
-            console.warn("Ошибка при остановке трека:", err);
-          }
-        });
-        localStreamRef.current = null;
-      }
-    
-      participants.forEach(socketId => {
-        const audio = document.getElementById(`audio-${socketId}`);
-        if (audio) {
-          try {
-            audio.remove();
-          } catch (err) {
-            console.warn("Ошибка при удалении аудио элемента:", err);
-          }
-        }
-      }); 
-
-      setParticipants([]);
+      localStreamRef.current = null;
     }
 
+    peersRef.current = {};
+    socketRef.current = null;
+    
+    setParticipants([]);
+  };
 
-  }, [createPeerConnection, participants]);
+
+  }, [createPeerConnection, isInCall]);
 
 
    return {
-    joinVoiceChat,
-    leaveVoiceChat,
     participants,
     isInCall,
+    joinVoiceChat,
+    leaveVoiceChat,
     setIsInCall,
-    toggleVoiceChat: (roomId: string, userLogin: string) => 
-      isInCall ? leaveVoiceChat() : joinVoiceChat(roomId, userLogin)
   };
 }
+
+export default useVoiceChat; 

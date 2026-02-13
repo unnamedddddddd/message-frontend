@@ -4,29 +4,45 @@ import { Message, Profile, Server, TextChat, VoiceChat } from '@/components';
 import useAuth from "@/hooks/user/useAuth";
 import useChat from "@/hooks/chat/useChat";
 import { Link } from "react-router-dom";
+import useVoiceChat from "@/hooks/chat/useVoiceChat";
+import useServers from "@/hooks/chat/useServer";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { userLogin, logOut } = useAuth();
   const {
+    textChats,
+    voiceChats,
+    joinServer
+  } = useServers();
+  const {
     message, 
     messages, 
     servers,
-    textChats,
     isConnected, 
     activeChatId, 
     setMessage,  
     disconnect, 
     setMessages,
     joinChat, 
-    joinServer,
     handleSubmit,
   } = useChat(userLogin); 
+  const {
+    isInCall,
+    joinVoiceChat,
+    leaveVoiceChat,
+  } = useVoiceChat(userLogin)
 
   //!!!
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const checkChat = () => {
+    leaveVoiceChat();
+    disconnect();
+  
+  }
 
   return (
     <div className="home-container">
@@ -74,11 +90,11 @@ const Home = () => {
         </div>
         <div className="voice-chats">
           <label htmlFor="" className="voice-chats-label">Голосовые каналы</label>
-          {textChats.map((chat) => (
+          {voiceChats.map((chat) => (
             <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
               <VoiceChat 
                 chatId={chat.chatId}
-                onJoinChat={joinChat}
+                onJoinChat={joinVoiceChat}
                 name={chat.name}
                 disabled={activeChatId === chat.chatId}  
               />
@@ -87,8 +103,7 @@ const Home = () => {
         </div>
         <button 
           className="out-chat" 
-          disabled={!isConnected} 
-          onClick={disconnect}
+          onClick= {checkChat}
         >
           отключится
         </button>
