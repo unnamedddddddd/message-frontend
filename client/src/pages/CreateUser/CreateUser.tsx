@@ -37,7 +37,7 @@ const CreateUser = () => {
   return (
     <div className="create-main">
       <div className="create-form-container">
-        <form action="" className='create-form' onSubmit={handleForm}>
+        <form className='create-form' onSubmit={handleForm}>
           <div className="input-user-data">
             <div className="input-login">
               <label htmlFor="" className="login-label">

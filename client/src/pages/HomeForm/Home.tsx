@@ -1,20 +1,21 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import './Home.css';
-import { Message, Profile, Server, TextChat, VoiceChat } from '@/components';
-import useAuth from "@/hooks/user/useAuth";
-import useChat from "@/hooks/chat/useChat";
+import { Message, Profile, Server, TextChat, WidgetCreateChat, VoiceChat } from '@/components';
+
 import { Link } from "react-router-dom";
-import useVoiceChat from "@/hooks/chat/useVoiceChat";
-import useServers from "@/hooks/chat/useServer";
+import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
+import { useAuth } from "@/hooks/user";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
   const { userLogin, logOut } = useAuth();
   const {
     textChats,
     voiceChats,
-    joinServer
-  } = useServers();
+    joinServer,
+    currentServerId
+  } = useServer();
   const {
     message, 
     messages, 
@@ -28,7 +29,6 @@ const Home = () => {
     handleSubmit,
   } = useChat(userLogin); 
   const {
-    isInCall,
     joinVoiceChat,
     leaveVoiceChat,
   } = useVoiceChat(userLogin)
@@ -101,12 +101,25 @@ const Home = () => {
             </div>
           ))}
         </div>
-        <button 
-          className="out-chat" 
-          onClick= {checkChat}
-        >
-          отключится
-        </button>
+        <div className="buttons-container-chat">
+          <button 
+            className="show-widget-create-chat-button"
+            onClick={() => setShowWidgetCreateChat(true)}
+          >
+          create chat
+          </button>
+            <div className={`widget-overlay ${showWidgetCreateChat ? 'visible' : ''}`} onClick={() => setShowWidgetCreateChat(false)}>
+              <div className="widget-window" onClick={e => e.stopPropagation()}>
+                <WidgetCreateChat onClose={() => setShowWidgetCreateChat(false)} serverId={currentServerId}/>
+              </div>
+          </div>
+          <button 
+            className="out-chat" 
+            onClick= {checkChat}
+          >
+            отключится
+          </button>
+        </div>
       </div>
       <div className='chat-main'>
         <div className='messages-container'>

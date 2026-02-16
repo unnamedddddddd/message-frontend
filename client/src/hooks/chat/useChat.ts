@@ -4,7 +4,7 @@ import type { MessageProps } from "@/types";
 import mapMessages from "@/utils/mapMessages";
 import { useState, type FormEvent } from "react";
 import useWebSocket from "./useWebSocket";
-import useServers from "./useServer";
+import useServer from "./useServer";
 import { formatTime } from "@/utils";
 import { useAuth } from "../user";
 
@@ -20,11 +20,19 @@ const useChat = (userLogin: string) => {
     socketRef 
   } = useWebSocket(
     userLogin, 
-    (newMsg: MessageProps) => setMessages(prev => [...prev, newMsg])
+    (newMsg: MessageProps) => { 
+      const message: MessageProps = {
+        type: newMsg.type,
+        message: newMsg.message,
+        userName: newMsg.userName,
+        userAvatar: newMsg.userAvatar,
+        renderTime: formatTime(newMsg.renderTime)
+      }
+      setMessages(prev => [...prev, message]);
+    }
   );
-  const { servers } = useServers();   
+  const { servers } = useServer();   
   const { userAvatar } = useAuth();
-
 
   const joinChat = async (roomId: string, chatId: number) => {
     disconnect();
@@ -61,6 +69,8 @@ const useChat = (userLogin: string) => {
       setMessages([]); 
       return;
     }
+    console.log(messageResponse);
+    
     const currentUserId = Number(localStorage.getItem('user_id'));
     setMessages(mapMessages(messageResponse.messages, currentUserId));
     console.log(messages);  

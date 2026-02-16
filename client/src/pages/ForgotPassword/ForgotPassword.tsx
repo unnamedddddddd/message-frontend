@@ -34,7 +34,7 @@ const ForgotPassword = () => {
   return (
     <div className="forgot-main">
       <div className="forgot-form-container">
-        <form action="" className="forgot-form" onSubmit={handleForm}>
+        <form className="forgot-form" onSubmit={handleForm}>
           <div className="input-user-data">
             <div className="input-login">
               <label htmlFor="" className="login-label">

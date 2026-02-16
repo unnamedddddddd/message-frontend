@@ -14,7 +14,7 @@ const Login = () => {
   return(
     <div className="login-main">
       <div className="login-form-container">
-        <form action="" className="login-form" onSubmit={handleForm}>
+        <form className="login-form" onSubmit={handleForm}>
           <div className="main-form">
             <div className="input-user-data">
               <div className="input-login">

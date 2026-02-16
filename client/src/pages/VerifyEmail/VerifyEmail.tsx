@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import './VerifyEmail.css'
-import confirmEmail from '@/api/user/ConfirmEmail/confirmEmail';
 import { useNavigate } from "react-router-dom";
-import confirmCode from '@/api/user/ConfirmEmail/confirmCode';
+import { confirmCode, confirmEmail } from '@/api/user/ConfirmEmail';
+
 
 const VerifyEmail = () => {  
   const [verifyStep, setVerifyStep] = useState<'email' | 'code'>('email');
