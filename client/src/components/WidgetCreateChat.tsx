@@ -37,7 +37,7 @@ const WidgetCreateChat = ( {onClose, serverId}: CreateChatProps ) => {
           </div>
         </div>
         <div className="widget-create-chat-name">
-          <label htmlFor="widget-chat-name-input">Chat name</label>
+          <label htmlFor="widget-chat-name-input" className="widget-chat-name-label">Chat name</label>
           <input
             value={chatName}
             className="widget-chat-name-input"
@@ -53,6 +53,7 @@ const WidgetCreateChat = ( {onClose, serverId}: CreateChatProps ) => {
             <label htmlFor="widget-chat-type-input-voice">Голосовой</label>
             <input
               type="radio"
+              className="widget-chat-type-input-voice"
               id="widget-chat-type-input-voice"
               value="voice"
               checked={chatType === 'voice'}
@@ -63,6 +64,7 @@ const WidgetCreateChat = ( {onClose, serverId}: CreateChatProps ) => {
             <label htmlFor="widget-chat-type-input-text">Текстовый</label>
             <input
               type="radio"
+              className="widget-chat-type-input-text"
               id="widget-chat-type-input-text"
               value="text"
               checked={chatType === 'text'}

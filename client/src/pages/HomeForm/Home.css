@@ -428,6 +428,10 @@ input::placeholder {
   background-color: rgba(97, 99, 102, 0.7);
 }
 
+.widget-chat-name-label {
+  margin-bottom: 3px;
+}
+
 .widget-chat-name-input {
   background-color: #292929;
   border: 0px;
@@ -439,7 +443,7 @@ input::placeholder {
   padding: 14px 16px;
   transition: 0.5s;
   box-shadow: inset #1717188a 2px 2px 12px;
-  color: #a3a2a3  ;
+  color: #a3a2a3;
 }
 
 .widget-chat-name-input:focus {
@@ -464,6 +468,24 @@ input::placeholder {
 .container-radio-voice, .container-radio-text {
   display: flex;
   gap: 5px;
+}
+
+.widget-chat-type-input-voice,
+.widget-chat-type-input-text {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #a3a2a3;    
+  border-radius: 50%;           
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.widget-chat-type-input-voice:checked,
+.widget-chat-type-input-text:checked {
+  background-color: #1314148a;      
+  border-color: #0d0d0e8a;
+  box-shadow: inset 0 0 0 3px #292929; 
 }
 
 .buttons-container-chat {

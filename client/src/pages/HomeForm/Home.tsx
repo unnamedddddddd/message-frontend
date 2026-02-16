@@ -38,10 +38,9 @@ const Home = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const checkChat = () => {
+  const leaveChat = () => {
     leaveVoiceChat();
     disconnect();
-  
   }
 
   return (
@@ -115,7 +114,7 @@ const Home = () => {
           </div>
           <button 
             className="out-chat" 
-            onClick= {checkChat}
+            onClick= {leaveChat}
           >
             отключится
           </button>
