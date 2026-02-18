@@ -8,7 +8,6 @@ const WidgetCreateChat = ( {onClose, serverId}: CreateChatProps ) => {
 
   const handleCreateChat = async (e: FormEvent<HTMLFormElement>) => {
     try {
-      setChatName('');
       e.preventDefault()
       if (!serverId) {
         alert('Зайдите на сервер');
@@ -20,6 +19,7 @@ const WidgetCreateChat = ( {onClose, serverId}: CreateChatProps ) => {
         return;
       }
       alert(data.message);
+      setChatName('');
     } catch (error) {
       console.error(error);
     }

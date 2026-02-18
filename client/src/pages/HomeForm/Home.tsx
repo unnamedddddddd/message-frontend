@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import './Home.css';
 import { Message, Profile, Server, TextChat, WidgetCreateChat, VoiceChat } from '@/components';
-
-import { Link } from "react-router-dom";
 import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
 import { useAuth } from "@/hooks/user";
+import WidgetCreateServer from "@/components/WidgetCreateServer";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
+  const [showWidgetCreateServer, setShowWidgetCreateServer] = useState<boolean>(false);
+
   const { userLogin, logOut } = useAuth();
   const {
     textChats,
@@ -57,25 +58,22 @@ const Home = () => {
           </div>
         ))} 
         <div className="create-server-container">
-          <Link
-            to={'/createServer'}
-            className="create-server-link"
-            style={{
-              display: 'block',
-              textAlign: 'right',
-              color: '#A3A2A3',
-              fontSize: '13px',
-              textDecoration: 'none',
-              justifyContent: 'flex-end'
-            }}
-              >
-              create server
-          </Link>
+          <button 
+            className="show-widget-create-chat-button"
+            onClick={() => setShowWidgetCreateServer(true)}
+          >
+          create server
+          </button>
+            <div className={`widget-overlay ${showWidgetCreateServer ? 'visible' : ''}`} onClick={() => setShowWidgetCreateServer(false)}>
+              <div className="widget-window" onClick={e => e.stopPropagation()}>
+                <WidgetCreateServer onClose={() => setShowWidgetCreateServer(false)} />
+              </div>
+          </div>
         </div>
       </div>
       <div className="chats-sidebar">
         <div className="text-chats">
-          <label htmlFor="" className="text-chats-label">Текстовые каналы</label>
+          <label className="text-chats-label">Текстовые каналы</label>
           {textChats.map((chat) => (
             <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
               <TextChat 
@@ -88,7 +86,7 @@ const Home = () => {
           ))}
         </div>
         <div className="voice-chats">
-          <label htmlFor="" className="voice-chats-label">Голосовые каналы</label>
+          <label className="voice-chats-label">Голосовые каналы</label>
           {voiceChats.map((chat) => (
             <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
               <VoiceChat 

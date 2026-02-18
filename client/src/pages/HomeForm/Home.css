@@ -594,6 +594,34 @@ input::placeholder {
   cursor: pointer;
 }
 
+.widget-server-name-input {
+  width: 100%;
+  background-color: #292929;
+  border: 0px;
+  border-radius: 5px;
+  font-size: 16px;
+  border-width: 2px;
+  border-image: initial;
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: 0.5s;
+  box-shadow: inset #1717188a 2px 2px 12px;
+  color: #a3a2a3  
+}
+
+widget-server-name-input::placeholder {
+  opacity: 0.6;
+}
+
+.widget-server-name-input:focus, .server-avatar-input:focus {
+  outline: none;
+  box-shadow: inset #504f4f8a 2px 2px 12px;
+}
+
+.widget-server-name-label {
+ margin-bottom: ;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
