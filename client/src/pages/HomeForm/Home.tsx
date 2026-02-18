@@ -42,6 +42,7 @@ const Home = () => {
   const leaveChat = () => {
     leaveVoiceChat();
     disconnect();
+    setMessages([]);
   }
 
   return (

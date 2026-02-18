@@ -1,7 +1,8 @@
 import { createServer } from "@/api/chat";
+import type { CreateServerProps } from "@/types";
 import { useState } from "react";
 
-const WidgetCreateServer = ( {onClose} ) => {
+const WidgetCreateServer = ( {onClose}: CreateServerProps ) => {
   const [serverName, setServerName] = useState<string>('');
   const [serverAvatar, setServerAvatar] = useState<File | null>(null);
   const [serverAvatarURL, setServerAvatarURL] = useState<string>('');
@@ -20,6 +21,7 @@ const WidgetCreateServer = ( {onClose} ) => {
       return
     }
     alert('Сервер создан успешно');
+    window.location.reload();
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,9 +72,10 @@ const WidgetCreateServer = ( {onClose} ) => {
               style={{ display: 'none' }} 
             />
         <div className="widget-create-server-name">
-          <label htmlFor="widget-server-name-input" className="widget-server-name-label">server name</label>
+          <label htmlFor="widget-server-name-input" className="widget-server-name-label">Server name</label>
           <input
             value={serverName}
+            id="widget-server-name-input"
             className="widget-server-name-input"
             type="text" 
             placeholder="server name"
@@ -81,7 +84,7 @@ const WidgetCreateServer = ( {onClose} ) => {
             required
           />
         </div>
-        <button className="create-server-button" >
+        <button className="create-server-button" type="submit" >
           create server
         </button>
       </form>

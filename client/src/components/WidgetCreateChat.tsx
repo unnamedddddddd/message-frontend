@@ -20,6 +20,7 @@ const WidgetCreateChat = ( {onClose, serverId}: CreateChatProps ) => {
       }
       alert(data.message);
       setChatName('');
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
