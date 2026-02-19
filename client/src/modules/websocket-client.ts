@@ -45,9 +45,7 @@ export default class WebSocketChat implements IWebSocketClient{
     this.socket?.on('user-left-voice', handler);
   }
 
-  getParticipants(): Promise<Participant[]> {
-    console.log('Gjcbt');
-    
+  getParticipants(): Promise<Participant[]> {    
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         this.socket?.off('voice-chat-participants');
@@ -82,6 +80,7 @@ export default class WebSocketChat implements IWebSocketClient{
   getMessage(handler: (data: MessageProps) => void): void {
     this.socket?.on('message', (data) => {
       handler(data);
+      
     });
   }
 

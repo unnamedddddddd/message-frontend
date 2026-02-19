@@ -1,16 +1,20 @@
 import { createChat } from "@/api/chat";
+import { useNotification } from "@/hooks/chat/useNotification";
 import type { CreateChatProps } from "@/types";
 import { useState, type FormEvent } from "react";
 
 const WidgetCreateChat = ( {onClose, serverId}: CreateChatProps ) => {
   const [chatType, setChatType] = useState<'text' | 'voice'>('text');
   const [chatName, setChatName] = useState<string>('');
+  const { 
+    addNotification
+  } = useNotification();
 
   const handleCreateChat = async (e: FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault()
       if (!serverId) {
-        alert('Зайдите на сервер');
+        addNotification('info', 'Зайдите на сервер');
         return;
       }
       const data = await createChat(serverId, chatName, chatType);
@@ -18,10 +22,10 @@ const WidgetCreateChat = ( {onClose, serverId}: CreateChatProps ) => {
         console.error(data.message);
         return;
       }
-      alert(data.message);
+      addNotification('info', data.message);
       setChatName('');
-      window.location.reload();
     } catch (error) {
+      addNotification('error', error as string);
       console.error(error);
     }
   }

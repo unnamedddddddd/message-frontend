@@ -1,6 +1,5 @@
 import { getMessages } from "@/api/chat";
 import type { MessageProps } from "@/types";
-
 import mapMessages from "@/utils/mapMessages";
 import { useState, type FormEvent } from "react";
 import useWebSocket from "./useWebSocket";
@@ -13,6 +12,7 @@ const useChat = (userLogin: string) => {
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
   const { isVerified } = useAuth();
+
   const { 
     isConnected, 
     connect, 
@@ -29,6 +29,7 @@ const useChat = (userLogin: string) => {
         renderTime: formatTime(newMsg.renderTime)
       }
       setMessages(prev => [...prev, message]);
+      //addNotification('info', `Пришло сообщенение от ${newMsg.userName}`)
     }
   );
   const { servers } = useServer();   

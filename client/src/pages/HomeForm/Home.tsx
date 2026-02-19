@@ -4,12 +4,18 @@ import { Message, Profile, Server, TextChat, WidgetCreateChat, VoiceChat } from 
 import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
 import { useAuth } from "@/hooks/user";
 import WidgetCreateServer from "@/components/WidgetCreateServer";
+import Notiflication from "@/components/Notiflication";
+import { useNotification } from "@/hooks/chat/useNotification";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
   const [showWidgetCreateServer, setShowWidgetCreateServer] = useState<boolean>(false);
 
+  const {
+    notifications,
+    removeNotification
+  } = useNotification()
   const { userLogin, logOut } = useAuth();
   const {
     textChats,
@@ -34,7 +40,6 @@ const Home = () => {
     leaveVoiceChat,
   } = useVoiceChat(userLogin)
 
-  //!!!
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -44,7 +49,8 @@ const Home = () => {
     disconnect();
     setMessages([]);
   }
-
+  console.log(notifications);
+  
   return (
     <div className="home-container">
       <div className="servers-sidebar">
@@ -120,6 +126,18 @@ const Home = () => {
         </div>
       </div>
       <div className='chat-main'>
+        <div className="notifications-container">
+          {notifications.map(notif => (
+            <div key={notif.notificationId} className={`notification-item ${notif.type}-chat`}>
+              <Notiflication 
+              type={notif.type} 
+              message={notif.message} 
+              onClose={() => removeNotification(notif.notificationId)} 
+              notificationId={notif.notificationId} 
+              />
+            </div>
+          ))}
+        </div>
         <div className='messages-container'>
           {messages.map((msg, index) => (
             <div key={index} className={`${msg.type}-message-container`}>
@@ -149,7 +167,7 @@ const Home = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder='Введите сообщение'
-            />
+            /> 
             <button
               type="submit"
               className='btn-message'
