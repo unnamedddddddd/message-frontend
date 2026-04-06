@@ -11,7 +11,7 @@ export const NotificationProvider = ({children}: {children: ReactNode}) => {
     setNotifications(prev => [...prev, {notificationId, type, message}]);
     setTimeout(() => {
       setNotifications(prev => prev.filter(n => n.notificationId !== notificationId));
-    }, 4000);
+    }, 10000);
   }
 
   const removeNotification = (notificationId: number) => {

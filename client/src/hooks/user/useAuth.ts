@@ -80,7 +80,6 @@ const useAuth = () => {
     navigate('/login')
   }
 
-
   return {
     userLogin,
     userAvatar,

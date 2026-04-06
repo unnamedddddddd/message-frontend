@@ -2,12 +2,14 @@ import { loginUser } from "@/api/user";
 import verificationTokenRemember from "@/api/user/VerificationTokenRemember";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from "../chat/useNotification";
 
 const useUser = () => {
   const [login, setLogin] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isRemember, setIsRemember] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
 
   const checkTokenRemember = useCallback(async () => {
   try {
@@ -29,7 +31,7 @@ const useUser = () => {
     e.preventDefault();
 
     if (!login || !password) {
-      alert('Поле обязательное')
+      addNotification('error', 'Поле обязательное');
       return;
     }
 

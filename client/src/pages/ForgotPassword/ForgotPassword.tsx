@@ -1,7 +1,5 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
-import './ForgotPassword.css';
-
 import { forgotPassword } from '@/api/user';
 
 const ForgotPassword = () => {
@@ -11,7 +9,6 @@ const ForgotPassword = () => {
 
   const navigate = useNavigate();
 
-  // СДЕЛАТЬ ЧЕРЕЗ ПОЧТУ
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== repeatPassword) {
@@ -20,58 +17,60 @@ const ForgotPassword = () => {
     }
     
     const data = await forgotPassword(login, password);
-    console.log(login);
     
     if (!data.success) {
-      console.error(data.message);
       alert(`Ошибка: ${data.message}`);
-      return
+      return;
     }
     alert('Пароль успешно изменён');
     navigate('/login');
   }
 
+  const inputClass = "bg-[#292929] border-none rounded-[12px] text-[16px] p-[14px_16px] transition-all duration-500 shadow-[inset_#1717188a_2px_2px_12px] text-[#a3a2a3] placeholder:opacity-60 focus:outline-none focus:shadow-[inset_#504f4f8a_2px_2px_12px]";
+  const labelClass = "p-[5px] text-[#a3a2a3]";
+
   return (
-    <div className="forgot-main">
-      <div className="forgot-form-container">
-        <form className="forgot-form" onSubmit={handleForm}>
-          <div className="input-user-data">
-            <div className="input-login">
-              <label htmlFor="" className="login-label">
-                Login
-              </label>
+    <div className="min-h-screen p-5">
+      <div className="flex justify-center items-center min-h-[calc(100vh-80px)] w-full"> {/* .forgot-form-container */}
+        <form 
+          className="max-w-[400px] w-full bg-[#353536]/70 p-8 flex flex-col rounded-lg shadow-[0_4px_20px_rgba(23,23,24,0.54)] gap-[15px] text-[14px]" 
+          onSubmit={handleForm}
+        >
+          <div className="flex flex-col w-full gap-4">
+            
+            <div className="flex flex-col">
+              <label className={labelClass}>Login</label>
               <input 
                 type="text" 
-                className="login" 
+                className={inputClass} 
                 placeholder="Login"
                 onChange={(e) => setLogin(e.target.value.trim())}
               />
             </div>
-            <div className="input-password">
-              <label htmlFor="" className="login-label">
-                New Password
-              </label>
+
+            <div className="flex flex-col">
+              <label className={labelClass}>New Password</label>
               <input 
                 type="password" 
-                className="password" 
+                className={inputClass} 
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value.trim())}
-                />
+              />
             </div>    
-            <div className="input-password">
-              <label htmlFor="" className="login-label">
-                Repeat new Password
-              </label>
+
+            <div className="flex flex-col">
+              <label className={labelClass}>Repeat new Password</label>
               <input 
                 type="password" 
-                className="password" 
+                className={inputClass} 
                 placeholder="Password"
                 onChange={(e) => setRepeatPassword(e.target.value.trim())}
-                />
+              />
             </div>          
          </div> 
-         <div className="button-container">
-            <button className="forgot-button">
+
+         <div className="flex justify-center mt-2">
+            <button className="bg-[#292929] border-none p-[10px] w-full rounded-lg text-[#a3a2a3] transition-colors duration-300 text-[16px] font-semibold hover:bg-[#434548]">
               change password
             </button>
           </div>
@@ -80,7 +79,5 @@ const ForgotPassword = () => {
     </div>
   );
 };
-
-
 
 export default ForgotPassword;

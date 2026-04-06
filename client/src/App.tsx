@@ -2,10 +2,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-do
 import './App.css'
 import { CreateUser, ForgotPassword, Home, Login, ProfileForm, VerifyEmail } from './pages'
 import { NotificationProvider } from './providers/NotificationProvider'
+import { GlobalNotiflication } from './components/global'
 
 function App() {
   return (
     <NotificationProvider>
+      <GlobalNotiflication/>
       <Router>
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
