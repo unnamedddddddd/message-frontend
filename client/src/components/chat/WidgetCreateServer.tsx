@@ -74,6 +74,7 @@ const WidgetCreateServer = ({ onClose }: CreateServerProps) => {
             type="file"  
             className="hidden"
             accept="image/*"
+            required
           />
           <input 
             type="text" 
@@ -93,12 +94,12 @@ const WidgetCreateServer = ({ onClose }: CreateServerProps) => {
             type="text" 
             placeholder="Название сервера..."
             onChange={(e) => setServerName(e.target.value)}
-            minLength={5}
+            minLength={3}
+            maxLength={10}
             required
           />
         </div>
 
-        {/* Create Button */}
         <button className="bg-[#292929] border-none p-3.5 w-full rounded-xl text-[#a3a2a3] transition-all duration-300 text-base font-bold hover:bg-[#434548] active:scale-95 shadow-md">
           CREATE SERVER
         </button>

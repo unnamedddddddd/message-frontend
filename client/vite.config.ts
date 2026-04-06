@@ -19,7 +19,6 @@ export default defineConfig({
       'simple-peer': 'simple-peer/simplepeer.min.js'
     }
   }
-
 });
 
 

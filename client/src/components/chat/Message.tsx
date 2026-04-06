@@ -1,41 +1,62 @@
 import { SERVER_URL } from "@/config";
 import type { MessageProps } from "@/types";
 
-const Message = ({ message, userName, userAvatar, type, renderTime }: MessageProps) => {
-  const isMy = type === 'my';
-
+const Message = ({message, userName, userAvatar, type, renderTime}: MessageProps) => {
   return (
-    <div className={`flex items-end gap-2.5 mb-3 max-w-[75%] ${isMy ? 'ml-auto flex-row' : 'mr-auto flex-row-reverse'}`}>
-      
-      <div className={`flex flex-col p-3 shadow-lg border-2 border-white/5 
-        ${isMy 
-          ? 'bg-gradient-to-br from-[#616366] to-[#676b6e] rounded-[18px_18px_4px_18px]' 
-          : 'bg-gradient-to-br from-[#505255] to-[#5b5e61] rounded-[18px_18px_18px_4px]'
-        }`}
-      >
-        <div className={`text-xs font-semibold mb-1 ${isMy ? 'text-aquamarine text-right' : 'text-[#fc3908]/70 text-left'}`}>
-          {userName}
-        </div>
-
-        <div className={`text-white text-[15px] leading-relaxed break-words ${isMy ? 'text-right' : 'text-left'}`}>
-          {message}
-        </div>
-
-        <div className={`text-[10px] mt-1 text-[#a3a2a3] ${isMy ? 'text-right' : 'text-left'}`}>
-          {renderTime}
-        </div>
-      </div>
-
-      <div className="shrink-0">
-        <img 
-          src={`${SERVER_URL}${userAvatar}`} 
-          alt={`Аватар ${userName}`} 
-          className="w-10 h-10 rounded-full object-cover border-2 border-white/10 hover:scale-105 transition-transform duration-300"
-        />
-      </div>
-      
-    </div>
+    <>
+      {type === 'my' ? (
+        <>
+          <div className="flex flex-col"> 
+            <div className="flex flex-col bg-gradient-to-br from-[#616366] to-[#676b6e] p-[12px_16px] border-3 border-[#4e4f51]/20 rounded-[18px_18px_4px_18px]"> 
+              <div className="ml-auto mb-[5px] text-blue-400"> 
+                {userName}
+              </div>
+              <div className="flex justify-end"> 
+                <span className="text-white break-words line-height-[1.4]">
+                  {message}
+                </span>
+              </div>
+              <div className="text-[10px] flex justify-end text-[#a3a2a3]"> 
+                {renderTime}
+              </div> 
+            </div>
+          </div>
+          <div className="flex items-center gap-[10px]"> 
+            <img 
+              src={`${SERVER_URL}${userAvatar}`} 
+              alt={`Аватар пользователя ${userName}`}  
+              className="w-[40px] h-[40px] object-cover rounded-full border-2 border-white/10 transition-all duration-300 hover:border-white/30 hover:scale-[1.05]"
+            /> 
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex items-center gap-[10px]">
+            <img 
+              src={`${SERVER_URL}${userAvatar}`} 
+              alt={`Аватар пользователя ${userName}`}  
+              className="w-[40px] h-[40px] object-cover rounded-full border-2 border-white/10 transition-all duration-300"
+            /> 
+          </div>
+          <div className="flex flex-col">
+            <div className="flex flex-col bg-gradient-to-br from-[#616366] to-[#676b6e] p-[12px_16px] border-3 border-[#4e4f51]/20 rounded-[18px_18px_18px_4px]"> 
+              <div className="mr-auto mb-[5px] text-red-400"> 
+                {userName}
+              </div>
+              <div className="flex justify-start">
+                <span className="text-white break-words line-height-[1.4]">
+                  {message}
+                </span>
+              </div>
+              <div className="text-[10px] flex justify-start text-[#a3a2a3]">
+                {renderTime}
+              </div> 
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
-};
+}
 
 export default Message;

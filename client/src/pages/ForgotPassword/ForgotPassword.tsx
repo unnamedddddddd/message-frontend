@@ -31,7 +31,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="min-h-screen p-5">
-      <div className="flex justify-center items-center min-h-[calc(100vh-80px)] w-full"> {/* .forgot-form-container */}
+      <div className="flex justify-center items-center min-h-[calc(100vh-80px)] w-full"> 
         <form 
           className="max-w-[400px] w-full bg-[#353536]/70 p-8 flex flex-col rounded-lg shadow-[0_4px_20px_rgba(23,23,24,0.54)] gap-[15px] text-[14px]" 
           onSubmit={handleForm}

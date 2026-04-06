@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import './Home.css';
-import { Message, Server, TextChat, WidgetCreateChat, VoiceChat, WidgetCreateServer } from "@components/chat";
-import { useChat, useServer, useVoiceChat } from "@hooks/chat";
-import { useAuth } from "@hooks/user";
-import { Profile } from "@components/user";
+import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
+import { useAuth } from "@/hooks/user";
+
+import { useNotification } from "@/hooks/chat/useNotification";
+import { Message, Server, TextChat, VoiceChat, WidgetCreateChat, WidgetCreateServer } from "@/components/chat";
+import Notification from "@/components/chat/Notiflication";
+import { Profile } from "@/components/user";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
   const [showWidgetCreateServer, setShowWidgetCreateServer] = useState<boolean>(false);
 
+  const {
+    notifications,
+    removeNotification
+  } = useNotification()
   const { userLogin, logOut } = useAuth();
   const {
     textChats,
@@ -45,10 +51,10 @@ const Home = () => {
   }
   
   return (
-    <div className="home-container flex min-h-screen bg-[rgba(41,41,41,0.9)] p-5 gap-5">
-      <div className="servers-sidebar flex flex-col w-[15%] bg-[rgba(53,53,54,0.9)] rounded-2xl p-5 border border-[rgba(94,95,97,0.3)] overflow-y-auto">
+    <div className="flex h-screen bg-[#292929]/90 p-5 gap-5">
+      <div className="flex flex-col w-[15%] bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
         {servers.map((server) => (
-          <div key={server.name} className={`${server.name}-chat`}>
+          <div key={server.name} className="">
            <Server 
             avatar={server.avatar}
             serverId={server.serverId}
@@ -57,9 +63,9 @@ const Home = () => {
           />  
           </div>
         ))} 
-        <div className="create-server-container flex justify-center mt-auto">
+        <div className="flex justify-center mt-auto">
           <button 
-            className="show-widget-create-chat-button w-1/2 bg-[rgba(53,53,54,0.7)] border border-[rgba(109,114,117,0.4)] text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[rgba(97,99,102,0.7)]"
+            className="w-full bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold"
             onClick={() => setShowWidgetCreateServer(true)}
           >
           create server
@@ -71,11 +77,11 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="chats-sidebar flex flex-col w-[15%] bg-[rgba(53,53,54,0.9)] rounded-2xl p-5 border border-[rgba(94,95,97,0.3)] overflow-y-auto">
-        <div className="text-chats h-1/2">
-          <label className="text-chats-label text-xs flex justify-center mb-2 text-[#a3a2a3]">Текстовые каналы</label>
+      <div className="flex flex-col w-[15%] bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
+        <div className="h-1/2">
+          <label className="text-xs flex justify-center mb-2 text-[#a3a2a3]">Текстовые каналы</label>
           {textChats.map((chat) => (
-            <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
+            <div key={chat.name} className="mb-1">
               <TextChat 
                 chatId={chat.chatId}
                 onJoinChat={joinChat}
@@ -85,10 +91,10 @@ const Home = () => {
             </div>
           ))}
         </div>
-        <div className="voice-chats h-1/2 mt-4">
-          <label className="voice-chats-label text-xs flex justify-center mb-2 text-[#a3a2a3]">Голосовые каналы</label>
+        <div className="h-1/2 mt-4">
+          <label className="text-xs flex justify-center mb-2 text-[#a3a2a3]">Голосовые каналы</label>
           {voiceChats.map((chat) => (
-            <div key={chat.name} className={`chat-item ${chat.name}-chat`}>
+            <div key={chat.name} className="mb-1">
               <VoiceChat 
                 chatId={chat.chatId}
                 onJoinChat={joinVoiceChat}
@@ -98,9 +104,9 @@ const Home = () => {
             </div>
           ))}
         </div>
-        <div className="buttons-container-chat flex gap-5 mt-4">
+        <div className="flex gap-5 mt-4">
           <button 
-            className="show-widget-create-chat-button w-1/2 bg-[rgba(53,53,54,0.7)] border border-[rgba(109,114,117,0.4)] text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[rgba(97,99,102,0.7)]"
+            className="w-1/2 bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-sm"
             onClick={() => setShowWidgetCreateChat(true)}
           >
           create chat
@@ -111,18 +117,29 @@ const Home = () => {
               </div>
           </div>
           <button 
-            className="out-chat ml-auto bg-[rgba(53,53,54,0.7)] border border-[rgba(109,114,117,0.4)] text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[rgba(97,99,102,0.7)]" 
+            className="ml-auto bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-sm" 
             onClick= {leaveChat}
           >
             отключится
           </button>
         </div>
       </div>
-      <div className='chat-main relative flex flex-col flex-[0_0_55%] min-w-0 bg-[rgba(65,66,67,0.9)] rounded-2xl border border-[rgba(107,108,110,0.3)]'>
-       
-        <div className='messages-container flex-1 flex flex-col overflow-y-auto bg-[rgba(53,53,54,0.7)] rounded-2xl mb-1 border border-[rgba(78,79,81,0.2)]'>
+      <div className='relative flex flex-col flex-[0_0_55%] min-w-0 bg-[#414243]/90 rounded-2xl border border-[#6b6c6e]/30'>
+        <div className="absolute top-0 left-0 right-0 z-50 flex flex-col gap-2 p-4 pointer-events-none">
+          {notifications.map(notif => (
+            <div key={notif.notificationId} className="pointer-events-auto self-end">
+              <Notification 
+              type={notif.type} 
+              message={notif.message} 
+              onClose={() => removeNotification(notif.notificationId)} 
+              notificationId={notif.notificationId} 
+              />
+            </div>
+          ))}
+        </div>
+        <div className='flex-1 flex flex-col overflow-y-auto bg-[#353536]/70 rounded-2xl mb-1 border border-[#4e4f51]/20 p-4'>
           {messages.map((msg, index) => (
-            <div key={index} className={`${msg.type}-message-container`}>
+            <div key={index} className={msg.type === 'my' ? 'self-end flex gap-[10px] mb-3 max-w-[70%]' : 'self-start flex items-center gap-[10px] mb-3 max-w-[70%]'}>
               <Message
                 userAvatar={msg.userAvatar} 
                 type={msg.type}
@@ -134,29 +151,29 @@ const Home = () => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-        <div className="clear-chat-container flex justify-end mb-1">
-          <button className="clear-chat bg-[rgba(91,92,95,0.9)] border border-[rgba(109,114,117,0.4)] rounded-md text-[#a3a2a3] px-3 py-1 transition-colors hover:bg-[rgba(97,99,102,0.9)] mr-1" onClick={() => {
+        <div className="flex justify-end mb-1">
+          <button className="bg-[#5b5c5f]/90 border border-[#6d7275]/40 rounded-md text-[#a3a2a3] px-3 py-1 transition-colors hover:bg-[#616366] mr-1 text-sm" onClick={() => {
             setMessages([])
           }}> 
             🗑️ Очистить чат
           </button>
         </div>
-        <div className="input-container">
-          <form className='input-message flex gap-3 p-4 bg-[rgba(53,53,54,0.8)] rounded-2xl border border-[rgba(224,214,255,0.1)]' onSubmit={handleSubmit}>
+        <div className="">
+          <form className='flex gap-3 p-4 bg-[#353536]/80 rounded-2xl border border-[#e0d6ff]/10' onSubmit={handleSubmit}>
             <input
               type='text'
-              className='inputMessage flex-1 px-4 py-3 bg-[rgba(41,41,41,0.7)] border border-[rgba(109,114,117,0.4)] rounded-xl text-[#a3a2a3] text-base focus:outline-none focus:border-[#6d7275] focus:ring-2 focus:ring-[rgba(109,114,117,0.3)] placeholder:text-[rgba(224,214,255,0.5)]'
+              className='flex-1 px-4 py-3 bg-[#292929]/70 border border-[#6d7275]/40 rounded-xl text-[#a3a2a3] text-base focus:outline-none focus:border-[#6d7275] focus:ring-2 focus:ring-[#6d7275]/30 placeholder:text-[#a3a2a3]/50'
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder='Введите сообщение'
             /> 
             <button
               type="submit"
-              className='btn-message px-6 py-3 bg-gradient-to-br from-[#616366] to-[#6d7275] text-white rounded-xl border border-[rgba(109,114,117,0.3)] flex items-center justify-center transition-transform disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-0.5'
+              className='px-6 py-3 bg-gradient-to-br from-[#616366] to-[#6d7275] text-white rounded-xl border border-[#6d7275]/30 flex items-center justify-center transition-transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed'
               disabled={!message.trim() && !isConnected}
               title="Отправить"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <svg xmlns="http://w3.org" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
               </svg>
             </button>
