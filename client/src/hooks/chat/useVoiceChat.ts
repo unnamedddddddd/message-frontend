@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import SimplePeer from "simple-peer";
 import { WebSocketChat } from "@/modules";
 
-const useVoiceChat = (userLogin: string) => {
+const useVoiceChat = () => {
   const [isInCall, setIsInCall] = useState(false);
   const localStreamRef = useRef<MediaStream | null>(null);
   const peersRef = useRef<Record<string, SimplePeer.Instance>>({});
@@ -17,12 +17,12 @@ const useVoiceChat = (userLogin: string) => {
     setIsInCall(false);
   }
 
-  const joinVoiceChat = useCallback(async (roomId: string) => {
+  const joinVoiceChat = useCallback(async () => {
     try {
       leaveVoiceChat();
 
       socketRef.current = new WebSocketChat()
-      await socketRef.current?.connect(roomId, userLogin)
+      await socketRef.current?.connect()
 
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
@@ -41,7 +41,7 @@ const useVoiceChat = (userLogin: string) => {
     } catch (error) {
       console.error(error);
     }   
-  }, [userLogin])
+  }, [])
 
   const createPeerConnection = useCallback((targetSocketId: string, initiator: boolean) => {
     if (targetSocketId === socketRef.current?.socketId) {

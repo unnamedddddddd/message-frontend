@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
 import { useAuth } from "@/hooks/user";
-
 import { useNotification } from "@/hooks/chat/useNotification";
 import { Message, Server, TextChat, VoiceChat, WidgetCreateChat, WidgetCreateServer } from "@/components/chat";
 import Notification from "@/components/chat/Notiflication";
 import { Profile } from "@/components/user";
+import { useWebSocket } from "@/hooks/chat/useWebSocket";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
   const [showWidgetCreateServer, setShowWidgetCreateServer] = useState<boolean>(false);
-
+  const {
+    messages,
+    currentChatId,
+  } = useWebSocket();
   const {
     notifications,
     removeNotification
@@ -25,13 +28,10 @@ const Home = () => {
   } = useServer();
   const {
     message, 
-    messages, 
     servers,
     isConnected, 
     activeChatId, 
     setMessage,  
-    disconnect, 
-    setMessages,
     joinChat, 
     handleSubmit,
   } = useChat(userLogin); 
@@ -46,13 +46,13 @@ const Home = () => {
 
   const leaveChat = () => {
     leaveVoiceChat();
-    disconnect();
-    setMessages([]);
   }
+
+  const currentMessages = currentChatId ? (messages[currentChatId] || []) : [];
   
   return (
     <div className="flex h-screen bg-[#292929]/90 p-5 gap-5">
-      <div className="flex flex-col w-[15%] bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
+      <div className="flex flex-col w-fit bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
         {servers.map((server) => (
           <div key={server.name} className="">
            <Server 
@@ -65,10 +65,10 @@ const Home = () => {
         ))} 
         <div className="flex justify-center mt-auto">
           <button 
-            className="w-full bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold"
+            className="bg-[#353536]/70 border w-fit border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg"
             onClick={() => setShowWidgetCreateServer(true)}
           >
-          create server
+          +
           </button>
             <div className={`widget-overlay ${showWidgetCreateServer ? 'visible' : ''}`} onClick={() => setShowWidgetCreateServer(false)}>
               <div className="widget-window" onClick={e => e.stopPropagation()}>
@@ -106,10 +106,10 @@ const Home = () => {
         </div>
         <div className="flex gap-5 mt-4">
           <button 
-            className="w-1/2 bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-sm"
+            className="bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg w-fit"
             onClick={() => setShowWidgetCreateChat(true)}
           >
-          create chat
+          +
           </button>
             <div className={`widget-overlay ${showWidgetCreateChat ? 'visible' : ''}`} onClick={() => setShowWidgetCreateChat(false)}>
               <div className="widget-window" onClick={e => e.stopPropagation()}>
@@ -129,16 +129,16 @@ const Home = () => {
           {notifications.map(notif => (
             <div key={notif.notificationId} className="pointer-events-auto self-end">
               <Notification 
-              type={notif.type} 
-              message={notif.message} 
-              onClose={() => removeNotification(notif.notificationId)} 
-              notificationId={notif.notificationId} 
+                type={notif.type} 
+                message={notif.message} 
+                onClose={() => removeNotification(notif.notificationId)} 
+                notificationId={notif.notificationId} 
               />
             </div>
           ))}
         </div>
         <div className='flex-1 flex flex-col overflow-y-auto bg-[#353536]/70 rounded-2xl mb-1 border border-[#4e4f51]/20 p-4'>
-          {messages.map((msg, index) => (
+          {currentMessages.map((msg, index) => (
             <div key={index} className={msg.type === 'my' ? 'self-end flex gap-[10px] mb-3 max-w-[70%]' : 'self-start flex items-center gap-[10px] mb-3 max-w-[70%]'}>
               <Message
                 userAvatar={msg.userAvatar} 
@@ -153,7 +153,6 @@ const Home = () => {
         </div>
         <div className="flex justify-end mb-1">
           <button className="bg-[#5b5c5f]/90 border border-[#6d7275]/40 rounded-md text-[#a3a2a3] px-3 py-1 transition-colors hover:bg-[#616366] mr-1 text-sm" onClick={() => {
-            setMessages([])
           }}> 
             🗑️ Очистить чат
           </button>

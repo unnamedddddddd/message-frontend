@@ -2,5 +2,5 @@ export default interface TextChatProps {
   chatId: number;
   name: string;
   disabled?: boolean;
-  onJoinChat?: (roomId: string, chatId: number) => void
+  onJoinChat?: (chatId: number, friendId?: number, roomId?: string) => void;
 }

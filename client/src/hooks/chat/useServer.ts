@@ -2,6 +2,8 @@ import { getChats, getServers } from "@/api/chat";
 import type { ServerProps, TextChatProps, VoiceChatProps } from "@/types";
 import { mapTextChats, mapServers, mapVoiceChats } from "@/utils";
 import { useCallback, useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const useServer = () => {
   const [servers, setServers] = useState<ServerProps[]>([]);
@@ -9,6 +11,8 @@ const useServer = () => {
   const [voiceChats, setVoiceChats] = useState<VoiceChatProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentServerId, setCurrentServerId] = useState<number | null>(null);
+  const navigate = useNavigate();
+  const locationUser = useLocation();
 
   const loadServers = useCallback(async () => {
      setIsLoading(true); 
@@ -20,13 +24,16 @@ const useServer = () => {
     }
   }, []);
 
-  const joinServer = async (serverId: number) => {    
+  const joinServer = async (serverId: number) => { 
+    if (locationUser.pathname === '/personalMessages') {
+      navigate('/home');
+    }   
     setTextChats([]);
     setVoiceChats([]);
     setCurrentServerId(serverId);
 
     const chatsResponse = await getChats(serverId);
-
+    
     if (!chatsResponse.success) {
       console.log('Чаты не найдены:', chatsResponse.message);
       return;
@@ -34,7 +41,6 @@ const useServer = () => {
     setTextChats(mapTextChats(chatsResponse.chats))
     setVoiceChats(mapVoiceChats(chatsResponse.chats))  
   }
-
 
   useEffect(() => {
     loadServers();

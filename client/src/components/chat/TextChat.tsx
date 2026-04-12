@@ -3,7 +3,7 @@ import type { TextChatProps } from "@/types";
 const TextChat = ({ chatId, name, disabled, onJoinChat }: TextChatProps) => {
   const handleJoin = () => {
     if (onJoinChat) {
-      onJoinChat(name, chatId);
+      onJoinChat(chatId);
     }
   };
 

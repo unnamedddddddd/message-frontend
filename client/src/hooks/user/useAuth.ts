@@ -33,13 +33,14 @@ const useAuth = () => {
       setUserEmail(data.user_email);
       setisVerified(data.is_verified);
       
+      return userLogin;
     } catch (error) {
       console.error('Ошибка проверки авторизации:', error);
       navigate('/login');
     } finally {
       setIsLoading(false);
     }
-  }, [navigate]);
+  }, [navigate, userLogin]);
 
   useEffect(() => {
     checkAuth();
@@ -80,12 +81,18 @@ const useAuth = () => {
     navigate('/login')
   }
 
+  const getUserLogin = () => {
+    return userLogin;
+  }
+
   return {
     userLogin,
     userAvatar,
     userEmail,
     isVerified,
     isLoading,
+    checkAuth, 
+    getUserLogin,
     setUserLogin,
     setUserAvatar,
     setisVerified,

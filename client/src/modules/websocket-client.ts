@@ -9,24 +9,20 @@ import type { SignalData } from "simple-peer";
 export default class WebSocketChat implements IWebSocketClient{
   private socket: SocketProps | null = null;
   public socketId: string | undefined = undefined;
+  public currentRoom: string | null | undefined = this.socket?.roomId;
 
-  connect(roomId: string, userName: string): Promise<void> {
+  connect(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.socket = io(WEBSOCKET_URL, {
         withCredentials: true,
         transports: ['websocket', 'polling'],
         reconnectionAttempts: 3,
         timeout: 10000,
-      });
-
-      this.socket.userName = userName;
-      this.socket.currentRoom = roomId;
+      });      
       this.socketId = this.socket?.id;
-
-      this.socket.emit('join-room', {roomId, userName})
-
+      
       this.socket.on('connect', () => {
-        console.log(`Подключен user ${this.socket?.userName} c id ${this.socket?.id}`)
+        console.log(`Подключен user c id ${this.socket?.id}`)
         resolve();
       })
 
@@ -36,6 +32,13 @@ export default class WebSocketChat implements IWebSocketClient{
       })
     })
   }
+
+  joinTextChat(roomId: string, userName: string ): void {
+    if (!this.socket) return;
+    this.socket.userName = userName;
+    this.socket.roomId = roomId;    
+    this.socket?.emit('join-room', {roomId, userName});
+  }  
 
   onUserJoinedVoice(handler: (data: {userId: string}) => void): void {
     this.socket?.on('user-join-voice', handler);
@@ -59,7 +62,7 @@ export default class WebSocketChat implements IWebSocketClient{
       });
 
       this.socket?.emit('voice-chat-participants', { 
-        roomId: this.socket?.currentRoom 
+        roomId: this.socket?.roomId 
       });
     });
   }
@@ -69,7 +72,7 @@ export default class WebSocketChat implements IWebSocketClient{
   }
 
   sendVoiceSignalGroup(signal: unknown, targetSocketId: string): void {
-    const roomId = this.socket?.currentRoom;
+    const roomId = this.socket?.roomId;
     this.socket?.emit('voice-signal', {
       to: targetSocketId,
       signal,
@@ -78,38 +81,41 @@ export default class WebSocketChat implements IWebSocketClient{
   }
 
   getMessage(handler: (data: MessageProps) => void): void {
+    this.socket?.off('message');
     this.socket?.on('message', (data) => {
       handler(data);
     });
   }
 
   joinVoiceChat(): void {
-    const roomId = this.socket?.currentRoom;
+    const roomId = this.socket?.roomId;
     this.socket?.emit('user-join-voice', { roomId });
   }
 
   sendMessage(message: string): void {
-    const roomId = this.socket?.currentRoom;
+    const roomId = this.socket?.roomId;
     this.socket?.emit('message', {message, roomId});
   }
 
   leaveRoom(): void {
-    const roomId = this.socket!.currentRoom;
-    const userName = this.socket!.userName;
+    if (!this.socket) return
+      
+    const { roomId, userName } = this.socket;
     this.socket?.emit('leave-room', {roomId, userName})
-    this.socket!.currentRoom = null;
+    this.socket!.roomId = null;
   }
-
+  offMessage(): void {
+    this.socket?.off('message');
+  }
   disconnect(): void {
     if (!this.socket) return;
 
-    const roomId = this.socket!.currentRoom;
-    const userName = this.socket!.userName;
+    const { roomId, userName } = this.socket;
     this.socket?.emit('leave-room', {roomId, userName})
 
     this.socket.disconnect();
 
-    this.socket.currentRoom = null;
+    this.socket.roomId = null;
     this.socket = null;   
   }
 }
