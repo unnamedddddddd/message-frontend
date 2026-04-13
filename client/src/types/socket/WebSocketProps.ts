@@ -15,5 +15,10 @@ export default interface IWebSocketClient {
   onUserJoinedVoice(handler: (data: {userId: string}) => void ): void;
   offMessage(): void;
   joinVoiceChat(): void;
+  onUserStopTyping(handler: (data: { userName: string }) => void): void;
+  onUserTyping(handler: (data: { userName: string }) => void): void;
+  removeAllListeners(): void;
+  sendTyping(): void;
+  stopTyping(): void;
   disconnect(): void;
 }

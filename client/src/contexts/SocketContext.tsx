@@ -4,10 +4,12 @@ import { createContext } from "react";
 type SocketContextType = {
   messages: Record<string, MessageProps[]>;
   isConnected: boolean;
-  currentChatId: number | null;
   isConnectedChat: boolean;
+  typingUsers: string[];
   joinSocketTextChat(roomId: string): void;
   sendMessage(message: MessageProps): void;
+  sendTypingSocket(): void;
+  stopTypingSocket(): void;
   leaveChat(): void;
 }
 

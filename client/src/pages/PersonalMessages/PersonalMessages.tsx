@@ -1,6 +1,6 @@
 import { Friend, Message, Server } from "@/components/chat";
 import Notification from "@/components/chat/Notiflication";
-import { useChat, useServer } from "@/hooks/chat";
+import { useChat, useServer, useWebSocket } from "@/hooks/chat";
 import { useFriends } from "@/hooks/chat/useFriends";
 import { useNotification } from "@/hooks/chat/useNotification";
 import { useAuth } from "@/hooks/user";
@@ -9,10 +9,16 @@ import { useEffect, useRef } from "react";
 const PersonalMessages = () => {
   const { servers, joinServer } = useServer();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const typingRef = useRef<HTMLDivElement>(null);
+
   const {
     notifications,
     removeNotification
   } = useNotification()
+  const {
+    messages,
+    typingUsers,
+  } = useWebSocket();
   const {
     friends
   } = useFriends();
@@ -20,11 +26,9 @@ const PersonalMessages = () => {
 
   const {
     message, 
-    messages, 
     isConnected, 
     activeChatId, 
     setMessage,  
-    setMessages,
     joinChat, 
     handleSubmit,
   } = useChat(userLogin); 
@@ -37,6 +41,9 @@ const PersonalMessages = () => {
 
   }
   
+  const currentMessages = activeChatId ? (messages[activeChatId] || []) : [];
+
+
   return (
     <div className="flex h-screen bg-[#292929]/90 p-5 gap-5">
       <div className="flex flex-col w-fit bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
@@ -80,7 +87,7 @@ const PersonalMessages = () => {
           ))}
         </div>
         <div className='flex-1 flex flex-col overflow-y-auto bg-[#353536]/70 rounded-2xl mb-1 border border-[#4e4f51]/20 p-4'>
-          {messages.map((msg, index) => (
+          {currentMessages.map((msg, index) => (
             <div key={index} className={msg.type === 'my' ? 'self-end flex gap-[10px] mb-3 max-w-[70%]' : 'self-start flex items-center gap-[10px] mb-3 max-w-[70%]'}>
               <Message
                 userAvatar={msg.userAvatar} 
@@ -91,15 +98,26 @@ const PersonalMessages = () => {
               />
             </div>
           ))}
+           <div  ref={typingRef}  className="flex justify-end mt-auto">
+            {typingUsers.length > 0 && (
+              <div className="bg-[#4e4f51]/90 backdrop-blur-sm rounded-2xl px-4 py-2 text-sm text-[#a3a2a3] animate-pulse w-fit">
+                {typingUsers.length === 1 ? (
+                  <>✍️ {typingUsers[0]} печатает...</>
+                ) : (
+                  <>✍️ {typingUsers.length} человека печатают...</>
+                )}
+              </div>
+            )}
+          </div>      
           <div ref={messagesEndRef} />
         </div>
-        <div className="flex justify-end mb-1">
+        {/* <div className="flex justify-end mb-1">
           <button className="bg-[#5b5c5f]/90 border border-[#6d7275]/40 rounded-md text-[#a3a2a3] px-3 py-1 transition-colors hover:bg-[#616366] mr-1 text-sm" onClick={() => {
             setMessages([])
           }}> 
             🗑️ Очистить чат
           </button>
-        </div>
+        </div> */}
         <div className="">
           <form className='flex gap-3 p-4 bg-[#353536]/80 rounded-2xl border border-[#e0d6ff]/10' onSubmit={handleSubmit}>
             <input

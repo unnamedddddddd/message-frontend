@@ -7,9 +7,8 @@ import { io } from 'socket.io-client'
 import type { SignalData } from "simple-peer";
 
 export default class WebSocketChat implements IWebSocketClient{
-  private socket: SocketProps | null = null;
+  public socket: SocketProps | null = null;
   public socketId: string | undefined = undefined;
-  public currentRoom: string | null | undefined = this.socket?.roomId;
 
   connect(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -35,7 +34,7 @@ export default class WebSocketChat implements IWebSocketClient{
 
   joinTextChat(roomId: string, userName: string ): void {
     if (!this.socket) return;
-    this.socket.userName = userName;
+    this.socket.userName = userName;    
     this.socket.roomId = roomId;    
     this.socket?.emit('join-room', {roomId, userName});
   }  
@@ -81,8 +80,9 @@ export default class WebSocketChat implements IWebSocketClient{
   }
 
   getMessage(handler: (data: MessageProps) => void): void {
-    this.socket?.off('message');
-    this.socket?.on('message', (data) => {
+    this.socket?.on('message', (data) => {      
+      console.log(data);
+      
       handler(data);
     });
   }
@@ -94,6 +94,8 @@ export default class WebSocketChat implements IWebSocketClient{
 
   sendMessage(message: string): void {
     const roomId = this.socket?.roomId;
+    console.log('отправил');
+    
     this.socket?.emit('message', {message, roomId});
   }
 
@@ -104,9 +106,36 @@ export default class WebSocketChat implements IWebSocketClient{
     this.socket?.emit('leave-room', {roomId, userName})
     this.socket!.roomId = null;
   }
+
   offMessage(): void {
     this.socket?.off('message');
   }
+
+  sendTyping(): void {
+    if (!this.socket) return;
+    const { roomId, userName } = this.socket;
+    
+    this.socket?.emit('send-typing', { roomId, userName });
+  }
+
+  stopTyping(): void {
+    if (!this.socket) return;
+    const { roomId, userName } = this.socket;
+    this.socket?.emit('stop-typing', { roomId, userName });
+  }
+
+  onUserTyping(handler: (data: { userName: string}) => void): void {
+    this.socket?.on('send-typing', handler);
+  }
+
+  onUserStopTyping(handler: (data: { userName: string}) => void): void {
+    this.socket?.on('stop-typing', handler);
+  }
+
+  removeAllListeners(): void {
+    this.socket?.removeAllListeners();
+  }
+
   disconnect(): void {
     if (!this.socket) return;
 

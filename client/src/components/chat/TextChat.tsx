@@ -6,7 +6,7 @@ const TextChat = ({ chatId, name, disabled, onJoinChat }: TextChatProps) => {
       onJoinChat(chatId);
     }
   };
-
+  
   return (
     <button 
       disabled={disabled}
