@@ -4,7 +4,7 @@ import { useContext } from "react"
 export const useWebSocket = () => {
   const context = useContext(SocketContext);
   if (!context) {
-    throw new Error("useNotification must be used within NotificationProvider");
+    throw new Error("useWebSocket must be used within SocketProvider");
   }
   return context;
 }

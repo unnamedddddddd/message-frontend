@@ -3,6 +3,7 @@ import useServer from "./useServer";
 import { formatTime } from "@/utils";
 import { useAuth } from "../user";
 import { useWebSocket } from "./useWebSocket";
+import { getOrCreatePersonalChat } from "@/api/chat";
 
 const useChat = (userLogin: string) => {
   const [message, setMessage] = useState<string>('')
@@ -18,27 +19,29 @@ const useChat = (userLogin: string) => {
   const { servers } = useServer();   
   const { userAvatar } = useAuth();
 
-  const joinChat = async (chatId: number, friendId?: number ) => {
+  const joinChat = async (chatType: 'server' | 'personal', chatId: number, friendId?: number) => {
     if (isConnectedChat) {
       leaveChat();
     }
   
-    if (chatId && isConnected) {
-      joinSocketTextChat(chatId.toString())
+    if (chatId && isConnected && chatType === 'server') {
+      joinSocketTextChat(chatId.toString(), chatType)
+      setActiveChatId(chatId)
     }  
-  //  if (friendId) {
-  //   const currentUserId = Number(localStorage.getItem('user_id'));
-  //   // const correctRoomId = [currentUserId, friendId].sort((a, b) => a - b).join('_');
 
-  //   disconnect();
-  //   setMessages([]);
+    if (friendId && isConnected && chatType === 'personal') {
+    console.log('personal');
+      
+    const currentUserId = Number(localStorage.getItem('user_id'));
+    const maxId = Math.max(currentUserId, friendId);
+    const minId = Math.min(currentUserId, friendId);
 
-  //   await loadMessages(friendId); 
-  //   await connect();   
-  //  }
-
-
-    setActiveChatId(chatId)
+    const data = await getOrCreatePersonalChat(maxId, minId);
+    if (data.success) {
+      joinSocketTextChat(data.chatId, chatType);   
+      setActiveChatId(data.chatId); 
+    }
+   }
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

@@ -1,4 +1,4 @@
-import type { Participant } from "@/types";
+import type { OnlineFriendsResponseProps, Participant } from "@/types";
 import { WEBSOCKET_URL } from "../config";
 import type MessageProps from "../types/chat/MessageProps";
 import type SocketProps from "../types/socket/SocketProps";
@@ -32,11 +32,11 @@ export default class WebSocketChat implements IWebSocketClient{
     })
   }
 
-  joinTextChat(roomId: string, userName: string ): void {
+  joinTextChat(roomId: string, userName: string, chatType: 'server' | 'personal'): void {
     if (!this.socket) return;
     this.socket.userName = userName;    
     this.socket.roomId = roomId;    
-    this.socket?.emit('join-room', {roomId, userName});
+    this.socket?.emit('join-room', {roomId, userName, chatType});
   }  
 
   onUserJoinedVoice(handler: (data: {userId: string}) => void): void {
@@ -81,8 +81,6 @@ export default class WebSocketChat implements IWebSocketClient{
 
   getMessage(handler: (data: MessageProps) => void): void {
     this.socket?.on('message', (data) => {      
-      console.log(data);
-      
       handler(data);
     });
   }
@@ -93,9 +91,7 @@ export default class WebSocketChat implements IWebSocketClient{
   }
 
   sendMessage(message: string): void {
-    const roomId = this.socket?.roomId;
-    console.log('отправил');
-    
+    const roomId = this.socket?.roomId;    
     this.socket?.emit('message', {message, roomId});
   }
 
@@ -130,6 +126,20 @@ export default class WebSocketChat implements IWebSocketClient{
 
   onUserStopTyping(handler: (data: { userName: string}) => void): void {
     this.socket?.on('stop-typing', handler);
+  }
+
+  onOnlineFriends(handler: (data: OnlineFriendsResponseProps[]) => void): void {
+    this.socket?.on('online-users', (onlineFriends) => {
+      handler(onlineFriends)
+    });
+  }
+
+  requestOnlineFriends(): void {    
+    this.socket?.emit('online-users')
+  }
+
+  sendPing(): void {
+    this.socket?.emit('ping-online');
   }
 
   removeAllListeners(): void {

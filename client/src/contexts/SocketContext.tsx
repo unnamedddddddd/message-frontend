@@ -1,4 +1,4 @@
-import type { MessageProps } from "@/types";
+import type { MessageProps, OnlineFriendsResponseProps } from "@/types";
 import { createContext } from "react";
 
 type SocketContextType = {
@@ -6,9 +6,11 @@ type SocketContextType = {
   isConnected: boolean;
   isConnectedChat: boolean;
   typingUsers: string[];
-  joinSocketTextChat(roomId: string): void;
+  friendsOnline: OnlineFriendsResponseProps [];
+  joinSocketTextChat(roomId: string, chatType: 'server' | 'personal'): void;
   sendMessage(message: MessageProps): void;
   sendTypingSocket(): void;
+  getFriendsSocket(): void;
   stopTypingSocket(): void;
   leaveChat(): void;
 }

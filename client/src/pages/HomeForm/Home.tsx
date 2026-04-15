@@ -92,6 +92,7 @@ const Home = () => {
           {textChats.map((chat) => (
             <div key={chat.name} className="mb-1">
               <TextChat 
+                type="server"
                 chatId={chat.chatId}
                 onJoinChat={joinChat}
                 name={chat.name}

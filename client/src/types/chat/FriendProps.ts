@@ -4,6 +4,7 @@ export default interface FriendProps {
   name: string;
   avatar?: string;
   disabled?: boolean;
-  onJoinChat?: (chatId: number, friendId?: number, roomId?: string) => void;
+  online: boolean;
+  onJoinChat?: (chatType: 'server' | 'personal', chatId: number, friendId?: number, roomId?: string) => void;
 }
 

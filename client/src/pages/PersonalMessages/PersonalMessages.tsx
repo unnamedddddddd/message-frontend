@@ -19,9 +19,11 @@ const PersonalMessages = () => {
     messages,
     typingUsers,
   } = useWebSocket();
+
   const {
     friends
   } = useFriends();
+
   const { userLogin, logOut } = useAuth();
 
   const {
@@ -42,8 +44,7 @@ const PersonalMessages = () => {
   }
   
   const currentMessages = activeChatId ? (messages[activeChatId] || []) : [];
-
-
+  
   return (
     <div className="flex h-screen bg-[#292929]/90 p-5 gap-5">
       <div className="flex flex-col w-fit bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
@@ -63,6 +64,7 @@ const PersonalMessages = () => {
         {friends.map(friend => (
           <div className="" key={friend.id}>
             <Friend
+              online={friend.online}
               id={friend.friendId}
               friendId={friend.friendId}
               avatar={friend.avatar}
