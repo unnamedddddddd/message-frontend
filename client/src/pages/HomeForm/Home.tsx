@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
 import { useAuth } from "@/hooks/user";
 import { useNotification } from "@/hooks/chat/useNotification";
-import { Message, Server, TextChat, VoiceChat, WidgetCreateChat, WidgetCreateServer } from "@/components/chat";
+import { Message, Server } from "@/components/chat";
 import Notification from "@/components/chat/Notiflication";
-import { Profile } from "@/components/user";
 import { useWebSocket } from "@/hooks/chat/useWebSocket";
+import { WidgetCreateChat, WidgetCreateServer } from "@/components/chat/Widgets";
+import { TextChat, VoiceChat } from "@/components/chat/Chats";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -210,10 +211,16 @@ const Home = () => {
           </button>
         </form>
       </div>
-      <Profile 
-        name={userLogin}
-        logOut={logOut}
-      /> 
+      <div className="flex w-[21%] shrink-0 flex-col gap-5 rounded-[15px] border border-[#6b6c6e]/30 bg-[#414243]/90 p-4 min-h-0">
+        <div className="flex justify-end mt-auto">
+          <button 
+            className="mt-auto ml-auto mb-2 mr-2 rounded-md border border-[#6d7275]/40 bg-[#5b5c5f]/90 px-3 py-1 text-[#a3a2a3] transition-colors hover:bg-[#414243]/90"
+            onClick={logOut}
+          >
+            logOut
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
