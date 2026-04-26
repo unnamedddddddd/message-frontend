@@ -1,6 +1,8 @@
 import { getChats, getServers } from "@/api/chat";
-import type { ServerProps, TextChatProps, VoiceChatProps } from "@/types";
+import getServerMembers from "@/api/chat/getServerMembers";
+import type { MembersProps, ServerProps, TextChatProps, VoiceChatProps } from "@/types";
 import { mapTextChats, mapServers, mapVoiceChats } from "@/utils";
+import mapMembers from "@/utils/mapMembers";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
@@ -9,6 +11,7 @@ const useServer = () => {
   const [servers, setServers] = useState<ServerProps[]>([]);
   const [textChats, setTextChats] = useState<TextChatProps[]>([]);
   const [voiceChats, setVoiceChats] = useState<VoiceChatProps[]>([]);
+  const [serverMembers, setServerMembers] = useState<MembersProps[]>([])
   const [isLoading, setIsLoading] = useState(false);
   const [currentServerId, setCurrentServerId] = useState<number | null>(null);
   const navigate = useNavigate();
@@ -28,18 +31,26 @@ const useServer = () => {
     if (locationUser.pathname === '/personalMessages') {
       navigate('/home');
     }   
+    setServerMembers([]);
     setTextChats([]);
     setVoiceChats([]);
     setCurrentServerId(serverId);
 
     const chatsResponse = await getChats(serverId);
-    
     if (!chatsResponse.success) {
       console.log('Чаты не найдены:', chatsResponse.message);
-      return;
     }
-    setTextChats(mapTextChats(chatsResponse.chats))
-    setVoiceChats(mapVoiceChats(chatsResponse.chats))  
+    if (chatsResponse.success) {
+      setTextChats(mapTextChats(chatsResponse.chats));
+      setVoiceChats(mapVoiceChats(chatsResponse.chats));
+    }
+    
+    const membersResponse = await getServerMembers(serverId);    
+    if (!membersResponse.success) {
+      console.log('Участники не найдены:', membersResponse.message);
+      return;
+    }    
+    setServerMembers(mapMembers(membersResponse.members));
   }
 
   useEffect(() => {
@@ -51,6 +62,7 @@ const useServer = () => {
     voiceChats,
     servers, 
     isLoading,
+    serverMembers,
     textChats,
     setTextChats,
     setCurrentServerId,

@@ -1,4 +1,4 @@
-import Notiflication from "../chat/Notiflication";
+import Notiflication from "../chat/NotiflicationSystem";
 import { useNotification } from "@/hooks/chat/useNotification";
 
 const GlobalNotiflication = () => {

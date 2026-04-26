@@ -5,6 +5,7 @@ const mapTextChats = (dbChats: ChatResponse[]): TextChatProps[] => {
     .filter(chat => chat.chat_type === 'text')  
     .map(chat => ({
       chatId: chat.chat_id,
+      type: 'server',
       name: chat.chat_name,
     }));
 } 

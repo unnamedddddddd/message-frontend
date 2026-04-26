@@ -4,6 +4,7 @@ import { CreateUser, ForgotPassword, Home, Login, PersonalMessages, ProfileForm,
 import { NotificationProvider } from './providers/NotificationProvider'
 import { GlobalNotiflication } from './components/global'
 import { SocketProvider } from './providers/SocketProvider'
+import { MainLayout } from './layouts'
 
 function App() {
   return (
@@ -13,13 +14,17 @@ function App() {
           <GlobalNotiflication/>
             <Routes>
               <Route path="/" element={<Navigate to="/login" replace />} />
-              <Route path="/home" element={<Home />} />
+              
+              <Route element={<MainLayout />}>
+                <Route path="/home" element={<Home />} />
+                <Route path="/profile" element={<ProfileForm />} />
+                <Route path="/personalMessages" element={<PersonalMessages />} />
+              </Route>
+
               <Route path="/login" element={<Login />} />
               <Route path="/createUser" element={<CreateUser />} />
               <Route path="/forgotPassword" element={<ForgotPassword />} />
-              <Route path="/profile" element={<ProfileForm />} />
               <Route path="/verifyEmail" element={<VerifyEmail />} />
-              <Route path="/personalMessages" element={<PersonalMessages />} />
             </Routes>
         </NotificationProvider>
       </SocketProvider>

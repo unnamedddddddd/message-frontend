@@ -10,7 +10,6 @@ export const useFriends = () => {
   const { friendsOnline } = useWebSocket();
   const navigate = useNavigate();
         
-
   const loadFriends = useCallback(async () => {
     try {
       const res = await getFriends();

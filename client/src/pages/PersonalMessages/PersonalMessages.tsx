@@ -1,5 +1,5 @@
 import { Friend, Message, Server } from "@/components/chat";
-import Notification from "@/components/chat/Notiflication";
+import Notification from "@/components/chat/NotiflicationSystem";
 import { useChat, useServer, useWebSocket } from "@/hooks/chat";
 import { useFriends } from "@/hooks/chat/useFriends";
 import { useNotification } from "@/hooks/chat/useNotification";

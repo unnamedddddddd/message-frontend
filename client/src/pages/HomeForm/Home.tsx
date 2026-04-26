@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
 import { useAuth } from "@/hooks/user";
 import { useNotification } from "@/hooks/chat/useNotification";
-import { Message, Server } from "@/components/chat";
-import Notification from "@/components/chat/Notiflication";
+import { Member, Message, Server } from "@/components/chat";
+import Notification from "@/components/chat/NotiflicationSystem";
 import { useWebSocket } from "@/hooks/chat/useWebSocket";
-import { WidgetCreateChat, WidgetCreateServer } from "@/components/chat/Widgets";
+import { WidgetCreateChat, WidgetCreateServer, WidgetFindServer,} from "@/components/chat/Widgets";
 import { TextChat, VoiceChat } from "@/components/chat/Chats";
 
 const Home = () => {
@@ -13,6 +13,7 @@ const Home = () => {
   const typingRef = useRef<HTMLDivElement>(null);
   const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
   const [showWidgetCreateServer, setShowWidgetCreateServer] = useState<boolean>(false);
+  const [showWidgetFindServer, setshowWidgetFindServer] = useState<boolean>(false);
   const {
     messages,
     sendTypingSocket,
@@ -28,6 +29,7 @@ const Home = () => {
     textChats,
     voiceChats,
     joinServer,
+    serverMembers,
     currentServerId
   } = useServer();
   const {
@@ -61,7 +63,7 @@ const Home = () => {
   const currentMessages = activeChatId ? (messages[activeChatId] || []) : [];
   
   return (
-    <div className="flex h-screen bg-[#292929]/90 p-5 gap-5">
+    <div className="flex h-screen bg-[#292929]/90 p-5 gap-5 overflow-x-hidden pt-14">
       <div className="flex flex-col w-fit bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
         {servers.map((server) => (
           <div key={server.name} className="">
@@ -74,16 +76,35 @@ const Home = () => {
           </div>
         ))} 
         <div className="flex justify-center mt-auto">
-          <button 
-            className="bg-[#353536]/70 border w-fit border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg"
-            onClick={() => setShowWidgetCreateServer(true)}
+          <div className="flex flex-col gap-3">
+            <button 
+              className="bg-[#353536]/70 border w-fit border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg"
+              onClick={() => setshowWidgetFindServer(true)}
+            >
+            🔍
+            </button>
+            <button 
+              className="bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg"
+              onClick={() => setShowWidgetCreateServer(true)}
+            >
+            +
+            </button>
+          </div>
+          <div
+            className={`widget-overlay-find ${showWidgetFindServer ? 'visible' : ''} fixed inset-0 flex justify-center items-start pt-10`}
+            onClick={() => setshowWidgetFindServer(false)}
           >
-          +
-          </button>
-            <div className={`widget-overlay ${showWidgetCreateServer ? 'visible' : ''}`} onClick={() => setShowWidgetCreateServer(false)}>
-              <div className="widget-window" onClick={e => e.stopPropagation()}>
-                <WidgetCreateServer onClose={() => setShowWidgetCreateServer(false)} />
-              </div>
+            <div
+              className="widget-window w-full max-w-[800px] px-4"
+              onClick={e => e.stopPropagation()}
+            >
+              <WidgetFindServer onClose={() => setshowWidgetFindServer(false)} />
+            </div>
+          </div>
+          <div className={`widget-overlay ${showWidgetCreateServer ? 'visible' : ''}`} onClick={() => setShowWidgetCreateServer(false)}>
+            <div className="widget-window" onClick={e => e.stopPropagation()}>
+              <WidgetCreateServer onClose={() => setShowWidgetCreateServer(false)} />
+            </div>
           </div>
         </div>
       </div>
@@ -135,7 +156,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <div className='relative flex flex-col flex-[0_0_55%] min-w-0 bg-[#414243]/90 rounded-2xl border border-[#6b6c6e]/30'>
+      <div className='relative flex flex-col flex-[0_0_65%] min-w-0 bg-[#414243]/90 rounded-2xl border border-[#6b6c6e]/30'>
         <div className="absolute top-0 left-0 right-0 z-50 flex flex-col gap-2 p-4 pointer-events-none">
           {notifications.map(notif => (
             <div key={notif.notificationId} className="pointer-events-auto self-end">
@@ -211,7 +232,18 @@ const Home = () => {
           </button>
         </form>
       </div>
-      <div className="flex w-[21%] shrink-0 flex-col gap-5 rounded-[15px] border border-[#6b6c6e]/30 bg-[#414243]/90 p-4 min-h-0">
+      <div className="flex flex-1 shrink-0 flex-col gap-5 rounded-[15px] border border-[#6b6c6e]/30 bg-[#414243]/90 p-4 min-h-0">
+        <div className="flex-col">
+          {serverMembers.map(member => (
+            <div className="" key={member.id}>
+              <Member
+                id={member.id}
+                name={member.name}
+                avatar={member.avatar}
+              />
+            </div>
+          ))}
+        </div>
         <div className="flex justify-end mt-auto">
           <button 
             className="mt-auto ml-auto mb-2 mr-2 rounded-md border border-[#6d7275]/40 bg-[#5b5c5f]/90 px-3 py-1 text-[#a3a2a3] transition-colors hover:bg-[#414243]/90"

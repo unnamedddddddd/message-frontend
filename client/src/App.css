@@ -110,3 +110,48 @@ body {
   align-items: start;
 }
 
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideIn {
+  opacity: 0;
+  animation: slideIn 0.2s ease forwards;
+}
+
+.notification-animation-open {
+  animation: notification-open-slideIn 0.2s ease forwards;
+}
+
+@keyframes notification-open-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notification-animation-close {
+  animation: notification-close-slideIn 0.2s ease forwards;
+}
+
+@keyframes notification-close-slideIn {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}

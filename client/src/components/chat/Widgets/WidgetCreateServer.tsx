@@ -8,7 +8,6 @@ const WidgetCreateServer = ({ onClose }: CreateServerProps) => {
   const [serverAvatar, setServerAvatar] = useState<File | null>(null);
   const [serverAvatarURL, setServerAvatarURL] = useState<string>('');
   const { addNotification } = useNotification();
-
   const handleCreateServer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!serverAvatar) {
@@ -16,7 +15,13 @@ const WidgetCreateServer = ({ onClose }: CreateServerProps) => {
       return;
     }
 
-    const data = await createServer(serverName, serverAvatar);
+    const userId = localStorage.getItem('user_id');
+    if (!userId) {
+      addNotification('error', 'User id не найден в localStorage');
+      return;
+    }
+
+    const data = await createServer(serverName, serverAvatar, userId);
     if (!data.success) {
       addNotification('error', data.message);
       return;

@@ -1,4 +1,4 @@
-export default interface MessageResponse {
+export default interface MessageResponseProps {
   user_login: string;
   user_id: number;
   user_avatar: string;

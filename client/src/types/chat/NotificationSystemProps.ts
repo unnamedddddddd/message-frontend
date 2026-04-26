@@ -1,4 +1,4 @@
-export default interface NotificationProps {
+export default interface NotificationSystemProps {
   notificationId: number;
   type: 'error' | 'success' | 'warning' | 'info';
   message: string;

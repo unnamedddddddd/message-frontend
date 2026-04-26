@@ -1,6 +1,6 @@
-import type { NotificationProps } from "@/types";
+import type { NotificationSystemProps } from "@/types";
 
-const Notification = ({ type, message, onClose }: NotificationProps) => {
+const NotiflicationSystem = ({ type, message, onClose }: NotificationSystemProps) => {
   const typeClasses = {
     error: "bg-[#5A2A2A] border-[#8B3A3A] text-[#F0F0F0]",
     success: "bg-[#1E4A3B] border-[#2E7D5E] text-[#F0F0F0]",
@@ -39,4 +39,4 @@ const Notification = ({ type, message, onClose }: NotificationProps) => {
   );
 };
 
-export default Notification;
+export default NotiflicationSystem;

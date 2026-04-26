@@ -6,3 +6,6 @@ export { default as LogOut } from './LogOut'
 export { default as createServer } from './createServer';
 export { default as createChat } from './createChat';
 export { default as getOrCreatePersonalChat } from './getOrCreatePersonalChat';
+export { default as getFindServer } from './getFindServer';
+export { default as sendInvite } from './sendInvite';
+

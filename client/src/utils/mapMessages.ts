@@ -1,8 +1,8 @@
-import type { MessageProps, MessageResponse } from "@/types";
+import type { MessageProps, MessageResponseProps } from "@/types";
 import formatTime from "./time";
 
 const mapMessages = (
-  dbMessages: MessageResponse[], 
+  dbMessages: MessageResponseProps[], 
   currentUserId: number
 ): MessageProps[] => {
   return dbMessages.map(msg => ({
