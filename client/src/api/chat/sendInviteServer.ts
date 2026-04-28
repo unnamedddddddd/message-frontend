@@ -1,6 +1,6 @@
 import { SERVER_URL } from "@/config"
 
-const sendInvite = async (serverId: number) => {
+const sendInviteServer = async (serverId: number) => {
   const response = await fetch(`${SERVER_URL}/api/servers/${serverId}/invites`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -11,4 +11,4 @@ const sendInvite = async (serverId: number) => {
   return serverResponse;
 }
 
-export default sendInvite;
+export default sendInviteServer;

@@ -12,6 +12,7 @@ const mapNotifications = (
     serverId: ntf.server_id,
     serverAvatar: ntf.server_avatar,
     serverName: ntf.server_name,
+    friendId: ntf.friend_id,
     friendLogin: ntf.friend_login,
     friendAvatar: ntf.friend_avatar,
     senderId: ntf.sender_id,

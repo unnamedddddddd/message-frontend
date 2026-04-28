@@ -13,7 +13,7 @@ const Home = () => {
   const typingRef = useRef<HTMLDivElement>(null);
   const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
   const [showWidgetCreateServer, setShowWidgetCreateServer] = useState<boolean>(false);
-  const [showWidgetFindServer, setshowWidgetFindServer] = useState<boolean>(false);
+  const [showWidgetFindServer, setShowWidgetFindServer] = useState<boolean>(false);
   const {
     messages,
     sendTypingSocket,
@@ -79,7 +79,7 @@ const Home = () => {
           <div className="flex flex-col gap-3">
             <button 
               className="bg-[#353536]/70 border w-fit border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg"
-              onClick={() => setshowWidgetFindServer(true)}
+              onClick={() => setShowWidgetFindServer(true)}
             >
             🔍
             </button>
@@ -92,13 +92,13 @@ const Home = () => {
           </div>
           <div
             className={`widget-overlay-find ${showWidgetFindServer ? 'visible' : ''} fixed inset-0 flex justify-center items-start pt-10`}
-            onClick={() => setshowWidgetFindServer(false)}
+            onClick={() => setShowWidgetFindServer(false)}
           >
             <div
               className="widget-window w-full max-w-[800px] px-4"
               onClick={e => e.stopPropagation()}
             >
-              <WidgetFindServer onClose={() => setshowWidgetFindServer(false)} />
+              <WidgetFindServer onClose={() => setShowWidgetFindServer(false)} />
             </div>
           </div>
           <div className={`widget-overlay ${showWidgetCreateServer ? 'visible' : ''}`} onClick={() => setShowWidgetCreateServer(false)}>

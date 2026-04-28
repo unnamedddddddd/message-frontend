@@ -50,6 +50,7 @@ const Header = () => {
                   <div key={notification.notificationId}>
                     <Notiflication 
                       notificationId={notification.notificationId}
+                      friendId={notification.friendId}
                       friendLogin={notification.friendLogin}
                       friendAvatar={notification.friendAvatar}
                       senderId={notification.senderId}

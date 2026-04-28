@@ -21,7 +21,7 @@ const CreateUser = () => {
       alert('Пароли не совпадают');
       return;
     }
-    
+      
     const data = await createUser(login, password);
     if (!data.success) {
       alert(`Ошибка: ${data.message}`);

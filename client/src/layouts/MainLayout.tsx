@@ -1,11 +1,14 @@
 import { Header } from "@/components/global";
+import { SocketProvider } from "@/providers/SocketProvider";
 import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
     <div>
-      <Header />
-      <Outlet />
+      <SocketProvider>
+        <Header />
+        <Outlet />
+      </SocketProvider>
     </div>
   );
 }

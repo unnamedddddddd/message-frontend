@@ -9,25 +9,23 @@ import { MainLayout } from './layouts'
 function App() {
   return (
     <Router>
-      <SocketProvider>
         <NotificationProvider>
           <GlobalNotiflication/>
             <Routes>
-              <Route path="/" element={<Navigate to="/login" replace />} />
-              
-              <Route element={<MainLayout />}>
-                <Route path="/home" element={<Home />} />
-                <Route path="/profile" element={<ProfileForm />} />
-                <Route path="/personalMessages" element={<PersonalMessages />} />
-              </Route>
+                <Route path="/" element={<Navigate to="/login" replace />} />
+                
+                <Route element={<MainLayout />}>
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/profile" element={<ProfileForm />} />
+                  <Route path="/personalMessages" element={<PersonalMessages />} />
+                </Route>
 
-              <Route path="/login" element={<Login />} />
-              <Route path="/createUser" element={<CreateUser />} />
-              <Route path="/forgotPassword" element={<ForgotPassword />} />
-              <Route path="/verifyEmail" element={<VerifyEmail />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/createUser" element={<CreateUser />} />
+                <Route path="/verifyEmail" element={<VerifyEmail />} />
+                <Route path="/forgotPassword" element={<ForgotPassword />} />
             </Routes>
         </NotificationProvider>
-      </SocketProvider>
     </Router>
   )
 }

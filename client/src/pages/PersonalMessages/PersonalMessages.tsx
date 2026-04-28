@@ -1,15 +1,17 @@
 import { Friend, Message, Server } from "@/components/chat";
 import Notification from "@/components/chat/NotiflicationSystem";
+import { WidgetFindUsers } from "@/components/chat/Widgets";
 import { useChat, useServer, useWebSocket } from "@/hooks/chat";
 import { useFriends } from "@/hooks/chat/useFriends";
 import { useNotification } from "@/hooks/chat/useNotification";
 import { useAuth } from "@/hooks/user";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const PersonalMessages = () => {
   const { servers, joinServer } = useServer();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingRef = useRef<HTMLDivElement>(null);
+  const [showFindUsersWidget, setShowFindUsersWidget] = useState<boolean>(false);
 
   const {
     notifications,
@@ -46,7 +48,7 @@ const PersonalMessages = () => {
   const currentMessages = activeChatId ? (messages[activeChatId] || []) : [];
   
   return (
-    <div className="flex h-screen bg-[#292929]/90 p-5 gap-5">
+    <div className="flex h-screen bg-[#292929]/90 p-5 gap-5 overflow-x-hidden pt-14">
       <div className="flex flex-col w-fit bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
         {servers.map((server) => (
           <div key={server.name}>
@@ -74,7 +76,26 @@ const PersonalMessages = () => {
             />
           </div> 
         ))} 
+        <div className="mt-auto p-2 flex justify-center items-center z-50">
+          <button 
+              className="bg-[#353536]/70 border w-fit border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-sm"
+              onClick={() => setShowFindUsersWidget(true)}
+            >
+            Добавить друга
+          </button>
+        </div>
       </div>
+       <div
+            className={`widget-overlay-find ${showFindUsersWidget ? 'visible' : ''} fixed inset-0 flex justify-center items-start pt-10`}
+            onClick={() => setShowFindUsersWidget(false)}
+          >
+            <div
+              className="widget-window w-full max-w-[800px] px-4"
+              onClick={e => e.stopPropagation()}
+            >
+              <WidgetFindUsers onClose={() => setShowFindUsersWidget(false)} />
+            </div>
+          </div> 
        <div className='relative flex flex-col flex-1 min-w-0 bg-[#414243]/90 rounded-2xl border border-[#6b6c6e]/30'>
         <div className="absolute top-0 left-0 right-0 z-50 flex flex-col gap-2 p-4 pointer-events-none">
           {notifications.map(notif => (

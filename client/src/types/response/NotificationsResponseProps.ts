@@ -6,6 +6,7 @@ export default interface NotificationsResponseProps {
   server_name: string;
   server_avatar: string;  
   friend_login: string;
+  friend_id: number;
   sender_login: string;
   server_id: number;
   sender_id: number;

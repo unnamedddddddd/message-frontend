@@ -1,29 +1,30 @@
-import { getFindServer } from "@/api/chat";
-import type { ServerProps } from "@/types";
+import { getFindUsers } from "@/api/chat";
+import type { FindUserProps  } from "@/types";
 import type WidgetFindServerProps from "@/types/chat/WidgetFindServerProps";
-import { debounce, mapServers } from "@/utils";
+import { debounce, mapFindUsers } from "@/utils";
 import { useRef, useState } from "react";
-import FoundServer from "../FoundServer";
+import FoundUser from "../FoundUser";
 
-const WidgetFindServer = ({ onClose }: WidgetFindServerProps) => {
-  const [foundServers , setFoundServers] = useState<ServerProps[]>([]);
-  const [prevServers, setPrevServers] = useState<ServerProps[]>([]);
+const WidgetFindUsers = ({ onClose }: WidgetFindServerProps) => {
+  const [foundUsers , setFoundUsers] = useState<FindUserProps[]>([]);
+  const [prevUsers, setPrevUsers] = useState<FindUserProps[]>([]);
 
   const handleFindServer = async(text: string) => {
-    setPrevServers(foundServers );
+    setPrevUsers(foundUsers);
     if (!text) {
-      setFoundServers([]);
+      setFoundUsers([]);
       return;
     }
     
-    const data = await getFindServer(text);
+    const data = await getFindUsers(text);
     if (!data.success) {
       console.error(data.message);
-      setFoundServers([]);
+      setFoundUsers([]);
       return;
     }
+    console.log(data.users);
     
-    setFoundServers(mapServers(data.servers));
+    setFoundUsers(mapFindUsers(data.users));
   } 
 
   const debouncedGetFindServer = useRef(
@@ -37,11 +38,11 @@ const WidgetFindServer = ({ onClose }: WidgetFindServerProps) => {
       <div className="flex gap-5">
         <input 
         type="text" 
-        placeholder="Поиск серверов"
+        placeholder="Поиск пользователей"
         className="w-full p-3 rounded-lg bg-[#2a2a2b] text-white outline-none"
         onChange={(e) => debouncedGetFindServer.current(e.target.value)}
         />
-        <button 
+        <button   
           onClick={onClose} 
           className="text-[#a3a2a3] hover:text-white transition-colors font-bold text-xl"
         >
@@ -49,16 +50,16 @@ const WidgetFindServer = ({ onClose }: WidgetFindServerProps) => {
         </button>
       </div>
       <div className="flex flex-col mb-auto rounded-2xl">
-        {foundServers.map((server, index) => (
+        {foundUsers.map((user, index) => (
           <div 
-            key={server.serverId}
-            className={prevServers.some(s => s.serverId === server.serverId) ? '' : 'animate-slideIn'}
+            key={user.userId}
+            className={prevUsers.some(s => s.userId === user.userId) ? '' : 'animate-slideIn'}
             style={{ animationDelay: `${index * 50}ms` }}   
           >
-            <FoundServer
-              serverId={server.serverId}
-              name={server.name}
-              avatar={server.avatar}
+            <FoundUser
+              userAvatar={user.userAvatar}
+              userId={user.userId}
+              userLogin={user.userLogin}
             />
           </div>
         ))}
@@ -67,4 +68,4 @@ const WidgetFindServer = ({ onClose }: WidgetFindServerProps) => {
   );
 };
 
-export default WidgetFindServer;
+export default WidgetFindUsers;

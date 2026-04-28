@@ -6,4 +6,5 @@ export { default as VerificationTokenRemember } from './VerificationTokenRemembe
 export { default as uploadUserAvatar } from './uploadAvatar';
 export { default as getNotifications } from './getNotifications';
 export { default as updateStatusInviteServer } from './updateStatusInviteServer';
+export { default as updateStatusRequestFriend } from './updateStatusRequestFriend';
 

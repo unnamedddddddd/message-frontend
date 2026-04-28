@@ -16,7 +16,6 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
   const { userLogin } = useAuth();
   const [friendsOnline, setFriendsOnline] = useState<OnlineFriendsResponseProps[]>([]);
 
-
   const handleTyping = ({ userName }: { userName: string }) => {
     setTypingUsers(prev => [...new Set([...prev, userName])]);
   };
@@ -131,10 +130,6 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
       [chatId]: mapped
     }));
   };
-
-  // setInterval(() => {
-  //   getTypingUsersSocket();
-  // }, 1000)
 
   useEffect(() => {
     connect();

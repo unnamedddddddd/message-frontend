@@ -6,6 +6,7 @@ export default interface NotificationsProps {
   serverName: string;
   serverAvatar: string;  
   senderLogin: string;
+  friendId: number;
   friendLogin: string;
   serverId: number;
   senderId: number;
