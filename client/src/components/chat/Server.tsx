@@ -1,18 +1,25 @@
 import type { ServerProps } from "@/types";
 import { SERVER_URL } from "../../config";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useWebSocket } from "@/hooks/chat";
 
-const Server = ({ serverId, avatar, name, disabled, onJoinServer }: ServerProps) => {
+const Server = ({ serverId, avatar, name, disabled }: ServerProps) => {
+  const navigate = useNavigate();
+  const locationUser = useLocation();
+  const { setCurrentServerId } = useWebSocket();
+
   const handleJoin = () => {
-    if (onJoinServer) {
-      onJoinServer(serverId);
-    }
+    if (locationUser.pathname === '/personalMessages' || locationUser.pathname === '/profile') {
+      navigate('/home');
+    }   
+   setCurrentServerId(serverId)
   };
   
   return (
     <button 
       disabled={disabled}
       onClick={handleJoin}
-      className="group mb-5 w-fit p-2 bg-[#353536]/70 border border-[#6d7275]/40 rounded-xl transition-all duration-200 
+      className="group mb-5 w-fit p-2 rounded-xl transition-all duration-200 
               hover:bg-[#414243]/90 active:bg-[#4e4f51]/90 
                 disabled:opacity-60 disabled:cursor-not-allowed disabled:grayscale-[0.5]"
       title={name}

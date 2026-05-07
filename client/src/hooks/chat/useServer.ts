@@ -4,8 +4,7 @@ import type { MembersProps, ServerProps, TextChatProps, VoiceChatProps } from "@
 import { mapTextChats, mapServers, mapVoiceChats } from "@/utils";
 import mapMembers from "@/utils/mapMembers";
 import { useCallback, useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import useWebSocket from "./useWebSocket";
 
 const useServer = () => {
   const [servers, setServers] = useState<ServerProps[]>([]);
@@ -13,12 +12,10 @@ const useServer = () => {
   const [voiceChats, setVoiceChats] = useState<VoiceChatProps[]>([]);
   const [serverMembers, setServerMembers] = useState<MembersProps[]>([])
   const [isLoading, setIsLoading] = useState(false);
-  const [currentServerId, setCurrentServerId] = useState<number | null>(null);
-  const navigate = useNavigate();
-  const locationUser = useLocation();
 
+  const { currentServerId, setCurrentServerId } = useWebSocket();
   const loadServers = useCallback(async () => {
-     setIsLoading(true); 
+    setIsLoading(true);
     try {
       const res = await getServers();
       if (res.success) setServers(mapServers(res.servers));
@@ -27,47 +24,49 @@ const useServer = () => {
     }
   }, []);
 
-  const joinServer = async (serverId: number) => { 
-    if (locationUser.pathname === '/personalMessages') {
-      navigate('/home');
-    }   
-    setServerMembers([]);
+
+  const loadChats = useCallback(async () => {
     setTextChats([]);
     setVoiceChats([]);
-    setCurrentServerId(serverId);
 
-    const chatsResponse = await getChats(serverId);
-    if (!chatsResponse.success) {
-      console.log('Чаты не найдены:', chatsResponse.message);
-    }
+    const chatsResponse = await getChats(currentServerId!);
     if (chatsResponse.success) {
       setTextChats(mapTextChats(chatsResponse.chats));
       setVoiceChats(mapVoiceChats(chatsResponse.chats));
     }
-    
-    const membersResponse = await getServerMembers(serverId);    
-    if (!membersResponse.success) {
-      console.log('Участники не найдены:', membersResponse.message);
-      return;
-    }    
-    setServerMembers(mapMembers(membersResponse.members));
-  }
+  }, [currentServerId])
+
+  const joinServer = useCallback(async () => {
+    setServerMembers([]);
+
+    loadChats();
+    const membersResponse = await getServerMembers(currentServerId!);
+    if (membersResponse.success) {
+      setServerMembers(mapMembers(membersResponse.members));
+    }
+  }, [currentServerId, loadChats])
 
   useEffect(() => {
     loadServers();
-  }, [loadServers])
+  }, [loadServers]);
 
-  return { 
-    currentServerId,
+  useEffect(() => {
+    if (!currentServerId) return;
+    joinServer();
+    joinServer()
+  }, [currentServerId, joinServer]);
+
+  return {
     voiceChats,
-    servers, 
+    servers,
     isLoading,
     serverMembers,
     textChats,
     setTextChats,
+    loadChats,
     setCurrentServerId,
     joinServer,
- };
+  };
 }
 
-export default useServer;
+export default useServer; 

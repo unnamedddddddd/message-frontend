@@ -1,51 +1,44 @@
 import { useEffect, useRef, useState } from "react";
 import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
 import { useAuth } from "@/hooks/user";
-import { useNotification } from "@/hooks/chat/useNotification";
-import { Member, Message, Server } from "@/components/chat";
-import Notification from "@/components/chat/NotiflicationSystem";
+import { Member, Message } from "@/components/chat";
 import { useWebSocket } from "@/hooks/chat/useWebSocket";
-import { WidgetCreateChat, WidgetCreateServer, WidgetFindServer,} from "@/components/chat/Widgets";
+import { WidgetCreateChat } from "@/components/chat/Widgets";
 import { TextChat, VoiceChat } from "@/components/chat/Chats";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingRef = useRef<HTMLDivElement>(null);
   const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
-  const [showWidgetCreateServer, setShowWidgetCreateServer] = useState<boolean>(false);
-  const [showWidgetFindServer, setShowWidgetFindServer] = useState<boolean>(false);
+
   const {
     messages,
     sendTypingSocket,
     stopTypingSocket,
     typingUsers,
+    currentServerId
   } = useWebSocket();
-  const {
-    notifications,
-    removeNotification
-  } = useNotification()
-  const { userLogin, logOut } = useAuth();
+
+  const { userLogin } = useAuth();
   const {
     textChats,
     voiceChats,
-    joinServer,
     serverMembers,
-    currentServerId
+    loadChats,
   } = useServer();
   const {
-    message, 
-    servers,
-    isConnected, 
-    activeChatId, 
-    setMessage,  
-    joinChat, 
+    message,
+    isConnected,
+    activeChatId,
+    setMessage,
+    joinChat,
     handleSubmit,
-  } = useChat(userLogin); 
+  } = useChat(userLogin);
   const {
     joinVoiceChat,
-    leaveVoiceChat,
+    // leaveVoiceChat,
   } = useVoiceChat()
-
+  
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -56,132 +49,81 @@ const Home = () => {
     }
   }, [typingUsers]);
 
-  const leaveChat = () => {
-    leaveVoiceChat();
+  const currentMessages = activeChatId ? (messages[activeChatId] || []) : [];
+
+  const handleCloseWidgetCreateChat = () => {
+    loadChats();
+    setShowWidgetCreateChat(false)
   }
 
-  const currentMessages = activeChatId ? (messages[activeChatId] || []) : [];
-  
   return (
-    <div className="flex h-screen bg-[#292929]/90 p-5 gap-5 overflow-x-hidden pt-14">
-      <div className="flex flex-col w-fit bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
-        {servers.map((server) => (
-          <div key={server.name} className="">
-           <Server 
-            avatar={server.avatar}
-            serverId={server.serverId}
-            name={server.name}
-            onJoinServer={joinServer}
-          />  
-          </div>
-        ))} 
-        <div className="flex justify-center mt-auto">
-          <div className="flex flex-col gap-3">
-            <button 
-              className="bg-[#353536]/70 border w-fit border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg"
-              onClick={() => setShowWidgetFindServer(true)}
-            >
-            🔍
-            </button>
-            <button 
-              className="bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg"
-              onClick={() => setShowWidgetCreateServer(true)}
-            >
-            +
-            </button>
-          </div>
-          <div
-            className={`widget-overlay-find ${showWidgetFindServer ? 'visible' : ''} fixed inset-0 flex justify-center items-start pt-10`}
-            onClick={() => setShowWidgetFindServer(false)}
-          >
-            <div
-              className="widget-window w-full max-w-[800px] px-4"
-              onClick={e => e.stopPropagation()}
-            >
-              <WidgetFindServer onClose={() => setShowWidgetFindServer(false)} />
-            </div>
-          </div>
-          <div className={`widget-overlay ${showWidgetCreateServer ? 'visible' : ''}`} onClick={() => setShowWidgetCreateServer(false)}>
-            <div className="widget-window" onClick={e => e.stopPropagation()}>
-              <WidgetCreateServer onClose={() => setShowWidgetCreateServer(false)} />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col w-[15%] bg-[#353536]/90 rounded-2xl p-5 border border-[#5e5f61]/30 overflow-y-auto shrink-0">
+    <div className="flex h-full gap-2 overflow-x-hidden">
+      <div className="flex flex-col w-[15%] bg-[#2b2d31] rounded-xl p-4 overflow-y-auto shrink-0">
         <div className="h-1/2">
-          <label className="text-xs flex justify-center mb-2 text-[#a3a2a3]">Текстовые каналы</label>
+          <div className="flex justify-center items-center gap-1 mb-1">
+            <label className="text-xs flex justify-center text-[#a3a2a3]">Текстовые каналы</label>
+            <button
+              className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-[#616366]/70 font-semibold text-lg "
+              onClick={() => setShowWidgetCreateChat(true)}
+            >
+              +
+            </button>
+          </div>
           {textChats.map((chat) => (
-            <div key={chat.name} className="mb-1">
-              <TextChat 
+            <div key={chat.name}>
+              <TextChat
                 type="server"
                 chatId={chat.chatId}
                 onJoinChat={joinChat}
                 name={chat.name}
-                disabled={activeChatId === chat.chatId}  
+                disabled={activeChatId === chat.chatId}
               />
             </div>
           ))}
+
         </div>
         <div className="h-1/2 mt-4">
-          <label className="text-xs flex justify-center mb-2 text-[#a3a2a3]">Голосовые каналы</label>
+          <div className="flex justify-center items-center gap-1 mb-1">
+            <label className="text-xs flex justify-center text-[#a3a2a3]">Голосовые каналы</label>
+            <button
+              className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-[#616366]/70 font-semibold text-lg "
+              onClick={() => setShowWidgetCreateChat(true)}
+            >
+              +
+            </button>
+          </div>
           {voiceChats.map((chat) => (
             <div key={chat.name} className="mb-1">
-              <VoiceChat 
+              <VoiceChat
                 chatId={chat.chatId}
                 onJoinChat={joinVoiceChat}
                 name={chat.name}
-                disabled={activeChatId === chat.chatId}  
+                disabled={activeChatId === chat.chatId}
               />
             </div>
           ))}
         </div>
-        <div className="flex gap-5 mt-4">
-          <button 
-            className="bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-lg w-fit"
-            onClick={() => setShowWidgetCreateChat(true)}
-          >
-          +
-          </button>
-            <div className={`widget-overlay ${showWidgetCreateChat ? 'visible' : ''}`} onClick={() => setShowWidgetCreateChat(false)}>
-              <div className="widget-window" onClick={e => e.stopPropagation()}>
-                <WidgetCreateChat onClose={() => setShowWidgetCreateChat(false)} serverId={currentServerId}/>
-              </div>
+
+        <div className={`widget-overlay ${showWidgetCreateChat ? 'visible' : ''}`} onClick={() => setShowWidgetCreateChat(false)}>
+          <div className="widget-window" onClick={e => e.stopPropagation()}>
+            <WidgetCreateChat onClose={handleCloseWidgetCreateChat} serverId={currentServerId} />
           </div>
-          <button 
-            className="ml-auto bg-[#353536]/70 border border-[#6d7275]/40 text-[#a3a2a3] px-4 py-2 rounded-xl transition-colors hover:bg-[#616366]/70 font-semibold text-sm" 
-            onClick= {leaveChat}
-          >
-            отключится
-          </button>
         </div>
       </div>
-      <div className='relative flex flex-col flex-[0_0_65%] min-w-0 bg-[#414243]/90 rounded-2xl border border-[#6b6c6e]/30'>
-        <div className="absolute top-0 left-0 right-0 z-50 flex flex-col gap-2 p-4 pointer-events-none">
-          {notifications.map(notif => (
-            <div key={notif.notificationId} className="pointer-events-auto self-end">
-              <Notification 
-                type={notif.type} 
-                message={notif.message} 
-                onClose={() => removeNotification(notif.notificationId)} 
-                notificationId={notif.notificationId} 
-              />
-            </div>
-          ))}
-        </div>   
-        <div className='flex-1 flex flex-col overflow-y-auto bg-[#353536]/70 rounded-2xl mb-1 border border-[#4e4f51]/20 p-4'>
+      <div className='relative flex flex-col flex-[0_0_70%] min-w-0 bg-[#383a40] rounded-xl'>
+        <div className='flex-1 flex flex-col overflow-y-auto bg-[#313338]/70 rounded-2xl mb-1 border border-[#4e4f51]/20 p-4'>
           {currentMessages.map((msg, index) => (
-            <div key={index} className={msg.type === 'my' ? 'self-end flex gap-[10px] mb-3 max-w-[70%]' : 'self-start flex items-center gap-[10px] mb-3 max-w-[70%]'}>
+            <div key={index} className={'self-start flex items-center gap-[10px] mb-3 max-w-[70%]'}>
               <Message
-                userAvatar={msg.userAvatar} 
+                userAvatar={msg.userAvatar}
                 type={msg.type}
-                message={msg.message} 
-                userName={msg.userName} 
+                message={msg.message}
+                userName={msg.userName}
                 renderTime={msg.renderTime}
               />
             </div>
           ))}
-           <div  ref={typingRef}  className="flex justify-end mt-auto">
+          <div ref={typingRef} className="flex justify-end mt-auto">
             {typingUsers.length > 0 && (
               <div className="bg-[#4e4f51]/90 backdrop-blur-sm rounded-2xl px-4 py-2 text-sm text-[#a3a2a3] animate-pulse w-fit">
                 {typingUsers.length === 1 ? (
@@ -191,7 +133,7 @@ const Home = () => {
                 )}
               </div>
             )}
-          </div>      
+          </div>
           <div ref={messagesEndRef} />
         </div>
         {/* <div className="flex justify-end mb-1">
@@ -219,7 +161,7 @@ const Home = () => {
               stopTypingSocket();
             }}
             placeholder='Введите сообщение'
-          /> 
+          />
           <button
             type="submit"
             className='px-6 py-3 bg-gradient-to-br from-[#616366] to-[#6d7275] text-white rounded-xl border border-[#6d7275]/30 flex items-center justify-center transition-transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed'
@@ -232,7 +174,7 @@ const Home = () => {
           </button>
         </form>
       </div>
-      <div className="flex flex-1 shrink-0 flex-col gap-5 rounded-[15px] border border-[#6b6c6e]/30 bg-[#414243]/90 p-4 min-h-0">
+      <div className="flex flex-1 shrink-0 flex-col gap-5 rounded-xl bg-[#2b2d31] p-4 min-h-0">
         <div className="flex-col">
           {serverMembers.map(member => (
             <div className="" key={member.id}>
@@ -243,14 +185,6 @@ const Home = () => {
               />
             </div>
           ))}
-        </div>
-        <div className="flex justify-end mt-auto">
-          <button 
-            className="mt-auto ml-auto mb-2 mr-2 rounded-md border border-[#6d7275]/40 bg-[#5b5c5f]/90 px-3 py-1 text-[#a3a2a3] transition-colors hover:bg-[#414243]/90"
-            onClick={logOut}
-          >
-            logOut
-          </button>
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
   const [chatType, setChatType] = useState<'server' | 'personal'>('server');
   const { userLogin } = useAuth();
   const [friendsOnline, setFriendsOnline] = useState<OnlineFriendsResponseProps[]>([]);
+  const [currentServerId, setCurrentServerId] = useState<number | null>(null);
 
   const handleTyping = ({ userName }: { userName: string }) => {
     setTypingUsers(prev => [...new Set([...prev, userName])]);
@@ -154,6 +155,8 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
       isConnectedChat,
       typingUsers,
       friendsOnline,
+      currentServerId,
+      setCurrentServerId,
       sendTypingSocket,
       stopTypingSocket,
       joinSocketTextChat,

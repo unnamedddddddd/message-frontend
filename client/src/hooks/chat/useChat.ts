@@ -8,7 +8,7 @@ import { getOrCreatePersonalChat } from "@/api/chat";
 const useChat = (userLogin: string) => {
   const [message, setMessage] = useState<string>('')
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
-  const { isVerified } = useAuth();  
+  // const { isVerified } = useAuth();  
   const { 
     isConnected,
     isConnectedChat,
@@ -20,6 +20,8 @@ const useChat = (userLogin: string) => {
   const { userAvatar } = useAuth();
 
   const joinChat = async (chatType: 'server' | 'personal', chatId: number, friendId?: number) => {
+    console.log(chatType);
+    
     if (isConnectedChat) {
       leaveChat();
     }
@@ -29,9 +31,7 @@ const useChat = (userLogin: string) => {
       setActiveChatId(chatId)
     }  
 
-    if (friendId && isConnected && chatType === 'personal') {
-    console.log('personal');
-      
+    if (friendId && isConnected && chatType === 'personal') {      
     const currentUserId = Number(localStorage.getItem('user_id'));
     const maxId = Math.max(currentUserId, friendId);
     const minId = Math.min(currentUserId, friendId);

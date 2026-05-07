@@ -5,9 +5,11 @@ type SocketContextType = {
   messages: Record<string, MessageProps[]>;
   isConnected: boolean;
   isConnectedChat: boolean;
+  currentServerId: number | null;
   typingUsers: string[];
   friendsOnline: OnlineFriendsResponseProps [];
   joinSocketTextChat(roomId: string, chatType: 'server' | 'personal'): void;
+  setCurrentServerId: (id: number | null) => void;
   sendMessage(message: MessageProps): void;
   sendTypingSocket(): void;
   getFriendsSocket(): void;

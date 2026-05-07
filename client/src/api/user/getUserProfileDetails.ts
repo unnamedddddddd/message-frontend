@@ -1,7 +1,7 @@
 import { SERVER_URL } from "../../config";
 
-const getUserProfile = async () => {
-  const request = await fetch(`${SERVER_URL}/api/me`, {
+const getUserProfileDetails = async () => {
+  const request = await fetch(`${SERVER_URL}/api/user/profile`, {
     method: 'GET',
     headers:{'Content-Type': 'application/json'},
     credentials: 'include',
@@ -11,4 +11,4 @@ const getUserProfile = async () => {
   return serverResponse;
 }
 
-export default getUserProfile;
+export default getUserProfileDetails;

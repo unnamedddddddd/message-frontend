@@ -1,11 +1,11 @@
 import NotificationContext from "@/contexts/NotificationContext";
-import type { NotificationProps } from "@/types"
+import type { NotificationSystemProps } from "@/types"
 import { useState, type ReactNode } from "react";
 
 export const NotificationProvider = ({children}: {children: ReactNode}) => {
-  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+  const [notifications, setNotifications] = useState<NotificationSystemProps[]>([]);
 
-  const addNotification = (type: NotificationProps['type'], message: string) => {
+  const addNotification = (type: NotificationSystemProps['type'], message: string) => {
     const notificationId = Date.now();
 
     setNotifications(prev => [...prev, {notificationId, type, message}]);

@@ -80,6 +80,13 @@
   backdrop-filter: blur(4px)
 }
 
+.widget-window-edit-profile {
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 0 16px;
+} 
 
 .widget-overlay.visible {
   opacity: 1;

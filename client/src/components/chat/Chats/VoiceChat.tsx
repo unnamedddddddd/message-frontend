@@ -11,7 +11,7 @@ const VoiceChat = ({ chatId, disabled, name, onJoinChat }: VoiceChatProps) => {
     <button 
       disabled={disabled}
       onClick={handleButton}
-      className="group w-full mb-5 p-2 bg-[#353536]/70 border border-[#6d7275]/40 rounded-xl transition-all duration-200 
+      className="group w-full mb-2 p-2 rounded-xl transition-all duration-200 
                  hover:bg-[#414243]/90 active:bg-[#4e4f51]/90 
                  disabled:opacity-60 disabled:cursor-not-allowed"
     >

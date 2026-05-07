@@ -8,6 +8,7 @@ export { default as Member } from './Member';
 
 export { default as FoundServer } from './FoundServer';
 export { default as FoundUser } from './FoundUser';
+export { default as ServerList } from './ServerList';
 
 export * as Widgets from './Widgets';
 export * as Chats from './Chats';

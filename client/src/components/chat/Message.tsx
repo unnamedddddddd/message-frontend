@@ -2,60 +2,25 @@ import { SERVER_URL } from "@/config";
 import type { MessageProps } from "@/types";
 
 const Message = ({message, userName, userAvatar, type, renderTime}: MessageProps) => {
+  const isMyMessage = type === 'my';
+  
   return (
-    <>
-      {type === 'my' ? (
-        <>
-          <div className="flex flex-col"> 
-            <div className="flex flex-col bg-gradient-to-br from-[#616366] to-[#676b6e] p-[12px_16px] border-3 border-[#4e4f51]/20 rounded-[18px_18px_4px_18px]"> 
-              <div className="ml-auto mb-[5px] text-blue-400"> 
-                {userName}
-              </div>
-              <div className="flex justify-end"> 
-                <span className="text-white break-words line-height-[1.4]">
-                  {message}
-                </span>
-              </div>
-              <div className="text-[10px] flex justify-end text-[#a3a2a3]"> 
-                {renderTime}
-              </div> 
-            </div>
-          </div>
-          <div className="flex items-center gap-[10px]"> 
-            <img 
-              src={`${SERVER_URL}${userAvatar}`} 
-              alt={`Аватар пользователя ${userName}`}  
-              className="w-[40px] h-[40px] object-cover rounded-full border-2 border-white/10 transition-all duration-300 hover:border-white/30 hover:scale-[1.05]"
-            /> 
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="flex items-center gap-[10px]">
-            <img 
-              src={`${SERVER_URL}${userAvatar}`} 
-              alt={`Аватар пользователя ${userName}`}  
-              className="w-[40px] h-[40px] object-cover rounded-full border-2 border-white/10 transition-all duration-300"
-            /> 
-          </div>
-          <div className="flex flex-col">
-            <div className="flex flex-col bg-gradient-to-br from-[#616366] to-[#676b6e] p-[12px_16px] border-3 border-[#4e4f51]/20 rounded-[18px_18px_18px_4px]"> 
-              <div className="mr-auto mb-[5px] text-red-400"> 
-                {userName}
-              </div>
-              <div className="flex justify-start">
-                <span className="text-white break-words line-height-[1.4]">
-                  {message}
-                </span>
-              </div>
-              <div className="text-[10px] flex justify-start text-[#a3a2a3]">
-                {renderTime}
-              </div> 
-            </div>
-          </div>
-        </>
-      )}
-    </>
+    <div className={`flex items-end gap-2 flex-row mb-1`}>
+      <img 
+        src={`${SERVER_URL}${userAvatar}`}
+        alt={userName}
+        className="w-8 h-8 rounded-full object-cover shrink-0"
+      />
+      <div className={`flex flex-col items-start`}>
+        <span className={`text-xs mb-1 ${isMyMessage ? 'text-blue-400' : 'text-red-400'}`}>
+          {userName}
+        </span>
+        <div className={`px-3 py-2 rounded-2xl max-w-xs ${isMyMessage ? 'bg-[#5865f2]' : 'bg-[#1e1f22]'}`}>
+          <span className="text-white text-sm break-words">{message}</span>
+        </div>
+        <span className="text-[10px] text-[#a3a2a3] mt-1">{renderTime}</span>
+      </div>
+    </div>
   );
 }
 

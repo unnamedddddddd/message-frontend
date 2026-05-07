@@ -155,3 +155,45 @@ body {
     transform: translateY(-10px);
   }
 }
+
+
+.blue-circle-left {
+  animation: blue-circle-left-animate 8s ease-in-out infinite alternate;
+}
+
+@keyframes blue-circle-left-animate {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 20px); }
+  100% { transform: translate(-20px, 40px); }
+}
+
+.red-circle-center {
+  animation: red-circle-animate 10s ease-in-out infinite alternate;
+}
+
+@keyframes red-circle-animate {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-40px, -20px); }
+  100% { transform: translate(20px, -40px); }
+}
+
+.blue-circle-right {
+  animation: blue-circle-right-animate 12s ease-in-out infinite alternate;
+}
+
+@keyframes blue-circle-right-animate {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -30px); }
+  100% { transform: translate(-30px, 20px); }
+}
+
+
+.pink-circle-bottom {
+  animation: blue-circle-right-animate 10s ease-in-out infinite alternate;
+}
+
+@keyframes pink-circle-bottom {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, 30px); }
+  100% { transform: translate(-50px, 10px); }
+}

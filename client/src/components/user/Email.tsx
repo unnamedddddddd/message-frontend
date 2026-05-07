@@ -7,10 +7,10 @@ const Email = () => {
   return (
     <div className="text-[#a3a2a3] text-[16px]"> 
       {isVerified ? (
-        <span>email: {userEmail}</span>
+        <span className="text-white">Email: <span>{userEmail}</span></span>
       ) : (
         <div className="flex items-center gap-2">
-          <label>email:</label> 
+           <span className="text-white">Email:</span>
           <Link
             to='/verifyEmail'
             className="block text-[#5c5e61] text-[14px] no-underline hover:text-[#a3a2a3] transition-colors"
