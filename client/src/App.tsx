@@ -16,7 +16,7 @@ function App() {
 
             <Route element={<MainLayout />}>
               <Route path="/home" element={<Home />} />
-              <Route path="/profile1" element={<ProfileForm />} />
+              <Route path="/profile" element={<ProfileForm />} />
               <Route path="/personalMessages" element={<PersonalMessages />} />
             </Route>
 
