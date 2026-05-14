@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
-import { CreateUser, ForgotPassword, Home, Login, PersonalMessages, ProfileForm, VerifyEmail } from './pages'
+import { ForgotPassword, Home, Login, PersonalMessages, ProfileForm, VerifyEmail } from './pages'
 import { NotificationProvider } from './providers/NotificationProvider'
 import { GlobalNotiflication } from './components/global'
 import { MainLayout } from './layouts'
@@ -21,7 +21,6 @@ function App() {
             </Route>
 
             <Route path="/login" element={<Login />} />
-            <Route path="/createUser" element={<CreateUser />} />
             <Route path="/verifyEmail" element={<VerifyEmail />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
           </Routes>

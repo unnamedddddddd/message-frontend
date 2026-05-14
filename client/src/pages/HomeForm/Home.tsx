@@ -11,33 +11,11 @@ const Home = () => {
   const typingRef = useRef<HTMLDivElement>(null);
   const [showWidgetCreateChat, setShowWidgetCreateChat] = useState<boolean>(false);
 
-  const {
-    messages,
-    sendTypingSocket,
-    stopTypingSocket,
-    typingUsers,
-    currentServerId
-  } = useWebSocket();
-
+  const { messages, sendTypingSocket, stopTypingSocket, typingUsers, currentServerId } = useWebSocket();
   const { userLogin } = useAuth();
-  const {
-    textChats,
-    voiceChats,
-    serverMembers,
-    loadChats,
-  } = useServer();
-  const {
-    message,
-    isConnected,
-    activeChatId,
-    setMessage,
-    joinChat,
-    handleSubmit,
-  } = useChat(userLogin);
-  const {
-    joinVoiceChat,
-    // leaveVoiceChat,
-  } = useVoiceChat()
+  const { textChats, voiceChats, serverMembers, loadChats } = useServer();
+  const { message, isConnected, activeChatId, setMessage, joinChat, handleSubmit } = useChat(userLogin);
+  const { joinVoiceChat } = useVoiceChat();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -53,19 +31,22 @@ const Home = () => {
 
   const handleCloseWidgetCreateChat = () => {
     loadChats();
-    setShowWidgetCreateChat(false)
-  }
+    setShowWidgetCreateChat(false);
+  };
+
+  const panel = "bg-[#0d0d0f]/75 backdrop-blur-md border border-white/[0.06]";
 
   return (
     <div className="flex h-full gap-2 overflow-x-hidden">
-      <div className="flex flex-col w-[15%] bg-[#2b2d31] rounded-xl p-4 overflow-y-auto shrink-0">
+      {/* Channels sidebar */}
+      <div className={`flex flex-col w-[15%] ${panel} rounded-xl p-4 overflow-y-auto shrink-0`}>
         <div className="gap-2 flex flex-col h-svh p-2">
 
           <div className="flex flex-col flex-1 min-h-0">
             <div className="flex justify-center items-center gap-1 mb-1 shrink-0">
-              <label className="text-xs flex justify-center text-[#a3a2a3]">Текстовые каналы</label>
+              <label className="text-xs text-white/30 uppercase tracking-widest">Текстовые</label>
               <button
-                className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-[#616366]/70 font-semibold text-lg "
+                className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-white/[0.08] hover:text-white font-semibold text-lg"
                 onClick={() => setShowWidgetCreateChat(true)}
               >
                 +
@@ -73,24 +54,20 @@ const Home = () => {
             </div>
             <div className="overflow-y-auto flex flex-col flex-1 min-h-0">
               {textChats.map((chat) => (
-                <div key={chat.name} >
-                  <TextChat
-                    type="server"
-                    chatId={chat.chatId}
-                    onJoinChat={joinChat}
-                    name={chat.name}
-                    disabled={activeChatId === chat.chatId}
-                  />
+                <div key={chat.name}>
+                  <TextChat type="server" chatId={chat.chatId} onJoinChat={joinChat} name={chat.name} disabled={activeChatId === chat.chatId} />
                 </div>
               ))}
             </div>
-
           </div>
+
+          <div className="w-full h-px bg-white/[0.05] my-1" />
+
           <div className="flex flex-col flex-1 min-h-0">
             <div className="flex justify-center items-center gap-1 mb-1 shrink-0">
-              <label className="text-xs flex justify-center text-[#a3a2a3]">Голосовые каналы</label>
+              <label className="text-xs text-white/30 uppercase tracking-widest">Голосовые</label>
               <button
-                className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-[#616366]/70 font-semibold text-lg "
+                className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-white/[0.08] hover:text-white font-semibold text-lg"
                 onClick={() => setShowWidgetCreateChat(true)}
               >
                 +
@@ -99,12 +76,7 @@ const Home = () => {
             <div className="overflow-y-auto flex flex-col flex-1 min-h-0">
               {voiceChats.map((chat) => (
                 <div key={chat.name} className="mb-1">
-                  <VoiceChat
-                    chatId={chat.chatId}
-                    onJoinChat={joinVoiceChat}
-                    name={chat.name}
-                    disabled={activeChatId === chat.chatId}
-                  />
+                  <VoiceChat chatId={chat.chatId} onJoinChat={joinVoiceChat} name={chat.name} disabled={activeChatId === chat.chatId} />
                 </div>
               ))}
             </div>
@@ -117,61 +89,42 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className='relative flex flex-col flex-[0_0_70%] min-w-0 bg-[#383a40] rounded-xl'>
-        <div className='flex-1 flex flex-col overflow-y-auto bg-[#313338]/70 rounded-2xl mb-1 border border-[#4e4f51]/20 p-4'>
+
+      {/* Chat area */}
+      <div className={`relative flex flex-col flex-[0_0_70%] min-w-0 ${panel} rounded-xl`}>
+        <div className='flex-1 flex flex-col overflow-y-auto bg-black/80 rounded-xl mb-1 border border-white/[0.04] p-4'>
           {currentMessages.map((msg, index) => (
-            <div key={index} className={'self-start flex items-center gap-[10px] mb-3 max-w-[70%]'}>
-              <Message
-                userAvatar={msg.userAvatar}
-                type={msg.type}
-                message={msg.message}
-                userName={msg.userName}
-                renderTime={msg.renderTime}
-              />
+            <div key={index} className='self-start flex items-center gap-[10px] mb-3 max-w-[70%]'>
+              <Message userAvatar={msg.userAvatar} type={msg.type} message={msg.message} userName={msg.userName} renderTime={msg.renderTime} />
             </div>
           ))}
           <div ref={typingRef} className="flex justify-end mt-auto">
             {typingUsers.length > 0 && (
-              <div className="bg-[#4e4f51]/90 backdrop-blur-sm rounded-2xl px-4 py-2 text-sm text-[#a3a2a3] animate-pulse w-fit">
-                {typingUsers.length === 1 ? (
-                  <>✍️ {typingUsers[0]} печатает...</>
-                ) : (
-                  <>✍️ {typingUsers.length} человека печатают...</>
-                )}
+              <div className="bg-white/[0.06] backdrop-blur-sm rounded-2xl px-4 py-2 text-sm text-[#a3a2a3] animate-pulse w-fit">
+                {typingUsers.length === 1 ? <>✍️ {typingUsers[0]} печатает...</> : <>✍️ {typingUsers.length} человека печатают...</>}
               </div>
             )}
           </div>
           <div ref={messagesEndRef} />
         </div>
-        {/* <div className="flex justify-end mb-1">
-          <button className="bg-[#5b5c5f]/90 border border-[#6d7275]/40 rounded-md text-[#a3a2a3] px-3 py-1 transition-colors hover:bg-[#616366] mr-1 text-sm" onClick={() => {
-          }}> 
-            🗑️ Очистить чат
-          </button>
-        </div> */}
-        <form className='flex gap-3 p-4 bg-[#353536]/80 rounded-2xl border border-[#e0d6ff]/10' onSubmit={handleSubmit}>
+
+        <form className='flex gap-3 p-3 bg-transparent' onSubmit={handleSubmit}>
           <input
             type='text'
-            className='flex-1 px-4 py-3 bg-[#292929]/70 border border-[#6d7275]/40 rounded-xl text-[#a3a2a3] text-base focus:outline-none focus:border-[#6d7275] focus:ring-2 focus:ring-[#6d7275]/30 placeholder:text-[#a3a2a3]/50'
+            className='flex-1 px-4 py-3 bg-black/60 border border-white/[0.08] rounded-xl text-[#a3a2a3] text-base focus:outline-none focus:border-white/20 transition-colors placeholder:text-[#a3a2a3]/40'
             value={message}
             onChange={(e) => {
               const newValue = e.target.value;
               setMessage(newValue);
-              if (newValue === "") {
-                stopTypingSocket();
-              } else {
-                sendTypingSocket();
-              }
+              if (newValue === "") stopTypingSocket();
+              else sendTypingSocket();
             }}
-            onBlur={() => {
-              if (message === "") return;
-              stopTypingSocket();
-            }}
+            onBlur={() => { if (message === "") return; stopTypingSocket(); }}
             placeholder='Введите сообщение'
           />
           <button
             type="submit"
-            className='px-6 py-3 bg-gradient-to-br from-[#616366] to-[#6d7275] text-white rounded-xl border border-[#6d7275]/30 flex items-center justify-center transition-transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed'
+            className='px-6 py-3 bg-white/[0.08] border border-white/[0.08] text-[#a3a2a3] rounded-xl flex items-center justify-center transition-all hover:bg-white/[0.14] hover:text-white hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed'
             disabled={!message.trim() && !isConnected}
             title="Отправить"
           >
@@ -181,15 +134,14 @@ const Home = () => {
           </button>
         </form>
       </div>
-      <div className="flex flex-1 shrink-0 flex-col gap-5 rounded-xl bg-[#2b2d31] p-4 min-h-0">
+
+      {/* Members sidebar */}
+      <div className={`flex flex-1 shrink-0 flex-col rounded-xl ${panel} p-4 min-h-0`}>
+        <span className="text-xs text-white/30 uppercase tracking-widest mb-3 text-center">Участники</span>
         <div className="flex-col">
           {serverMembers.map(member => (
-            <div className="" key={member.id}>
-              <Member
-                id={member.id}
-                name={member.name}
-                avatar={member.avatar}
-              />
+            <div key={member.id}>
+              <Member id={member.id} name={member.name} avatar={member.avatar} />
             </div>
           ))}
         </div>

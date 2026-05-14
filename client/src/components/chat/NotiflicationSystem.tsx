@@ -17,7 +17,7 @@ const NotiflicationSystem = ({ type, message, onClose }: NotificationSystemProps
 
   return (
     <div 
-      className={`max-w-[350px] w-full p-4 rounded-xl border-4 shadow-2xl transition-all duration-300 animate-in fade-in slide-in-from-right-5 ${typeClasses[type]}`}
+      className={`max-w-[350px] w-full p-4 rounded-xl border shadow-2xl backdrop-blur-sm transition-all duration-300 animate-in fade-in slide-in-from-right-5 ${typeClasses[type]}`}
     >
       <div className="flex items-center justify-between mb-2">
         <div className="text-xs font-bold uppercase tracking-wider">

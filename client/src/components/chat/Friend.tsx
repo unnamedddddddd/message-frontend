@@ -12,9 +12,9 @@ const Friend = ({id, friendId, avatar, name, online, disabled, onJoinChat }: Fri
   <button 
     disabled={disabled}
     onClick={handleJoin}
-    className="group mb-5 flex items-center w-fit p-2 bg-[#353536]/70 border border-[#6d7275]/40 rounded-xl transition-all duration-200 
-              hover:bg-[#414243]/90 active:bg-[#4e4f51]/90 
-              disabled:opacity-60 disabled:cursor-not-allowed disabled:grayscale-[0.5]"
+    className="group mb-3 flex items-center w-full p-2 bg-black/30 border border-white/[0.05] rounded-xl transition-all duration-200
+              hover:bg-white/[0.06] hover:border-white/[0.09] active:bg-white/[0.04]
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:grayscale-[0.4]"
     title={name}
   >
     <div className="relative">
@@ -23,7 +23,7 @@ const Friend = ({id, friendId, avatar, name, online, disabled, onJoinChat }: Fri
         alt={name}
         className="w-12 h-12 rounded-[15px] border border-[#6d7275]/30 object-cover" 
       />
-      <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full ring-2 ring-[#353536] ${
+      <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full ring-2 ring-black/60 ${
         online === true ? 'bg-green-500' : 
         // online === 'idle' ? 'bg-yellow-500' : 
         'bg-gray-500'

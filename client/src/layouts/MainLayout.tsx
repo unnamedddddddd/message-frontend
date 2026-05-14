@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 const MainLayout = () => {
   return (
    <SocketProvider>
-      <div className="flex h-screen bg-[#111214] p-2 min-w-[768px]">
+      <div className="flex h-screen bg-transparent p-2 min-w-[768px]">
         <ServerList />
         
         <div className="flex flex-col flex-1 overflow-hidden px-2 gap-2">

@@ -12,10 +12,10 @@ const Message = ({message, userName, userAvatar, type, renderTime}: MessageProps
         className="w-8 h-8 rounded-full object-cover shrink-0"
       />
       <div className={`flex flex-col items-start`}>
-        <span className={`text-xs mb-1 ${isMyMessage ? 'text-blue-400' : 'text-red-400'}`}>
+        <span className={`text-xs mb-1 ${isMyMessage ? 'text-white' : 'text-[#a3a2a3]'}`}>
           {userName}
         </span>
-        <div className={`px-3 py-2 rounded-2xl max-w-xs ${isMyMessage ? 'bg-[#5865f2]' : 'bg-[#1e1f22]'}`}>
+        <div className={`px-3 py-2 rounded-2xl max-w-xs border ${isMyMessage ? 'bg-white/[0.1] border-white/[0.1]' : 'bg-black/50 border-white/[0.06]'}`}>
           <span className="text-white text-sm break-words">{message}</span>
         </div>
         <span className="text-[10px] text-[#a3a2a3] mt-1">{renderTime}</span>
