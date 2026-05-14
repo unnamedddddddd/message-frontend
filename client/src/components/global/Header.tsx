@@ -55,9 +55,9 @@ const Header = () => {
   }, [isOpen]);
 
   return (
-    <header className="h-10 bg-[#1e1f22] flex items-center justify-between px-4 rounded-xl z-50" >
+    <header className="h-10 bg-[#0d0d0f]/75 backdrop-blur-md border border-white/[0.06] flex items-center justify-between px-4 rounded-xl z-50">
       <div>
-        <span>Droksid</span>
+        <span className="font-bold text-sm tracking-[0.14em] uppercase text-white/60">Droksid</span>
       </div>
       <div className="flex items-center gap-4">
         <div className="relative">
@@ -70,7 +70,7 @@ const Header = () => {
             </svg>
           </button>
           {isVisible && (
-            <div className={`${isOpen ? 'notification-animation-open' : 'notification-animation-close'} absolute right-0 top-11 w-96 bg-[#2a2a2b] rounded-2xl shadow-xl p-3 flex-col gap-2`}>
+            <div className={`${isOpen ? 'notification-animation-open' : 'notification-animation-close'} absolute right-0 top-11 w-96 bg-[#0d0d0f]/90 backdrop-blur-xl border border-white/[0.07] rounded-2xl shadow-2xl p-3 flex-col gap-2`}>
               {notifications.length === 0 ? (
                 <div className="flex justify-center items-center flex-col p-2">
                   <div className="">

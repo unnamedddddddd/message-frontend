@@ -15,65 +15,53 @@ const ForgotPassword = () => {
       alert('Пароли не совпадают');
       return;
     }
-    
     const data = await forgotPassword(login, password);
-    
     if (!data.success) {
       alert(`Ошибка: ${data.message}`);
       return;
     }
     alert('Пароль успешно изменён');
     navigate('/login');
-  }
+  };
 
-  const inputClass = "bg-[#292929] border-none rounded-[12px] text-[16px] p-[14px_16px] transition-all duration-500 shadow-[inset_#1717188a_2px_2px_12px] text-[#a3a2a3] placeholder:opacity-60 focus:outline-none focus:shadow-[inset_#504f4f8a_2px_2px_12px]";
-  const labelClass = "p-[5px] text-[#a3a2a3]";
+  const inputClass = "bg-black/60 border border-white/[0.08] rounded-xl text-[16px] p-[14px_16px] text-[#a3a2a3] placeholder:text-[#a3a2a3]/40 focus:outline-none focus:border-white/20 transition-colors";
+  const labelClass = "p-[5px] text-[#a3a2a3]/80 text-sm";
 
   return (
-    <div className="min-h-screen p-5">
-      <div className="flex justify-center items-center min-h-[calc(100vh-80px)] w-full"> 
-        <form 
-          className="max-w-[400px] w-full bg-[#353536]/70 p-8 flex flex-col rounded-lg shadow-[0_4px_20px_rgba(23,23,24,0.54)] gap-[15px] text-[14px]" 
+    <div className="min-h-screen p-5 flex justify-center items-center">
+      <div className="max-w-[400px] w-full">
+        <form
+          className="bg-[#0d0d0f]/80 backdrop-blur-xl border border-white/[0.07] p-8 flex flex-col rounded-2xl gap-4 shadow-[0_32px_64px_rgba(0,0,0,0.5)]"
           onSubmit={handleForm}
         >
-          <div className="flex flex-col w-full gap-4">
-            
-            <div className="flex flex-col">
-              <label className={labelClass}>Login</label>
-              <input 
-                type="text" 
-                className={inputClass} 
-                placeholder="Login"
-                onChange={(e) => setLogin(e.target.value.trim())}
-              />
-            </div>
+          <h1 className="text-2xl font-bold text-white tracking-tight">Восстановить пароль</h1>
 
-            <div className="flex flex-col">
-              <label className={labelClass}>New Password</label>
-              <input 
-                type="password" 
-                className={inputClass} 
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value.trim())}
-              />
-            </div>    
-
-            <div className="flex flex-col">
-              <label className={labelClass}>Repeat new Password</label>
-              <input 
-                type="password" 
-                className={inputClass} 
-                placeholder="Password"
-                onChange={(e) => setRepeatPassword(e.target.value.trim())}
-              />
-            </div>          
-         </div> 
-
-         <div className="flex justify-center mt-2">
-            <button className="bg-[#292929] border-none p-[10px] w-full rounded-lg text-[#a3a2a3] transition-colors duration-300 text-[16px] font-semibold hover:bg-[#434548]">
-              change password
-            </button>
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>Login</label>
+            <input type="text" className={inputClass} placeholder="Введите логин" onChange={(e) => setLogin(e.target.value.trim())} />
           </div>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>Новый пароль</label>
+            <input type="password" className={inputClass} placeholder="Введите пароль" onChange={(e) => setPassword(e.target.value.trim())} />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass}>Повторите пароль</label>
+            <input type="password" className={inputClass} placeholder="Повторите пароль" onChange={(e) => setRepeatPassword(e.target.value.trim())} />
+          </div>
+
+          <button className="bg-white/[0.08] border border-white/[0.1] p-[10px] w-full rounded-lg text-[#a3a2a3] font-semibold hover:bg-white/[0.14] hover:text-white transition-all">
+            change password
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate('/login')}
+            className="bg-transparent border border-white/25 p-3 rounded-full text-[#a3a2a3] font-semibold hover:scale-105 hover:border-white/50 hover:text-white active:scale-95 transition-all"
+          >
+            Назад к входу
+          </button>
         </form>
       </div>
     </div>

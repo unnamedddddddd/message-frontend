@@ -45,7 +45,7 @@ const Notifications = ({friendAvatar, friendLogin, friendId, serverId, senderLog
             </div>     
             <div className="flex gap-2 items-center">
               <button 
-                className="p-2 rounded-2xl bg-[#353536]/70 border border-[#6d7275]/40 transition-all duration-200 hover:bg-[#414243]/90"
+                className="p-2 rounded-2xl bg-white/[0.05] border border-white/[0.08] transition-all duration-200 hover:bg-white/[0.1]"
                 onClick={() => handleUpdateStatusInviteServer('accepted')}
               >
                 ✔️
@@ -69,7 +69,7 @@ const Notifications = ({friendAvatar, friendLogin, friendId, serverId, senderLog
           <span className="text-sm text-gray-400 self-end mb-auto">{createdAt}</span>
            <div className="flex gap-2 items-center">
               <button 
-                className="p-2 rounded-2xl bg-[#353536]/70 border border-[#6d7275]/40 transition-all duration-200 hover:bg-[#414243]/90"
+                className="p-2 rounded-2xl bg-white/[0.05] border border-white/[0.08] transition-all duration-200 hover:bg-white/[0.1]"
                 onClick={() => handleUpdateStatusRequestFriend('accepted')}
               >
                 ✔️
