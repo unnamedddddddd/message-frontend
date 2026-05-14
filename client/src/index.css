@@ -117,16 +117,16 @@
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(41, 41, 41, 0.3);
+  background: transparent
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(109, 114, 117, 0.5);
-  border-radius: 4px;
+  background: rgba(70, 71, 71, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:hover {

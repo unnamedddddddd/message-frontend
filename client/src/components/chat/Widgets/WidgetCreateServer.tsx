@@ -65,10 +65,10 @@ const WidgetCreateServer = ({ onClose }: CreateServerProps) => {
         <div className="flex flex-col items-center gap-4">
           <label 
             htmlFor="server-avatar-upload" 
-            className="w-full h-32 border-2 border-dashed border-[#1717188a] rounded-xl flex items-center justify-center cursor-pointer hover:border-[#ced0d8] hover:bg-[#7289da]/10 transition-all group overflow-hidden"
+            className="w-full h-64 border-2 border-dashed border-[#1717188a] rounded-full flex items-center justify-center cursor-pointer hover:border-[#ced0d8] hover:bg-[#7289da]/10 transition-all group overflow-hidden"
           >
             {serverAvatarURL ? (
-              <img src={serverAvatarURL} alt="Preview" className="w-full h-full object-cover" />
+              <img src={serverAvatarURL} alt="Preview" className="w-full h-full object-cover rounded-full" />
             ) : (
               <span className="text-[#b9bbbe] group-hover:text-white">Поставить аватар</span>
             )}

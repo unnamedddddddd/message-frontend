@@ -31,7 +31,7 @@ const useUser = () => {
     e.preventDefault();
 
     if (!login || !password) {
-      addNotification('error', 'Поле обязательное');
+      addNotification('warning', 'Поле обязательное');
       return;
     }
 

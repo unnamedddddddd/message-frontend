@@ -38,7 +38,7 @@ const Home = () => {
     joinVoiceChat,
     // leaveVoiceChat,
   } = useVoiceChat()
-  
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -59,49 +59,56 @@ const Home = () => {
   return (
     <div className="flex h-full gap-2 overflow-x-hidden">
       <div className="flex flex-col w-[15%] bg-[#2b2d31] rounded-xl p-4 overflow-y-auto shrink-0">
-        <div className="h-1/2">
-          <div className="flex justify-center items-center gap-1 mb-1">
-            <label className="text-xs flex justify-center text-[#a3a2a3]">Текстовые каналы</label>
-            <button
-              className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-[#616366]/70 font-semibold text-lg "
-              onClick={() => setShowWidgetCreateChat(true)}
-            >
-              +
-            </button>
-          </div>
-          {textChats.map((chat) => (
-            <div key={chat.name}>
-              <TextChat
-                type="server"
-                chatId={chat.chatId}
-                onJoinChat={joinChat}
-                name={chat.name}
-                disabled={activeChatId === chat.chatId}
-              />
-            </div>
-          ))}
+        <div className="gap-2 flex flex-col h-svh p-2">
 
-        </div>
-        <div className="h-1/2 mt-4">
-          <div className="flex justify-center items-center gap-1 mb-1">
-            <label className="text-xs flex justify-center text-[#a3a2a3]">Голосовые каналы</label>
-            <button
-              className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-[#616366]/70 font-semibold text-lg "
-              onClick={() => setShowWidgetCreateChat(true)}
-            >
-              +
-            </button>
-          </div>
-          {voiceChats.map((chat) => (
-            <div key={chat.name} className="mb-1">
-              <VoiceChat
-                chatId={chat.chatId}
-                onJoinChat={joinVoiceChat}
-                name={chat.name}
-                disabled={activeChatId === chat.chatId}
-              />
+          <div className="flex flex-col flex-1 min-h-0">
+            <div className="flex justify-center items-center gap-1 mb-1 shrink-0">
+              <label className="text-xs flex justify-center text-[#a3a2a3]">Текстовые каналы</label>
+              <button
+                className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-[#616366]/70 font-semibold text-lg "
+                onClick={() => setShowWidgetCreateChat(true)}
+              >
+                +
+              </button>
             </div>
-          ))}
+            <div className="overflow-y-auto flex flex-col flex-1 min-h-0">
+              {textChats.map((chat) => (
+                <div key={chat.name} >
+                  <TextChat
+                    type="server"
+                    chatId={chat.chatId}
+                    onJoinChat={joinChat}
+                    name={chat.name}
+                    disabled={activeChatId === chat.chatId}
+                  />
+                </div>
+              ))}
+            </div>
+
+          </div>
+          <div className="flex flex-col flex-1 min-h-0">
+            <div className="flex justify-center items-center gap-1 mb-1 shrink-0">
+              <label className="text-xs flex justify-center text-[#a3a2a3]">Голосовые каналы</label>
+              <button
+                className="text-[#a3a2a3] px-1 rounded-full transition-colors hover:bg-[#616366]/70 font-semibold text-lg "
+                onClick={() => setShowWidgetCreateChat(true)}
+              >
+                +
+              </button>
+            </div>
+            <div className="overflow-y-auto flex flex-col flex-1 min-h-0">
+              {voiceChats.map((chat) => (
+                <div key={chat.name} className="mb-1">
+                  <VoiceChat
+                    chatId={chat.chatId}
+                    onJoinChat={joinVoiceChat}
+                    name={chat.name}
+                    disabled={activeChatId === chat.chatId}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className={`widget-overlay ${showWidgetCreateChat ? 'visible' : ''}`} onClick={() => setShowWidgetCreateChat(false)}>

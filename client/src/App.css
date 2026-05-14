@@ -156,7 +156,6 @@ body {
   }
 }
 
-
 .blue-circle-left {
   animation: blue-circle-left-animate 8s ease-in-out infinite alternate;
 }
@@ -196,4 +195,30 @@ body {
   0% { transform: translate(0, 0); }
   50% { transform: translate(-20px, 30px); }
   100% { transform: translate(-50px, 10px); }
+}
+
+.slide-out-left {
+  animation: slideOutLeft 0.3s ease-in-out forwards;
+}
+
+.slide-out-right {
+  animation: slideOutRight 0.3s ease-in-out forwards;
+}
+
+@keyframes slideOutLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }

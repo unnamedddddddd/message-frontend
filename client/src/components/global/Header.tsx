@@ -57,7 +57,7 @@ const Header = () => {
   return (
     <header className="h-10 bg-[#1e1f22] flex items-center justify-between px-4 rounded-xl z-50" >
       <div>
-        <span>Клон ДС</span>
+        <span>Droksid</span>
       </div>
       <div className="flex items-center gap-4">
         <div className="relative">

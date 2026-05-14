@@ -1,51 +1,47 @@
 import { createUser } from '@/api/user';
 import { useState } from 'react';
+import { useNotification } from '../chat/useNotification';
 
-interface User {
-  userLogin: string;
-  userPassword: string;
-}
+const useCreateUser = () => {
+  const [createLogin, setCreateLogin] = useState('');
+  const [createPassword, setCreatePassword] = useState('');
+  const [repeatcreatePassword, setRepeatCreatePassword] = useState('');
+  const { addNotification } = useNotification()
 
-interface CreateUserResponse {
-  success: boolean;
-  message?: string;
-  error?: string;
-}
-
-export const useCreateUser = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
-
-  const create = async (user: User): Promise<CreateUserResponse> => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-
+  const handleCreateUserForm = async () => {
     try {
-      const response = await createUser(user.userLogin, user.userPassword);
 
-      if (response.success) {
-        setSuccess(true);
-        return { success: true };
-      } else {
-        const errorMessage = response.message || 'Failed to create user';
-        setError(errorMessage);
-        return { success: false, error: errorMessage };
+      if (!createLogin || !createPassword || !repeatcreatePassword) {
+        addNotification('warning', 'Поле обязательное');
+        return;
       }
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
-      setError(errorMessage);
-      return { success: false, error: errorMessage };
-    } finally {
-      setLoading(false);
+
+      if (createPassword !== repeatcreatePassword) {
+        addNotification('warning', 'Пароли не совпадают');
+        return;
+      }
+
+      const data = await createUser(createLogin, createPassword);
+      if (!data.success) {
+        addNotification('error', data.message);
+        return;
+      }
+      addNotification('success', 'Пользователь создан успешно');
+      return true;
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return {
-    create,
-    loading,
-    error,
-    success
+    createLogin,
+    createPassword,
+    repeatcreatePassword,
+    setCreateLogin,
+    setCreatePassword,
+    setRepeatCreatePassword,
+    handleCreateUserForm,
   };
 };
+
+export default useCreateUser;

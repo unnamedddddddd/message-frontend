@@ -19,7 +19,7 @@ const Server = ({ serverId, avatar, name, disabled }: ServerProps) => {
     <button 
       disabled={disabled}
       onClick={handleJoin}
-      className="group mb-5 w-fit p-2 rounded-xl transition-all duration-200 
+      className="group w-fit p-2 rounded-xl transition-all duration-200 
               hover:bg-[#414243]/90 active:bg-[#4e4f51]/90 
                 disabled:opacity-60 disabled:cursor-not-allowed disabled:grayscale-[0.5]"
       title={name}
