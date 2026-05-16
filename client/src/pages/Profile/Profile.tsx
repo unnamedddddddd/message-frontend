@@ -5,6 +5,7 @@ import { getUserProfileDetails } from "@/api/user";
 import { useCallback, useEffect, useState } from "react";
 import type { ProfileDetailsProps } from "@/types";
 import { WidgetEditProfile } from "@/components/chat/Widgets";
+import { createPortal } from "react-dom";
 
 const EditIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" className="text-white/30 hover:text-white/80 transition-colors">
@@ -84,11 +85,12 @@ const ProfileForm = () => {
             {detailRow('Статус', userDetails?.status)}
             {detailRow('Обо мне', userDetails?.about_me)}
 
-            <div className={`widget-overlay ${showWidgetEditProfile ? 'visible' : ''}`} onClick={() => setShowWidgetEditProfile(false)}>
+             {createPortal(<div className={`widget-overlay ${showWidgetEditProfile ? 'visible' : ''}`} onClick={() => setShowWidgetEditProfile(false)}>
               <div className="widget-window-edit-profile" onClick={e => e.stopPropagation()}>
                 <WidgetEditProfile onClose={handleCloseWidgetEditProfile} />
               </div>
-            </div>
+            </div>, 
+            document.body)}
           </div>
         </div>
       </div>

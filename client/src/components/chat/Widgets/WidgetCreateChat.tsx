@@ -32,7 +32,7 @@ const WidgetCreateChat = ({ onClose, serverId }: CreateChatProps) => {
   const radioInputClass = "appearance-none w-[18px] h-[18px] border-2 border-white/20 rounded-full cursor-pointer transition-all duration-200 checked:bg-white/10 checked:border-white/40 checked:shadow-[inset_0_0_0_3px_rgba(0,0,0,0.6)]";
 
   return (
-    <div className="p-8 flex flex-col bg-[#0d0d0f]/90 backdrop-blur-xl border border-white/[0.07] rounded-2xl shadow-[0_32px_64px_rgba(0,0,0,0.6)] max-w-[400px] w-full gap-5">
+    <div className=" p-8 flex flex-col bg-[#0d0d0f]/90 backdrop-blur-xl border border-white/[0.07] rounded-2xl shadow-[0_32px_64px_rgba(0,0,0,0.6)] max-w-[400px] w-full gap-5">
       <div className="relative w-full flex items-center justify-center">
         <h3 className="text-white/60 font-semibold text-sm uppercase tracking-widest">Создать чат</h3>
         <button onClick={onClose} className="absolute right-0 text-white/30 hover:text-white transition-colors text-xl leading-none">✕</button>
