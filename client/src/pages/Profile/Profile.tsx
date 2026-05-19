@@ -52,8 +52,12 @@ const ProfileForm = () => {
 
   return (
     <div className="h-full flex items-center justify-center p-8">
-      <div className="w-full max-w-2xl bg-[#0d0d0f]/80 backdrop-blur-xl border border-white/[0.07] rounded-2xl overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.5)]">
+      <div className="absolute pink-circle-bottom bg-[#ff99c9] w-[15vw] h-[15vw] rounded-full top-[10%] left-[70%] blur-3xl" />
+      <div className="absolute purple-circle-right bg-[#c1bddb] w-[12vw] h-[12vw] rounded-full right-[65%] top-[15%] blur-3xl" />
+      <div className="absolute blue-circle-right bg-[#a2c7e5] w-[10vw] h-[10vw] rounded-full left-[80%] bottom-[20%] blur-3xl" />
+      <div className="absolute aqua-circle-left-animate bg-[#58fcec] w-[12vw] h-[12vw] rounded-full right-[70%] bottom-[10%] blur-3xl" />
 
+      <div className="w-full max-w-2xl  bg-transparent backdrop-blur-xl border border-white/[0.07] rounded-2xl overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.5)]">
         <div className="h-24 bg-white/[0.04] border-b border-white/[0.05]" />
 
         <div className="px-6 pb-6">
@@ -85,12 +89,12 @@ const ProfileForm = () => {
             {detailRow('Статус', userDetails?.status)}
             {detailRow('Обо мне', userDetails?.about_me)}
 
-             {createPortal(<div className={`widget-overlay ${showWidgetEditProfile ? 'visible' : ''}`} onClick={() => setShowWidgetEditProfile(false)}>
+            {createPortal(<div className={`widget-overlay ${showWidgetEditProfile ? 'visible' : ''}`} onClick={() => setShowWidgetEditProfile(false)}>
               <div className="widget-window-edit-profile" onClick={e => e.stopPropagation()}>
                 <WidgetEditProfile onClose={handleCloseWidgetEditProfile} />
               </div>
-            </div>, 
-            document.body)}
+            </div>,
+              document.body)}
           </div>
         </div>
       </div>

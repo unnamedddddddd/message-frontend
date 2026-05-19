@@ -8,21 +8,19 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-image: linear-gradient(
-    to right top,
-    #000000,  
-    #0c0c0c,
-    #161617,
-    #1f2021,
-    #28292b,
-    #313335,
-    #3a3c3e,
-    #434548,
-    #444749,
-    #45494b,
-    #464b4c,
-    #474d4d
-  );
+  background-image: linear-gradient(to right top,
+      #0a0a0a,
+      #0c0c0c,
+      #0e0e0f,
+      #101011,
+      #121213,
+      #141415,
+      #161617,
+      #181819,
+      #1a1a1b,
+      #1c1c1d,
+      #1e1e1f,
+      #202021);
   background-size: 400% 400%;
   color: #a3a2a3;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -35,10 +33,12 @@ body {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
 
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -49,7 +49,7 @@ body {
   border: 2px solid rgba(0, 0, 0, 0.5);
   padding: 20px;
   border-radius: 30%;
-  transition: opacity 0.3s ease, visibility 0.3s ease ;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .notification-item {
@@ -63,6 +63,7 @@ body {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -75,7 +76,7 @@ body {
   margin-bottom: 10px;
 }
 
-.close-notification-button { 
+.close-notification-button {
   margin-left: auto;
   background-color: transparent;
   border: 0px;
@@ -84,7 +85,7 @@ body {
   cursor: pointer;
 }
 
-.notifications-container { 
+.notifications-container {
   z-index: 1000;
   position: absolute;
   top: 20px;
@@ -95,7 +96,7 @@ body {
 
 .notification-data-container {
   margin-top: -10px;
-} 
+}
 
 .notification-header {
   display: flex;
@@ -115,6 +116,7 @@ body {
     opacity: 0;
     transform: translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -135,6 +137,7 @@ body {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -150,30 +153,47 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+
   to {
     opacity: 0;
     transform: translateY(-10px);
   }
 }
 
-.blue-circle-left {
-  animation: blue-circle-left-animate 8s ease-in-out infinite alternate;
+.purple-circle-right {
+  animation: purple-circle-right-animate 8s ease-in-out infinite alternate;
 }
 
-@keyframes blue-circle-left-animate {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(30px, 20px); }
-  100% { transform: translate(-20px, 40px); }
+@keyframes purple-circle-right-animate {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(30px, 20px);
+  }
+
+  100% {
+    transform: translate(-20px, 40px);
+  }
 }
 
-.red-circle-center {
-  animation: red-circle-animate 10s ease-in-out infinite alternate;
+.aqua-circle-left-animate {
+  animation: aqua-circle-animate 10s ease-in-out infinite alternate;
 }
 
-@keyframes red-circle-animate {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-40px, -20px); }
-  100% { transform: translate(20px, -40px); }
+@keyframes aqua-circle-animate {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-40px, -20px);
+  }
+
+  100% {
+    transform: translate(20px, -40px);
+  }
 }
 
 .blue-circle-right {
@@ -181,20 +201,35 @@ body {
 }
 
 @keyframes blue-circle-right-animate {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(20px, -30px); }
-  100% { transform: translate(-30px, 20px); }
-}
+  0% {
+    transform: translate(0, 0);
+  }
 
+  50% {
+    transform: translate(20px, -30px);
+  }
+
+  100% {
+    transform: translate(-30px, 20px);
+  }
+}
 
 .pink-circle-bottom {
-  animation: blue-circle-right-animate 10s ease-in-out infinite alternate;
+  animation: pink-circle-bottom-animate 10s ease-in-out infinite alternate;
 }
 
-@keyframes pink-circle-bottom {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-20px, 30px); }
-  100% { transform: translate(-50px, 10px); }
+@keyframes pink-circle-bottom-animate {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-20px, 30px);
+  }
+
+  100% {
+    transform: translate(-50px, 10px);
+  }
 }
 
 .slide-out-left {
@@ -209,6 +244,7 @@ body {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-100%);
   }
@@ -218,6 +254,7 @@ body {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(100%);
   }

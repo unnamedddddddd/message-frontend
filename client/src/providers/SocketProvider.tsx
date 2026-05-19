@@ -5,8 +5,9 @@ import { WebSocketChat } from "@/modules";
 import type { MessageProps, OnlineFriendsResponseProps } from "@/types";
 import { formatTime, mapMessages } from "@/utils";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { SignalData } from "simple-peer";
 
-export const SocketProvider = ({children}: {children: ReactNode}) => {
+export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const socketRef = useRef<WebSocketChat | null>(null);
   const [messages, setMessages] = useState<Record<string, MessageProps[]>>({});
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -21,17 +22,17 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
     setTypingUsers(prev => [...new Set([...prev, userName])]);
   };
 
-  const handleStopTyping = ({ userName }: { userName: string }) => {    
+  const handleStopTyping = ({ userName }: { userName: string }) => {
     setTypingUsers(prev => prev.filter(name => name !== userName));
   };
 
-  const handleOnlineFriends = (data: OnlineFriendsResponseProps[]) => {    
+  const handleOnlineFriends = (data: OnlineFriendsResponseProps[]) => {
     setFriendsOnline(data);
   };
 
-  const getMessagesSocketHandler = (newMsg: MessageProps) => { 
-     const roomId = socketRef.current?.socket?.roomId;
-      if (!roomId) return;
+  const getMessagesSocketHandler = (newMsg: MessageProps) => {
+    const roomId = socketRef.current?.socket?.roomId;
+    if (!roomId) return;
 
     const message: MessageProps = {
       type: newMsg.type,
@@ -40,14 +41,14 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
       userAvatar: newMsg.userAvatar,
       renderTime: formatTime(newMsg.renderTime)
     }
-    
+
     setMessages(prev => ({
       ...prev,
       [roomId]: [...(prev[roomId] || []), message]
     }));
     //addNotification('info', `Пришло сообщенение от ${newMsg.userName}`)
   }
-  
+
   const connect = () => {
     if (socketRef.current) {
       return;
@@ -61,24 +62,24 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
       socketRef.current.onOnlineFriends(handleOnlineFriends);
       setIsConnected(true);
     })
-    .catch((err) => {
-      console.error('Ошибка подклчения сокета', err);
-    });
+      .catch((err) => {
+        console.error('Ошибка подклчения сокета', err);
+      });
     socketRef.current.requestOnlineFriends();
   }
-  
+
   const getFriendsSocket = () => {
     socketRef.current?.requestOnlineFriends();
   }
 
   const sendMessage = (message: MessageProps) => {
     const roomId = socketRef.current?.socket?.roomId;
-    
+
     if (!roomId) return;
 
     if (!message) return;
     console.log(message);
-    
+
     socketRef.current?.sendMessage(message.message);
     setMessages(prev => ({
       ...prev,
@@ -93,7 +94,7 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
 
       socketRef.current?.offMessage();
       socketRef.current?.joinTextChat(roomId, userLogin, chatType);
-      
+
       setIsConnectedChat(true);
       setChatType(chatType);
       socketRef.current?.getMessage(getMessagesSocketHandler);
@@ -101,7 +102,7 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
     } catch (error) {
       console.error(error);
     }
-  };  
+  };
 
   const leaveChat = () => {
     if (socketRef.current) {
@@ -110,7 +111,7 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
       setIsConnectedChat(false);
     }
   }
- 
+
   const sendTypingSocket = () => {
     socketRef.current?.sendTyping();
   }
@@ -120,16 +121,52 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
   }
 
   const loadMessagesSocket = async (chatId: number) => {
-    const messageResponse = await getMessages(chatId, chatType); 
+    const messageResponse = await getMessages(chatId, chatType);
     if (!messageResponse.success) return;
-      
+
     const currentUserId = Number(localStorage.getItem("user_id"));
 
-    const mapped = mapMessages(messageResponse.messages, currentUserId)  
+    const mapped = mapMessages(messageResponse.messages, currentUserId)
     setMessages(prev => ({
       ...prev,
       [chatId]: mapped
     }));
+  };
+
+  const joinVoiceSocket = () => {
+    socketRef.current?.joinVoiceChat();
+  };
+
+  const leaveVoiceSocket = () => {
+    socketRef.current?.leaveVoiceChat();
+  };
+
+  const getVoiceParticipants = async () => {
+    return await socketRef.current?.getParticipants();
+  };
+
+  const sendVoiceSignal = (signal: SignalData, targetSocketId: string) => {
+  socketRef.current?.sendVoiceSignalGroup(signal, targetSocketId);
+};
+
+const onVoiceSignal = (handler: (data: { from: string; signal: SignalData }) => void) => {
+  socketRef.current?.getVoiceSignal(handler);
+};
+
+const onUserJoinedVoiceSocket = (handler: (data: { userId: string }) => void) => {
+  socketRef.current?.onUserJoinedVoice(handler);
+};
+
+const onUserLeftVoiceSocket = (handler: (data: { userId: string }) => void) => {
+  socketRef.current?.onUserLeftVoice(handler);
+};
+
+  const offVoiceEvents = () => {
+    socketRef.current?.offVoiceEvents();
+  };
+
+  const getSocketId = () => {
+    return socketRef.current?.getSocketId();
   };
 
   useEffect(() => {
@@ -148,7 +185,7 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
     };
   }, []);
 
-  return ( 
+  return (
     <SocketContext.Provider value={{
       messages,
       isConnected,
@@ -156,6 +193,15 @@ export const SocketProvider = ({children}: {children: ReactNode}) => {
       typingUsers,
       friendsOnline,
       currentServerId,
+      joinVoiceSocket,
+      leaveVoiceSocket,
+      getVoiceParticipants,
+      sendVoiceSignal,
+      onVoiceSignal,
+      onUserJoinedVoiceSocket,
+      onUserLeftVoiceSocket,
+      offVoiceEvents,
+      getSocketId,
       setCurrentServerId,
       sendTypingSocket,
       stopTypingSocket,
