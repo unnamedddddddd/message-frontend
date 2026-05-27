@@ -1,5 +1,5 @@
 import { createUser } from '@/api/user';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, type FormEvent } from 'react';
 import { useNotification } from '../chat/useNotification';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,8 @@ const useCreateUser = () => {
   const { addNotification } = useNotification();
   const navigate = useNavigate();
 
-  const handleCreateUserForm = useCallback(() => {
+  const handleCreateUserForm = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!createLogin || !createPassword || !repeatcreatePassword) {
       addNotification('warning', 'Поле обязательное');
       return;
@@ -31,9 +32,11 @@ const useCreateUser = () => {
     const verifiedEmail = sessionStorage.getItem('verifiedEmail');
     const savedLogin = sessionStorage.getItem('createLogin');
     const savedPassword = sessionStorage.getItem('createPassword');
+
     sessionStorage.removeItem('verifiedEmail');
     sessionStorage.removeItem('createLogin');
     sessionStorage.removeItem('createPassword');
+
     if (verifiedEmail && savedLogin && savedPassword) {
       const data = await createUser(savedLogin, savedPassword, verifiedEmail);
       if (!data.success) {
