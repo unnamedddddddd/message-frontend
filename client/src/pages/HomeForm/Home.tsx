@@ -118,7 +118,7 @@ const Home = () => {
           <div ref={typingRef} className="flex justify-end mt-auto">
             {typingUsers.length > 0 && (
               <div className="bg-white/[0.06] backdrop-blur-sm rounded-2xl px-4 py-2 text-sm text-[#a3a2a3] animate-pulse w-fit">
-                {typingUsers.length === 1 ? <>✍️ {typingUsers[0]} печатает...</> : <>✍️ {typingUsers.length} человека печатают...</>}
+                {typingUsers.length === 1 ? <>{typingUsers[0]} печатает...</> : <>{typingUsers.length} человека печатают...</>}
               </div>
             )}
           </div>

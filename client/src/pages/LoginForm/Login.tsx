@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useCreateUser, useUser } from '@/hooks/user';
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 
 const Login = () => {
   const {
@@ -23,14 +23,6 @@ const Login = () => {
   } = useCreateUser();
 
   const [isLogin, setIsLogin] = useState(true);
-
-  const handleCreateAnimate = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const success = await handleCreateUserForm();
-    if (success) {
-      setIsLogin(true);
-    }
-  };
 
   const inputClass = "bg-black/60 border border-white/[0.08] rounded-xl text-[16px] p-[14px_16px] text-[#a3a2a3] placeholder:text-[#a3a2a3]/40 focus:outline-none focus:border-white/20 transition-colors";
   const labelClass = "p-[5px] text-[#a3a2a3]/80 text-sm";
@@ -108,7 +100,7 @@ const Login = () => {
         <form
           className="absolute right-0 top-0 w-1/2 h-full bg-black/70 backdrop-blur-sm p-8 flex flex-col gap-4 overflow-y-auto transition-all duration-500 border-l border-white/[0.04]"
           style={{ transform: isLogin ? 'translateX(100%)' : 'translateX(0)' }}
-          onSubmit={handleCreateAnimate}
+          onSubmit={handleCreateUserForm}
         >
           <h1 className="text-2xl font-bold text-white tracking-tight">Создать аккаунт</h1>
 

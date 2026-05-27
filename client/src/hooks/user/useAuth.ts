@@ -21,7 +21,7 @@ const useAuth = () => {
         return;
       }
 
-      const data: ProfileResponse = await getUserProfile(Number(userId));
+      const data: ProfileResponse = await getUserProfile();
       if (!data.success) {
         console.log('Пользователь не авторизован:', data.message);
         navigate('/login');
@@ -31,7 +31,6 @@ const useAuth = () => {
       setUserLogin(data.user_login);      
       setUserAvatar(data.user_avatar);
       setUserEmail(data.user_email);
-      setisVerified(data.is_verified);
       
       return userLogin;
     } catch (error) {

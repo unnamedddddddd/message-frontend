@@ -1,11 +1,11 @@
 import { SERVER_URL } from "../../../config";
 
-const confirmCode = async (userId: number, userCode: string) => {
-  const request = await fetch(`${SERVER_URL}/api/users/${userId}/confirmCode`, {
+const confirmCode = async (userCode: string, userEmail: string) => {
+  const request = await fetch(`${SERVER_URL}/api/users/confirmCode`, {
     method: 'POST',
     headers:{'Content-Type': 'application/json'},
     credentials: 'include',
-    body: JSON.stringify({userCode})
+    body: JSON.stringify({userCode, userEmail})
 
   });
 

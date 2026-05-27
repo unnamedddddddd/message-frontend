@@ -19,6 +19,8 @@ const useUser = () => {
       navigate('/home');
     }
   } catch(error) {
+    console.log(123);
+    
     console.error(error);
   }
 }, [navigate]); 

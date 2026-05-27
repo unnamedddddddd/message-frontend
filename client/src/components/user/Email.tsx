@@ -2,11 +2,11 @@ import { useAuth } from "@/hooks/user";
 import { Link } from 'react-router-dom';
 
 const Email = () => {
-  const { userEmail, isVerified } = useAuth();  
-
+  const { userEmail } = useAuth();  
+  
   return (
     <div className="text-[#a3a2a3] text-[16px]"> 
-      {isVerified ? (
+      {userEmail ? (
         <span className="text-white">Email: <span>{userEmail}</span></span>
       ) : (
         <div className="flex items-center gap-2">

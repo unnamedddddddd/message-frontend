@@ -1,40 +1,15 @@
-import { useState, type FormEvent } from 'react';
-import { useNavigate } from "react-router-dom";
-import { confirmCode, confirmEmail } from '@/api/user/ConfirmEmail';
-import { useNotification } from '@/hooks/chat/useNotification';
+import useVerifyEmail from "@/hooks/user/useVerifyEmail";
 
 const VerifyEmail = () => {
-  const [verifyStep, setVerifyStep] = useState<'email' | 'code'>('email');
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [code, setCode] = useState('');
-  const navigate = useNavigate();
-  const { addNotification } = useNotification();
-
-  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const userId = localStorage.getItem('user_id');
-    if (!userId) {
-      navigate('/login');
-      return;
-    }
-
-    if (verifyStep === 'email') {
-      const responseEmail = await confirmEmail(Number(userId), userEmail);
-      if (!responseEmail.success) {
-        addNotification('error', responseEmail.message);
-        return;
-      }
-      setVerifyStep('code');
-      addNotification('info', responseEmail.message);
-    } else {
-      const responseCode = await confirmCode(Number(userId), code);
-      if (!responseCode.success) {
-        addNotification('error', responseCode.message);
-        return;
-      }
-      navigate('/profile');
-    }
-  };
+  const { 
+    handleFormSubmit,
+    setCode,
+    setUserEmail,
+    verifyStep,
+    userEmail,
+    code,
+   } = useVerifyEmail();
+ 
 
   const inputClass = "bg-black/60 border border-white/[0.08] rounded-xl text-[16px] p-[14px_16px] text-[#a3a2a3] placeholder:text-[#a3a2a3]/40 focus:outline-none focus:border-white/20 transition-colors";
   const labelClass = "p-[5px] text-[#a3a2a3]/80 text-sm";
