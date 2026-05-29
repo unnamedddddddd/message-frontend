@@ -9,7 +9,6 @@ function App() {
   return (
     <Router>
       <NotificationProvider>
-         
           <GlobalNotiflication />
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />

@@ -1,5 +1,4 @@
 export { default as createUser } from './CreateUser';
-export { default as forgotPassword } from './ForgotPassword';
 export { default as getUserProfile } from './getUserProfile';
 export { default as loginUser } from './LoginUser';
 export { default as VerificationTokenRemember } from './VerificationTokenRemember';
@@ -10,4 +9,5 @@ export { default as updateStatusRequestFriend } from './updateStatusRequestFrien
 export { default as getUserProfileDetails } from './getUserProfileDetails';
 export { default as editUserProfileDetails } from './editUserProfileDetails';
 
-
+export * as emailApi from './ConfirmEmail';
+export * as forgotApi from './ForgotPassword';

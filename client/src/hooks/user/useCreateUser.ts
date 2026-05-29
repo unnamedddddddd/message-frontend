@@ -4,9 +4,9 @@ import { useNotification } from '../chat/useNotification';
 import { useNavigate } from 'react-router-dom';
 
 const useCreateUser = () => {
-  const [createLogin, setCreateLogin] = useState('');
-  const [createPassword, setCreatePassword] = useState('');
-  const [repeatcreatePassword, setRepeatCreatePassword] = useState('');
+  const [createLogin, setCreateLogin] = useState<string>('');
+  const [createPassword, setCreatePassword] = useState<string>('');
+  const [repeatcreatePassword, setRepeatCreatePassword] = useState<string>('');
   const { addNotification } = useNotification();
   const navigate = useNavigate();
 

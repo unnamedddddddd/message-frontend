@@ -1,25 +1,35 @@
 import useVerifyEmail from "@/hooks/user/useVerifyEmail";
+import type { FormEvent } from "react";
 
 const VerifyEmail = () => {
-  const { 
-    handleFormSubmit,
+  const {
+    handleFormSubmitCreateUser,
+    handleFormSubmitForgotPassword,
     setCode,
     setUserEmail,
     verifyStep,
     userEmail,
     code,
-   } = useVerifyEmail();
- 
+  } = useVerifyEmail();
 
   const inputClass = "bg-black/60 border border-white/[0.08] rounded-xl text-[16px] p-[14px_16px] text-[#a3a2a3] placeholder:text-[#a3a2a3]/40 focus:outline-none focus:border-white/20 transition-colors";
   const labelClass = "p-[5px] text-[#a3a2a3]/80 text-sm";
+
+  const handleCheckStage = (e: FormEvent<HTMLFormElement>) => {
+    const stage = sessionStorage.getItem('stage-forgot-password');    
+    if (stage === 'check-verify') {
+      handleFormSubmitForgotPassword(e);
+    } else {
+      handleFormSubmitCreateUser(e);
+    }
+  }
 
   return (
     <div className="min-h-screen p-5 flex justify-center items-center">
       <div className="max-w-[400px] w-full">
         <form
           className="bg-[#0d0d0f]/80 backdrop-blur-xl border border-white/[0.07] p-8 flex flex-col rounded-2xl gap-4 shadow-[0_32px_64px_rgba(0,0,0,0.5)]"
-          onSubmit={handleFormSubmit}
+          onSubmit={handleCheckStage}
         >
           <h1 className="text-2xl font-bold text-white tracking-tight">Подтверждение Email</h1>
 
