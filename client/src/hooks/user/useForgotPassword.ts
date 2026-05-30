@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { forgotPassword } from "@/api/user/ForgotPassword";
-import { useNotification } from "../chat/useNotification";
+import { useNotification } from "../chat";
 
 const useForgotPassword = () => {
   const [password, setPassword] = useState<string>('');

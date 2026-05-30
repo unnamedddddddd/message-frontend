@@ -1,9 +1,10 @@
-import { getFindUsers } from "@/api/chat";
+import { getFindUsers } from "@/api/chat/get/getFind";
 import type { FindUserProps } from "@/types";
 import type WidgetFindServerProps from "@/types/chat/WidgetFindServerProps";
-import { debounce, mapFindUsers } from "@/utils";
+import { debounce } from "@/utils";
+import { mapFindUsers } from "@/utils/map";
 import { useRef, useState } from "react";
-import FoundUser from "../FoundUser";
+import { FoundUser } from "../Founds";
 
 const WidgetFindUsers = ({ onClose }: WidgetFindServerProps) => {
   const [foundUsers, setFoundUsers] = useState<FindUserProps[]>([]);

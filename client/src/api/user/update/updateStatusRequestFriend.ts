@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 
 const updateStatusRequestFriend = async (status: 'accepted' | 'declined', requestId: number, senderId: number) => {
   const request = await fetch(`${SERVER_URL}/api/friendRequests/${requestId}/status`, {

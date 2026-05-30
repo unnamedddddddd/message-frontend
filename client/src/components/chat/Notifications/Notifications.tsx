@@ -1,6 +1,6 @@
-import { updateStatusInviteServer, updateStatusRequestFriend } from "@/api/user";
+import { updateStatusInviteServer, updateStatusRequestFriend } from "@/api/user/update";
 import { SERVER_URL } from "@/config";
-import { useNotification } from "@/hooks/chat/useNotification";
+import { useNotification } from "@/hooks/chat";
 import type { NotificationsProps } from "@/types";
 
 const Notifications = ({friendAvatar, friendLogin, friendId, serverId, senderLogin, senderId, serverAvatar, serverName, createdAt, referenceId, notificationType, onRemove, notificationId}: NotificationsProps) => {
@@ -19,9 +19,7 @@ const Notifications = ({friendAvatar, friendLogin, friendId, serverId, senderLog
     }
   }
   
-  const handleUpdateStatusRequestFriend = async (status: 'accepted' | 'declined') => {    
-    console.log(friendId);
-    
+  const handleUpdateStatusRequestFriend = async (status: 'accepted' | 'declined') => {        
     const response = await updateStatusRequestFriend(status, referenceId, friendId);
     if (!response.success) {
       console.error(response.message);

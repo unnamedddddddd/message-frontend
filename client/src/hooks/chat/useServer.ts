@@ -1,10 +1,10 @@
-import { getChats, getServers } from "@/api/chat";
-import getServerMembers from "@/api/chat/getServerMembers";
 import type { MembersProps, ServerProps, TextChatProps, VoiceChatProps } from "@/types";
-import { mapTextChats, mapServers, mapVoiceChats } from "@/utils";
-import mapMembers from "@/utils/mapMembers";
 import { useCallback, useEffect, useState } from "react";
 import useWebSocket from "./useWebSocket";
+import { getChats, getServers } from "@/api/chat/get";
+import getServerMembers from "@/api/chat/get/getServerMembers";
+import mapMembers from "@/utils/map/mapMembers";
+import { mapServers, mapTextChats, mapVoiceChats } from "@/utils/map";
 
 const useServer = () => {
   const [servers, setServers] = useState<ServerProps[]>([]);

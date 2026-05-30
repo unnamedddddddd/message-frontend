@@ -1,5 +1,5 @@
 import type { ProfileDetailsProps } from "@/types";
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 
 const editUserProfileDetails = async (userDetails: ProfileDetailsProps) => {
   console.log(userDetails);

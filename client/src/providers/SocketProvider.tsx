@@ -1,10 +1,11 @@
-import { getMessages } from "@/api/chat";
+import { getMessages } from "@/api/chat/get";
 import SocketContext from "@/contexts/SocketContext";
 import { useAuth } from "@/hooks/user";
 import { WebSocketChat } from "@/modules";
 import type { MessageProps, OnlineFriendsResponseProps } from "@/types";
-import { formatTime, mapMessages } from "@/utils";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { formatTime } from "@/utils";
+import { mapMessages } from "@/utils/map";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import type { SignalData } from "simple-peer";
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
@@ -49,7 +50,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     //addNotification('info', `Пришло сообщенение от ${newMsg.userName}`)
   }
 
-  const connect = () => {
+  const connect = useCallback(() => {
     if (socketRef.current) {
       return;
     }
@@ -66,7 +67,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         console.error('Ошибка подклчения сокета', err);
       });
     socketRef.current.requestOnlineFriends();
-  }
+  }, []);
 
   const getFriendsSocket = () => {
     socketRef.current?.requestOnlineFriends();
@@ -183,7 +184,7 @@ const onUserLeftVoiceSocket = (handler: (data: { userId: string }) => void) => {
       socketRef.current = null;
       clearInterval(pingInterval);
     };
-  }, []);
+  }, [connect]);
 
   return (
     <SocketContext.Provider value={{

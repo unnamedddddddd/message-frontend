@@ -1,11 +1,11 @@
-import { getNotifications } from "@/api/user";
 import { SERVER_URL } from "@/config";
 import { useAuth } from "@/hooks/user";
 import type { NotificationsProps } from "@/types";
-import { mapNotifications } from "@/utils";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Notiflication from "../chat/Notifications";
+import Notiflication from "../chat/Notifications/Notifications";
+import { getNotifications } from "@/api/user/get";
+import { mapNotifications } from "@/utils/map";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -31,7 +31,7 @@ const Header = () => {
       const response = await getNotifications();
       if (!response.success) {
         console.error(response.message);
-        return; // ← выйти, оставив пустое окно
+        return; 
       }
       setNotifications(mapNotifications(response.notifications));
     } catch (error) {

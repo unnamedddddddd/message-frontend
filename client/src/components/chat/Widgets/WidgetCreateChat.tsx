@@ -1,5 +1,5 @@
-import { createChat } from "@/api/chat";
-import { useNotification } from "@/hooks/chat/useNotification";
+import { createChat } from "@/api/chat/create";
+import { useNotification } from "@/hooks/chat";
 import type { CreateChatProps } from "@/types";
 import { useState, type FormEvent } from "react";
 

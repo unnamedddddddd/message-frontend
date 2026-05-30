@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useNotification } from "../chat/useNotification";
+import { useNotification } from "../chat";
 import { confirmCode, confirmEmail } from "@/api/user/ConfirmEmail";
 import { confirmCodeForgot, sendCode } from "@/api/user/ForgotPassword";
 

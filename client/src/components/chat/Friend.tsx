@@ -1,5 +1,5 @@
+import { SERVER_URL } from "@/config";
 import type { FriendProps } from "@/types";
-import { SERVER_URL } from "../../config";
 
 const Friend = ({id, friendId, avatar, name, online, disabled, onJoinChat }: FriendProps) => {
   const handleJoin = () => {

@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 
 const getMessagesChat = async (chatId: number, chatType: 'server' | 'personal') => {
   const request = await fetch(`${SERVER_URL}/api/chats/${chatType}/${chatId}/messages`, {

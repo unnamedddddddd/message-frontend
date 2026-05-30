@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useChat, useServer, useVoiceChat } from "@/hooks/chat";
+import { useServer } from "@/hooks/chat";
 import { useAuth } from "@/hooks/user";
 import { Member, Message } from "@/components/chat";
 import { useWebSocket } from "@/hooks/chat/useWebSocket";
 import { WidgetCreateChat } from "@/components/chat/Widgets";
 import { TextChat, VoiceChat } from "@/components/chat/Chats";
+import { useChat, useVoiceChat } from "@/hooks/chat/Chats";
 
 const Home = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);

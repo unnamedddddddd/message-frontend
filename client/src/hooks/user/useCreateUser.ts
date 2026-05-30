@@ -1,7 +1,7 @@
 import { createUser } from '@/api/user';
 import { useState, useCallback, useEffect, type FormEvent } from 'react';
-import { useNotification } from '../chat/useNotification';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from '../chat';
 
 const useCreateUser = () => {
   const [createLogin, setCreateLogin] = useState<string>('');

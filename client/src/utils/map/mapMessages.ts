@@ -1,5 +1,5 @@
 import type { MessageProps, MessageResponseProps } from "@/types";
-import formatTime from "./time";
+import formatTime from "../time";
 
 const mapMessages = (
   dbMessages: MessageResponseProps[], 

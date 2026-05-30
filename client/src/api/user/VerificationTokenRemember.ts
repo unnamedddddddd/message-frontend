@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 
 const verificationTokenRemember = async () => {
   const request = await fetch(`${SERVER_URL}/api/verificationTokenRemember`, {

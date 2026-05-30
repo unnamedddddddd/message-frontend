@@ -1,6 +1,7 @@
 import { Friend, Message } from "@/components/chat";
 import { WidgetFindUsers } from "@/components/chat/Widgets";
-import { useChat, useWebSocket } from "@/hooks/chat";
+import { useWebSocket } from "@/hooks/chat";
+import { useChat } from "@/hooks/chat/Chats";
 import { useFriends } from "@/hooks/chat/useFriends";
 import { useAuth } from "@/hooks/user";
 import { useEffect, useRef, useState } from "react";

@@ -1,7 +1,7 @@
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 
-const getFriends = async () => {
-  const request = await fetch(`${SERVER_URL}/api/me/friends`, {
+const getUserProfile = async () => {
+  const request = await fetch(`${SERVER_URL}/api/me`, {
     method: 'GET',
     headers:{'Content-Type': 'application/json'},
     credentials: 'include',
@@ -11,4 +11,4 @@ const getFriends = async () => {
   return serverResponse;
 }
 
-export default getFriends;
+export default getUserProfile;

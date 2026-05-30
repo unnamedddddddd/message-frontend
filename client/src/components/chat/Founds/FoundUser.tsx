@@ -1,8 +1,8 @@
-import { useNotification } from "@/hooks/chat/useNotification";
 import type { FindUserProps } from "@/types";
 import { useState } from "react";
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 import { sendRequestFriend } from "@/api/chat";
+import { useNotification } from "@/hooks/chat";
 
 const FoundUser = ({ userAvatar, userId, userLogin }: FindUserProps) => {
   const { addNotification } = useNotification();

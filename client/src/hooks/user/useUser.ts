@@ -2,7 +2,7 @@ import { loginUser } from "@/api/user";
 import verificationTokenRemember from "@/api/user/VerificationTokenRemember";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useNotification } from "../chat/useNotification";
+import { useNotification } from "../chat";
 
 const useUser = () => {
   const [login, setLogin] = useState<string>('');

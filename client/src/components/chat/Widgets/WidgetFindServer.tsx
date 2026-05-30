@@ -1,9 +1,10 @@
-import { getFindServer } from "@/api/chat";
+import { getFindServer } from "@/api/chat/get/getFind";
 import type { ServerProps } from "@/types";
 import type WidgetFindServerProps from "@/types/chat/WidgetFindServerProps";
-import { debounce, mapServers } from "@/utils";
+import { debounce,  } from "@/utils";
+import { mapServers } from "@/utils/map";
 import { useRef, useState } from "react";
-import FoundServer from "../FoundServer";
+import { FoundServer } from "../Founds";
 
 const WidgetFindServer = ({ onClose }: WidgetFindServerProps) => {
   const [foundServers, setFoundServers] = useState<ServerProps[]>([]);

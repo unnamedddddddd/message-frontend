@@ -1,5 +1,5 @@
-import { LogOut } from "@/api/chat";
-import { getUserProfile, uploadUserAvatar } from "@/api/user";
+import { LogOut, uploadUserAvatar } from "@/api/user";
+import { getUserProfile } from "@/api/user/get";
 import type { ProfileResponse } from "@/types";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

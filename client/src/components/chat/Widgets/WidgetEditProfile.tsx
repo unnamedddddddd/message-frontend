@@ -1,5 +1,6 @@
-import { editUserProfileDetails, getUserProfileDetails } from "@/api/user";
-import { useNotification } from "@/hooks/chat/useNotification";
+import { editUserProfileDetails } from "@/api/user";
+import { getUserProfileDetails } from "@/api/user/get";
+import { useNotification } from "@/hooks/chat";
 import type { ProfileDetailsProps, WidgetFindServer } from "@/types";
 import { useEffect, useState, type FormEvent } from "react";
 

@@ -1,9 +1,10 @@
 import { useState, type FormEvent } from "react";
-import useServer from "./useServer";
 import { formatTime } from "@/utils";
-import { useAuth } from "../user";
-import { useWebSocket } from "./useWebSocket";
-import { getOrCreatePersonalChat } from "@/api/chat";
+import useServer from "../useServer";
+import { useAuth } from "@/hooks/user";
+import useWebSocket from "../useWebSocket";
+import { getOrCreatePersonalChat } from "@/api/chat/get";
+
 
 const useChat = (userLogin: string) => {
   const [message, setMessage] = useState<string>('')

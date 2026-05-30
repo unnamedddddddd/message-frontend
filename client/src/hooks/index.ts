@@ -1,3 +1,3 @@
-export * as chatApi from './chat';
-export * as userApi from './user';
+export * as chatHooks from './chat';
+export * as userHooks from './user';
 

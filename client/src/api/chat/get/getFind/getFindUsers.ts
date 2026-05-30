@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 
 const getFindUsers = async (text: string) => {
   const request = await fetch(`${SERVER_URL}/api/users/find?search=${text}`, {

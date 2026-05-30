@@ -1,10 +1,8 @@
-import type { OnlineFriendsResponseProps, Participant } from "@/types";
-import { WEBSOCKET_URL } from "../config";
-import type MessageProps from "../types/chat/MessageProps";
-import type SocketProps from "../types/socket/SocketProps";
-import type IWebSocketClient from "../types/socket/WebSocketProps";
+import type { MessageProps, OnlineFriendsResponseProps, Participant, SocketProps } from "@/types";
 import { io } from "socket.io-client";
 import type { SignalData } from "simple-peer";
+import { WEBSOCKET_URL } from "@/config";
+import type IWebSocketClient from "@/types/socket/WebSocketProps";
 
 export default class WebSocketChat implements IWebSocketClient {
   public socket: SocketProps | null = null;

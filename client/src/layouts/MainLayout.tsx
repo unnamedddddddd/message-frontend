@@ -1,5 +1,4 @@
-import { ServerList } from "@/components/chat";
-import { Header } from "@/components/global";
+import { Header, ServerList} from "@/components/global";
 import { SocketProvider } from "@/providers/SocketProvider";
 import { Outlet } from "react-router-dom";
 

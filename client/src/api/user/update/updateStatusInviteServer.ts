@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 
 const updateStatusInviteServer = async (status: 'accepted' | 'declined', inviteId: number, serverId: number, senderId: number) => {
   const request = await fetch(`${SERVER_URL}/api/invites/${inviteId}/status`, {

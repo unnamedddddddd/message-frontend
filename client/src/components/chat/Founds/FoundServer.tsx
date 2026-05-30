@@ -1,8 +1,9 @@
+
 import { sendInviteServer } from "@/api/chat";
-import { useNotification } from "@/hooks/chat/useNotification";
+import { SERVER_URL } from "@/config";
+import { useNotification } from "@/hooks/chat";
 import type { ServerProps } from "@/types";
 import { useState } from "react";
-import { SERVER_URL } from "../../config";
 
 const FoundServer = ({ serverId, avatar, name }: ServerProps) => {
   const { addNotification } = useNotification();

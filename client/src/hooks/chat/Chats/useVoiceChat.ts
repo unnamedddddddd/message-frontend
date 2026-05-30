@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import SimplePeer, { type SignalData } from "simple-peer";
-import useWebSocket from "./useWebSocket";
+import useWebSocket from "../useWebSocket";
 
 const useVoiceChat = () => {
   const {

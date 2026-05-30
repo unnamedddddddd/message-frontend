@@ -1,5 +1,5 @@
-import { createServer } from "@/api/chat";
-import { useNotification } from "@/hooks/chat/useNotification";
+import { createServer } from "@/api/chat/create";
+import { useNotification } from "@/hooks/chat";
 import type { CreateServerProps } from "@/types";
 import { useState } from "react";
 

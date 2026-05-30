@@ -1,5 +1,5 @@
 import type { NotificationsProps, NotificationsResponseProps } from "@/types";
-import formatTime from "./time";
+import formatTime from "../time";
 
 const mapNotifications = (
   dbMessages: NotificationsResponseProps[], 

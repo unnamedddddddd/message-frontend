@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../../config";
+import { SERVER_URL } from "@/config";
 
 const getUserProfileDetails = async () => {
   const request = await fetch(`${SERVER_URL}/api/user/profile`, {

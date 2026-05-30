@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import Server from "./Server";
 import { useServer } from "@/hooks/chat";
-import { WidgetCreateServer, WidgetFindServer } from "./Widgets";
+import { WidgetCreateServer, WidgetFindServer } from "../chat/Widgets";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import { Server } from "../chat";
 
 const ServerList = () => {
   const { joinServer, servers } = useServer();

@@ -1,7 +1,7 @@
 import type { ServerProps } from "@/types";
-import { SERVER_URL } from "../../config";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWebSocket } from "@/hooks/chat";
+import { SERVER_URL } from "@/config";
 
 const Server = ({ serverId, avatar, name, disabled }: ServerProps) => {
   const navigate = useNavigate();
