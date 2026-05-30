@@ -1,7 +1,7 @@
 import type { MembersProps } from "@/types";
 import { SERVER_URL } from "../../config";
 
-const Member = ({id, avatar, name}: MembersProps) => {
+const Member = ({avatar, name}: MembersProps) => {
 
   return (
   <button 
