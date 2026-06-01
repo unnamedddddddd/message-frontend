@@ -59,6 +59,7 @@ const useAuth = () => {
         alert('Id пользователя не найден');
         return;
       }
+          
       const data = await uploadUserAvatar(file, Number(currentUserId));
       if (data.success) {
         setUserAvatar(data.avatar); 

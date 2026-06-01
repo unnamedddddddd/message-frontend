@@ -1,5 +1,4 @@
 import Email from "@/components/user/Email";
-import { SERVER_URL } from "../../config";
 import { useAuth } from "@/hooks/user";
 import { useCallback, useEffect, useState } from "react";
 import type { ProfileDetailsProps } from "@/types";
@@ -65,7 +64,7 @@ const ProfileForm = () => {
             <div className="relative group">
               <label htmlFor="user-avatar-upload" className="cursor-pointer">
                 <img
-                  src={`${SERVER_URL}${userAvatar}`}
+                  src={userAvatar}
                   alt={userLogin}
                   className="h-24 w-24 rounded-full border-4 border-[#0d0d0f] object-cover group-hover:brightness-75 transition-all"
                 />

@@ -1,4 +1,3 @@
-import { SERVER_URL } from "@/config";
 import type { FriendProps } from "@/types";
 
 const Friend = ({id, friendId, avatar, name, online, disabled, onJoinChat }: FriendProps) => {
@@ -19,7 +18,7 @@ const Friend = ({id, friendId, avatar, name, online, disabled, onJoinChat }: Fri
   >
     <div className="relative">
       <img 
-        src={`${SERVER_URL}${avatar}`} 
+        src={avatar} 
         alt={name}
         className="w-12 h-12 rounded-[15px] border border-[#6d7275]/30 object-cover" 
       />

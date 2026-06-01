@@ -1,7 +1,6 @@
 import type { ServerProps } from "@/types";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWebSocket } from "@/hooks/chat";
-import { SERVER_URL } from "@/config";
 
 const Server = ({ serverId, avatar, name, disabled }: ServerProps) => {
   const navigate = useNavigate();
@@ -14,7 +13,8 @@ const Server = ({ serverId, avatar, name, disabled }: ServerProps) => {
     }   
    setCurrentServerId(serverId)
   };
-  
+    console.log(avatar);
+    
   return (
     <button 
       disabled={disabled}
@@ -26,7 +26,7 @@ const Server = ({ serverId, avatar, name, disabled }: ServerProps) => {
     >
       <div className="flex items-center"> 
         <img 
-          src={`${SERVER_URL}${avatar}`} 
+          src={avatar} 
           alt={name} 
           className="w-12 h-12 rounded-[15px] border border-[#6d7275]/30 object-cover" 
         />

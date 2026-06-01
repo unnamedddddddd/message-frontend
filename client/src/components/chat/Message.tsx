@@ -1,4 +1,3 @@
-import { SERVER_URL } from "@/config";
 import type { MessageProps } from "@/types";
 
 const Message = ({message, userName, userAvatar, type, renderTime}: MessageProps) => {
@@ -7,7 +6,7 @@ const Message = ({message, userName, userAvatar, type, renderTime}: MessageProps
   return (
     <div className={`flex items-end gap-2 flex-row mb-1`}>
       <img 
-        src={`${SERVER_URL}${userAvatar}`}
+        src={userAvatar}
         alt={userName}
         className="w-8 h-8 rounded-full object-cover shrink-0"
       />

@@ -1,4 +1,3 @@
-import { SERVER_URL } from "@/config";
 import { useAuth } from "@/hooks/user";
 import type { NotificationsProps } from "@/types";
 import { useEffect, useState } from "react";
@@ -113,7 +112,7 @@ const Header = () => {
           onClick={() => navigate('/profile')}>
           <div className="flex items-center gap-4">
             <img
-              src={`${SERVER_URL}${userAvatar}`}
+              src={userAvatar}
               alt={`Аватар пользователя ${userLogin}`}
               className="h-8 w-8 object-cover rounded-full border-2 border-white/10 transition-all duration-300"
             />

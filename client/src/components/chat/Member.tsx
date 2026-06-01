@@ -1,5 +1,4 @@
 import type { MembersProps } from "@/types";
-import { SERVER_URL } from "../../config";
 
 const Member = ({avatar, name}: MembersProps) => {
 
@@ -12,7 +11,7 @@ const Member = ({avatar, name}: MembersProps) => {
   >
     <div className="relative shrink-0">
       <img 
-        src={`${SERVER_URL}${avatar}`} 
+        src={avatar} 
         alt={name}
         className="w-8 h-8 rounded-full border border-[#6d7275]/30 object-cover" 
       />
