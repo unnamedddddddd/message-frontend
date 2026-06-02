@@ -1,5 +1,4 @@
 import { updateStatusInviteServer, updateStatusRequestFriend } from "@/api/user/update";
-import { SERVER_URL } from "@/config";
 import { useNotification } from "@/hooks/chat";
 import type { NotificationsProps } from "@/types";
 
@@ -38,7 +37,7 @@ const Notifications = ({friendAvatar, friendLogin, friendId, serverId, senderLog
         <div className="flex gap-2 flex-col">
           <div className="flex  justify-between">
             <div className="flex gap-2 items-center">
-              <img src={`${SERVER_URL}${serverAvatar}`} className="w-10 h-10 rounded-full"/>
+              <img src={serverAvatar} className="w-10 h-10 rounded-full"/>
               <span> {senderLogin} хочет зайти в {serverName}</span>
             </div>     
             <div className="flex gap-2 items-center">

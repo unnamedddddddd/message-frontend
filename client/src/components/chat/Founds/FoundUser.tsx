@@ -1,6 +1,5 @@
 import type { FindUserProps } from "@/types";
 import { useState } from "react";
-import { SERVER_URL } from "@/config";
 import { sendRequestFriend } from "@/api/chat";
 import { useNotification } from "@/hooks/chat";
 
@@ -23,7 +22,7 @@ const FoundUser = ({ userAvatar, userId, userLogin }: FindUserProps) => {
     <div className="flex items-center p-2 border rounded-2xl border-[#6d7275]/40 justify-between">
         <div className="flex items-center gap-2"> 
           <img 
-            src={`${SERVER_URL}${userAvatar}`} 
+            src={userAvatar} 
             alt={userLogin} 
             className="w-12 h-12 rounded-[15px] border border-[#6d7275]/30 object-cover" 
           />
