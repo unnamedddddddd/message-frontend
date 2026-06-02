@@ -56,7 +56,7 @@ const Login = () => {
           <span className='text-xs font-medium text-white/25 text-center uppercase tracking-widest'>или через логин и пароль</span>
 
           <div className="flex flex-col gap-1">
-            <label className={labelClass}>Login</label>
+            <label className={labelClass}>Логин</label>
             <input
               value={login}
               type="text"
@@ -67,7 +67,7 @@ const Login = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className={labelClass}>Password</label>
+            <label className={labelClass}>Пароль</label>
             <input
               value={password}
               type="password"
@@ -92,7 +92,7 @@ const Login = () => {
           </div>
 
           <button className={btnPrimary}>
-            sign in
+            Войти
           </button>
         </form>
 
@@ -105,7 +105,7 @@ const Login = () => {
           <h1 className="text-2xl font-bold text-white tracking-tight">Создать аккаунт</h1>
 
           <div className="flex flex-col gap-1">
-            <label className={labelClass}>Login</label>
+            <label className={labelClass}>Логин</label>
             <input
               type="text"
               value={createLogin}
@@ -116,7 +116,7 @@ const Login = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className={labelClass}>Password</label>
+            <label className={labelClass}>Пароль</label>
             <input
               type="password"
               value={createPassword}
@@ -127,18 +127,18 @@ const Login = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className={labelClass}>Repeat Password</label>
+            <label className={labelClass}>Повторите пароль</label>
             <input
               type="password"
               value={repeatcreatePassword}
               className={inputClass}
-              placeholder="Повторите пароль"
+              placeholder="Введите пароль"
               onChange={(e) => setRepeatCreatePassword(e.target.value)}
             />
           </div>
 
           <button className={btnPrimary} type='submit'>
-            sign up
+            Создать аккаунт
           </button>
         </form>
 

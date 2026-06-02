@@ -3,6 +3,7 @@ import { getUserProfile } from "@/api/user/get";
 import type { ProfileResponse } from "@/types";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../chat";
 
 const useAuth = () => {
   const [userLogin, setUserLogin] = useState<string>('');
@@ -10,7 +11,9 @@ const useAuth = () => {
   const [isVerified, setisVerified] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userEmail, setUserEmail] = useState<string>('');
+
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
 
   const checkAuth = useCallback( async () => {
     try {
@@ -50,20 +53,20 @@ const useAuth = () => {
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('Файл слишком большой (макс 5МБ)');
+      addNotification('warning', 'Файл слишком большой (макс 5МБ)');
       return;
     }
     try {
       const currentUserId = localStorage.getItem('user_id');
       if (!currentUserId) {
-        alert('Id пользователя не найден');
+        addNotification('error', 'Id пользователя не найден');
         return;
       }
           
       const data = await uploadUserAvatar(file, Number(currentUserId));
       if (data.success) {
         setUserAvatar(data.avatar); 
-        console.log("Аватар успешно обновлен:", data.avatar);
+        addNotification('success', `Аватар успешно обновлен: ${data.avatar}`);
       }
     } catch (error) {
       console.error("Ошибка загрузки аватара:", error);
@@ -74,7 +77,7 @@ const useAuth = () => {
     const data = await LogOut();
 
     if (!data.success) {
-      console.log('Пользователь не авторизован:', data.message);
+     addNotification('error', `Пользователь не авторизован: ${data.message}`);
       return;
     }
     localStorage.clear();

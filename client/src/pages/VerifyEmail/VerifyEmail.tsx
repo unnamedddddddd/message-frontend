@@ -40,7 +40,7 @@ const VerifyEmail = () => {
                 <input id="email" value={userEmail} onChange={(e) => setUserEmail(e.target.value)} type="email" className={inputClass} required />
               </div>
               <button type="submit" className="bg-white/[0.08] border border-white/[0.1] p-[10px] w-full rounded-lg text-[#a3a2a3] font-semibold hover:bg-white/[0.14] hover:text-white transition-all">
-                Send Code
+                Отправить код
               </button>
             </>
           ) : (
@@ -50,7 +50,7 @@ const VerifyEmail = () => {
                 <input id="code" value={code} onChange={(e) => setCode(e.target.value)} type="text" className={inputClass} maxLength={6} required />
               </div>
               <button type="submit" className="bg-white/[0.08] border border-white/[0.1] p-[10px] w-full rounded-lg text-[#a3a2a3] font-semibold hover:bg-white/[0.14] hover:text-white transition-all">
-                Confirm Code
+                Подтвердить код
               </button>
             </>
           )}

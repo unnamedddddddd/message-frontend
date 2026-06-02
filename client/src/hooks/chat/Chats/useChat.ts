@@ -47,10 +47,7 @@ const useChat = (userLogin: string) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // if (!isVerified) {
-    //   alert('Пожалуйста потвердите почту, сделать это можно в вашем профиле')
-    //   return;
-    // }    
+    
     sendMessage({ 
       message, 
       userAvatar,

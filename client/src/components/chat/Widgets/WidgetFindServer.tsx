@@ -40,7 +40,7 @@ const WidgetFindServer = ({ onClose }: WidgetFindServerProps) => {
         />
         <button onClick={onClose} className="text-white/30 hover:text-white transition-colors font-bold text-xl leading-none flex-shrink-0">✕</button>
       </div>
-      <div className="flex flex-col rounded-xl overflow-hidden">
+      <div className="flex flex-col rounded-xl overflow-hidden gap-3">
         {foundServers.map((server, index) => (
           <div
             key={server.serverId}

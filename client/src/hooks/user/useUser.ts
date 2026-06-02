@@ -12,24 +12,24 @@ const useUser = () => {
   const { addNotification } = useNotification();
 
   const checkTokenRemember = useCallback(async () => {
-  try {
-    const data = await verificationTokenRemember();
-    if (data.success) {
-      localStorage.setItem('user_id', data.user_id);
-      navigate('/home');
+    try {
+      const data = await verificationTokenRemember();
+      if (data.success) {
+        localStorage.setItem('user_id', data.user_id);
+        navigate('/home');
+      }
+    } catch (error) {
+      console.log(123);
+
+      console.error(error);
     }
-  } catch(error) {
-    console.log(123);
-    
-    console.error(error);
-  }
-}, [navigate]); 
+  }, [navigate]);
 
   useEffect(() => {
     checkTokenRemember();
   }, [checkTokenRemember]);
 
-  const handleForm = async (e: FormEvent<HTMLFormElement>) => {    
+  const handleForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!login || !password) {
@@ -38,25 +38,24 @@ const useUser = () => {
     }
 
     const data = await loginUser(login, password, isRemember);
-    console.log(data);
-    
     if (!data.success) {
       console.error(data.message)
-      alert(`Ошибка: ${data.message}`);
+      addNotification('error', `Ошибка: ${data.message}`);
       return;
     }
+
     localStorage.setItem('user_id', data.user_id);
     navigate('/home');
   }
 
-  return { 
-    login, 
-    setLogin, 
-    password, 
-    setPassword, 
-    isRemember, 
-    setIsRemember, 
-    handleForm 
+  return {
+    login,
+    setLogin,
+    password,
+    setPassword,
+    isRemember,
+    setIsRemember,
+    handleForm
   };
 }
 
